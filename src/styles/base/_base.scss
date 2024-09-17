@@ -1,0 +1,23 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0px;
+    font-size: $font-size-small;
+    background-color: $cor-primaria;
+}
+
+button {
+    width: 120px;
+    height: 40px;
+    border-radius: $radius;
+    text-align: center;
+    justify-content: center;
+    border-width: 0px;
+}
+
+.body {
+    display: flex;
+    max-width: 100%;
+    gap: 32px;
+    padding: 0px 32px;
+    justify-content: space-between;
+  }

@@ -1,0 +1,93 @@
+.div-form {
+    width: 50%;
+}
+
+.div-title-avaliacao{
+  border-radius: $radius $radius 0px 0px ;
+  background-color: $off-white;
+  margin: 0px;
+  padding: $m-size;
+}
+
+.title-avaliacao{
+  margin: 0px;
+  font-size: $font-size-medium;
+  font-weight: bold;
+}
+
+.form {
+    border-radius: 0px 0px $radius $radius;
+    background-color: $cor-fundo-avaliacao;
+    padding: $l-size 2*$l-size $l-size $l-size;
+    height: 67vh;
+    overflow-y: scroll;
+    margin-bottom: $m-size;
+}
+
+
+.form::-webkit-scrollbar-thumb {
+    background-color: #808080;
+    border-radius: 3px;
+}
+
+.form::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.form::-webkit-scrollbar-track {
+    background-color: #B0B0B0;
+    border-radius: 3px;
+}
+
+.text-question {
+    margin: $m-size 0px $xs-size !important;
+}
+
+textarea {
+    border-width: 0px 0px 1.5px 0px;
+    border-color: #A0A0A0;
+    border-radius: $radius;
+    height: auto;
+    padding: $xs-size;
+    width: 100%;
+    overflow:auto;
+    resize: none;
+}
+
+.input-error {
+  border-color: $error;
+}
+
+.text-error {
+  color: $error;
+}
+
+.button-save{
+    background-color: $botao-primario;
+    color: $off-white;
+  }
+  
+.button-cancel{
+    background-color: $off-white;
+    color: $botao-secundario;
+  }
+
+.button-send{
+    background-color: $botao-primario;
+    color: $off-white;
+  }
+
+.button-right{
+  margin-left: auto;
+}
+
+.div-form-button{
+  display: flex;
+  max-width: 100%;
+  justify-content: space-between;
+}
+
+.form_error{
+  color: $error;
+}
