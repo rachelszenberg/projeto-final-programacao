@@ -18,7 +18,7 @@
 .form {
     border-radius: 0px 0px $radius $radius;
     background-color: $cor-fundo-avaliacao;
-    padding: $l-size 2*$l-size $l-size $l-size;
+    padding: 0px 2*$l-size $l-size $l-size;
     height: 67vh;
     overflow-y: scroll;
     margin-bottom: $m-size;
@@ -42,6 +42,7 @@
 
 .text-question {
     margin: $m-size 0px $xs-size !important;
+    font-size: $font-size-small;
 }
 
 textarea {

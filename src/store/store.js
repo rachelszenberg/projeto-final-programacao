@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import avaliacaoReducer from "../features/AvaliacaoSlice";
+import questionarioReducer from "../features/QuestionarioSlice";
+import respostasReducer from "../features/RespostasSlice";
 
 export default configureStore({
     reducer: {
-        avaliacao: avaliacaoReducer,
+        questionario: questionarioReducer,
+        respostas: respostasReducer
     },
 })

@@ -1,13 +1,15 @@
 import React from "react";
 import { PdfViwer } from "./PdfViwer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Perguntas } from "./Perguntas";
-import { selectAllAvaliacoes } from "../features/AvaliacaoSlice"
+import { selectAllQuestionarios } from "../features/QuestionarioSlice"
+import { selectAllRespostas } from "../features/RespostasSlice";
 
 export const Body = () => {
-    const avaliacao = useSelector(selectAllAvaliacoes);
-    const questionario = avaliacao.questionarios[avaliacao.questionarioIndex];
-  
+    const questionarios = useSelector(selectAllQuestionarios);
+    const respostas = useSelector(selectAllRespostas);
+    const questionario = questionarios[respostas.respostaIndex];    
+
     return (
         <div className="body">
             <PdfViwer url={questionario.pdf} />

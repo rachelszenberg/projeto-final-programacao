@@ -1,5 +1,4 @@
 import Modal from 'react-modal'
-import { Button } from './Button';
 import { ReactComponent as Enviar } from '../svg/enviar.svg'
 
 export const ConfirmacaoModal = (props) => (

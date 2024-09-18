@@ -1,5 +1,3 @@
-import Modal from 'react-modal'
-import { Button } from './Button';
 import { ReactComponent as Error } from '../svg/error.svg'
 import { useNavigate } from 'react-router-dom';
 

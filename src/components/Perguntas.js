@@ -1,37 +1,41 @@
 import { useEffect, useState } from "react";
 import { Button } from "./Button";
-import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
-import { AiOutlineSend } from "react-icons/ai";
+// import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
+// import { AiOutlineSend } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { decrementIndex, incrementIndex, selectAllAvaliacoes, setAvaliacaoRespostas } from "../features/AvaliacaoSlice"
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
+import { decrementIndex, incrementIndex, selectAllRespostas, setAvaliacaoRespostas, addResposta } from "../features/RespostasSlice";
+import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 
 export const Perguntas = (props) => {
     const dispatch = useDispatch();
-    const avaliacao = useSelector(selectAllAvaliacoes);
-    const questionario = avaliacao.questionarios[avaliacao.questionarioIndex];
-    const perguntas = questionario.perguntas;
-    const respostasIniciais = questionario.respostas;
+    const questionarios = useSelector(selectAllQuestionarios);
+    const respostas = useSelector(selectAllRespostas);
     const navigate = useNavigate()
 
-    const [respostas, setRespostas] = useState([]);
+    const questionario = questionarios[respostas.respostaIndex]; 
+    const perguntas = questionario.perguntas;
+    const perguntaTemResposta = respostas.listRespostas.find(respostas => respostas.id === questionario.id);
+    const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
+
+    const [respostasTmp, setRespostasTmp] = useState(['o']);
     const [listIndexErros, setListIndexErros] = useState([]);
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
     const [showModal, setShowModal] = useState(false);
-
+    
     useEffect(() => {
-        setRespostas(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
-        setPodeVoltar(avaliacao.questionarioIndex !== 0);
-        setTemProximo(avaliacao.questionarioIndex !== avaliacao.questionarios.length - 1)
+        setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
+        setPodeVoltar(respostas.respostaIndex !== 0);
+        setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
         setListIndexErros([]);
     }, [perguntas])
 
     const handleRespostaChange = (index, value) => {
-        const novasRespostas = [...respostas];
+        const novasRespostas = [...respostasTmp];
         novasRespostas[index] = value;
-        setRespostas(novasRespostas);
+        setRespostasTmp(novasRespostas);
     };
 
     const onVoltar = (e) => {
@@ -42,13 +46,13 @@ export const Perguntas = (props) => {
     const onProximo = (e) => {
         e.preventDefault();
         let erros = []
-        respostas.map((r, index) => {
+        respostasTmp.map((r, index) => {
             if (!r) {
                 erros.push(index);
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas(respostas));
+            dispatch(setAvaliacaoRespostas({id: questionario.id, respostasPergunta: respostasTmp}));
             dispatch(incrementIndex());
         }
         else {
@@ -59,13 +63,13 @@ export const Perguntas = (props) => {
     const onEnviar = (e) => {
         e.preventDefault();
         let erros = []
-        respostas.map((r, index) => {
+        respostasTmp.map((r, index) => {
             if (!r) {
                 erros.push(index);
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas(respostas));
+            dispatch(setAvaliacaoRespostas({id: questionario.id, respostasPergunta: respostasTmp}));
             setShowModal(true);
         }
         else {
@@ -74,6 +78,8 @@ export const Perguntas = (props) => {
     };
 
     const confirmar = () => {
+        // TODO: salvar no firebase
+        dispatch(addResposta(respostas))
         navigate('/obrigado')
     }
 
@@ -86,12 +92,12 @@ export const Perguntas = (props) => {
                 {listIndexErros.length > 0 && <p className="form_error">Por favor, preencha todos os campos!</p>}
                 {perguntas.map((pergunta, index) => (
                     <div key={index}>
-                        <p className={`text-question${(listIndexErros.includes(index) && respostas[index] == "") && 'text-error'}`}>{pergunta}</p>
+                        <p className={`text-question ${(listIndexErros.includes(index) && respostasTmp[index] === "") && 'text-error'}`}>{pergunta}</p>
                         <textarea
-                            rows={6}
-                            className={(listIndexErros.includes(index) && respostas[index] == "") && "input-error"}
+                            rows={4}
+                            className={(listIndexErros.includes(index) && respostasTmp[index] === "") && "input-error"}
                             type="text"
-                            value={respostas[index]}
+                            value={respostasTmp[index]}
                             onChange={(e) => handleRespostaChange(index, e.target.value)}
                             placeholder={`Resposta ${index + 1}`} />
                     </div>
