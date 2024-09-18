@@ -1,7 +1,7 @@
 import React from "react";
-import { PdfViwer } from "./PdfViwer";
+import { PdfViwer } from "../components/PdfViwer";
 import { useSelector } from "react-redux";
-import { Perguntas } from "./Perguntas";
+import { Perguntas } from "../components/Perguntas";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice"
 import { selectAllRespostas } from "../features/RespostasSlice";
 

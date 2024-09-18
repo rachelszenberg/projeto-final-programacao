@@ -12,6 +12,10 @@ button {
     text-align: center;
     justify-content: center;
     border-width: 0px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .body {
@@ -20,4 +24,4 @@ button {
     gap: 32px;
     padding: 0px 32px;
     justify-content: space-between;
-  }
+}

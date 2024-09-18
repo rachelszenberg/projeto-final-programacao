@@ -1,9 +1,10 @@
 import React from 'react';
 import { Header } from './components/Header';
-import { Body } from './components/Body';
+import { Body } from './screens/Body';
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Obrigado } from './components/Obrigado';
-import { PageError } from './components/PageError';
+import { Obrigado } from './screens/Obrigado';
+import { PageError } from './screens/PageError';
+// import { PageError } from './components/PageError';
 import './firebase/firebase';
 
 function App() {

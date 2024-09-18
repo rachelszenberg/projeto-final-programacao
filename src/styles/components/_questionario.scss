@@ -67,16 +67,25 @@ textarea {
 .button-save{
     background-color: $botao-primario;
     color: $off-white;
+    &:hover {
+      background-color: $botao-primario-hover;
+    }
   }
   
 .button-cancel{
     background-color: $off-white;
     color: $botao-secundario;
+    &:hover {
+      background-color: $botao-secundario-hover;
+    }
   }
 
 .button-send{
     background-color: $botao-primario;
     color: $off-white;
+    &:hover {
+      background-color: $botao-primario-hover;
+    }
   }
 
 .button-right{
