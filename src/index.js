@@ -7,16 +7,19 @@ import store from './store/store';
 import { Provider } from 'react-redux';
 import './styles/styles.scss';
 import { fetchQuestionarios } from './features/QuestionarioSlice';
+import { fetchPerguntas } from './features/PerguntasSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 store.dispatch(fetchQuestionarios()).then(() => {
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
-  );
+  store.dispatch(fetchPerguntas()).then(() => {
+    root.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    );
+  })
 })
 
 // If you want to start measuring performance in your app, pass a function

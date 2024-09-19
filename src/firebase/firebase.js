@@ -39,10 +39,14 @@ export const db = getDatabase(app);
 //               ],
 // );
 
-// push(ref(db, 'respostas/-O7157lV0k3um_Zecaz2'), 
-// [
-//   "a", "b"
-// ],
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// "https://www.gov.br/mme/pt-br/acesso-a-informacao/entidades/chesf/poli_corp/PoliticadeCelebraodeAcordosJudiciaiseExtrajudiciaisdasEmpresasEletrobras.pdf"
+// )
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// "https://www.tjmg.jus.br/data/files/8D/20/B5/1A/87D67710AAE827676ECB08A8/Minuta%20versao%20final.pdf.pdf"
+// )
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// "https://www.tjmg.jus.br/data/files/8D/20/B5/1A/87D67710AAE827676ECB08A8/Minuta%20versao%20final.pdf.pdf"
 // )
 
 // get(ref(db, 'questionarios'))

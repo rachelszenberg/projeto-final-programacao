@@ -8,15 +8,16 @@ import { useNavigate } from "react-router-dom";
 import { decrementIndex, incrementIndex, selectAllRespostas, setAvaliacaoRespostas, addResposta } from "../features/RespostasSlice";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { ProgressBar } from "./ProgressBar";
+import { selectAllPerguntas } from "../features/PerguntasSlice";
 
-export const Perguntas = (props) => {
+export const Perguntas = () => {
     const dispatch = useDispatch();
     const questionarios = useSelector(selectAllQuestionarios);
     const respostas = useSelector(selectAllRespostas);
-    const navigate = useNavigate()
+    const allPerguntas = useSelector(selectAllPerguntas);
+    const navigate = useNavigate();
 
     const questionario = questionarios[respostas.respostaIndex];
-    const perguntas = questionario.perguntas;
     const perguntaTemResposta = respostas.listRespostas.find(respostas => respostas.id === questionario.id);
     const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
 
@@ -25,13 +26,19 @@ export const Perguntas = (props) => {
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
     const [showModal, setShowModal] = useState(false);
+    
+    let perguntas = [];
+    questionario.perguntas.map((p_id) => {
+        const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id).pergunta;
+        perguntas.push(perguntaTemp);
+    });
 
-    useEffect(() => {
+    useEffect(() => {      
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
         setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
         setListIndexErros([]);
-    }, [perguntas])
+    }, [questionario.perguntas])
 
     const handleRespostaChange = (index, value) => {
         const novasRespostas = [...respostasTmp];
@@ -79,7 +86,6 @@ export const Perguntas = (props) => {
     };
 
     const confirmar = () => {
-        // TODO: salvar no firebase
         dispatch(addResposta(respostas))
         navigate('/obrigado')
     }
