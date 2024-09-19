@@ -7,6 +7,7 @@ import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
 import { decrementIndex, incrementIndex, selectAllRespostas, setAvaliacaoRespostas, addResposta } from "../features/RespostasSlice";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
+import { ProgressBar } from "./ProgressBar";
 
 export const Perguntas = (props) => {
     const dispatch = useDispatch();
@@ -14,17 +15,17 @@ export const Perguntas = (props) => {
     const respostas = useSelector(selectAllRespostas);
     const navigate = useNavigate()
 
-    const questionario = questionarios[respostas.respostaIndex]; 
+    const questionario = questionarios[respostas.respostaIndex];
     const perguntas = questionario.perguntas;
     const perguntaTemResposta = respostas.listRespostas.find(respostas => respostas.id === questionario.id);
     const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
 
-    const [respostasTmp, setRespostasTmp] = useState(['o']);
+    const [respostasTmp, setRespostasTmp] = useState([]);
     const [listIndexErros, setListIndexErros] = useState([]);
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
     const [showModal, setShowModal] = useState(false);
-    
+
     useEffect(() => {
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
@@ -52,7 +53,7 @@ export const Perguntas = (props) => {
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas({id: questionario.id, respostasPergunta: respostasTmp}));
+            dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
             dispatch(incrementIndex());
         }
         else {
@@ -69,7 +70,7 @@ export const Perguntas = (props) => {
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas({id: questionario.id, respostasPergunta: respostasTmp}));
+            dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
             setShowModal(true);
         }
         else {
@@ -87,6 +88,9 @@ export const Perguntas = (props) => {
         <form className="div-form">
             <div className="div-title-avaliacao">
                 <p className="title-avaliacao">Avaliação</p>
+                <div>
+                    <ProgressBar total={questionarios.length} ind={respostas.respostaIndex} />
+                </div>
             </div>
             <div className="form">
                 {listIndexErros.length > 0 && <p className="form_error">Por favor, preencha todos os campos!</p>}
@@ -125,7 +129,7 @@ export const Perguntas = (props) => {
                     }
                 </div>
             </div>
-            <ConfirmacaoModal showModal={showModal} cancelButton={()=>setShowModal(false)} confirmButton={confirmar}/>
+            <ConfirmacaoModal showModal={showModal} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
         </form>
     )
 }
