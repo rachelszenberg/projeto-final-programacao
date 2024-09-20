@@ -18,6 +18,7 @@ export const Perguntas = () => {
     const navigate = useNavigate();
 
     const questionario = questionarios[respostas.respostaIndex];
+    
     const perguntaTemResposta = respostas.listRespostas.find(respostas => respostas.id === questionario.id);
     const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
 
@@ -48,7 +49,7 @@ export const Perguntas = () => {
 
     const onVoltar = (e) => {
         e.preventDefault();
-        dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
+        dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
         dispatch(decrementIndex());
     };
 
@@ -61,7 +62,7 @@ export const Perguntas = () => {
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
+            dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             dispatch(incrementIndex());
         }
         else {
@@ -78,7 +79,7 @@ export const Perguntas = () => {
             }
         });
         if (erros.length === 0) {
-            dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
+            dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             setShowModal(true);
         }
         else {
@@ -87,7 +88,7 @@ export const Perguntas = () => {
     };
 
     const confirmar = () => {
-        dispatch(addResposta(respostas))
+        dispatch(addResposta())
         navigate('/obrigado')
     }
 
@@ -100,7 +101,7 @@ export const Perguntas = () => {
                 {listIndexErros.length > 0 && <p className="form_error">Por favor, preencha todos os campos!</p>}
                 {perguntas.map((pergunta, index) => (
                     <div key={index}>
-                        <p className={`text-question ${(listIndexErros.includes(index) && respostasTmp[index] === "") && 'text-error'}`}>{pergunta}</p>
+                        <p className={`text-question ${(listIndexErros.includes(index) && respostasTmp[index] === "") && 'text-error'}`}>{index+1}. {pergunta}</p>
                         <textarea
                             rows={4}
                             className={(listIndexErros.includes(index) && respostasTmp[index] === "") && "input-error"}
