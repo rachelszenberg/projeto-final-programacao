@@ -10,10 +10,13 @@ export const fetchQuestionarios = createAsyncThunk(
         snapshot.forEach((childSnapShot) => {
             const pdfTemp = childSnapShot.val().pdf;
             const listPdf = Object.entries(pdfTemp).map(([key, value]) => ({id: key, url: value}));
+            
+            const randomIndex = Math.floor(Math.random() * listPdf.length);           
+            const randomPdf = listPdf[randomIndex];
                        
             questionarios.push({
                 id: childSnapShot.key,
-                pdf: listPdf,
+                pdf: randomPdf,
                 perguntas: childSnapShot.val().perguntas
             })
         })

@@ -12,8 +12,7 @@ export const Body = () => {
 
     return (
         <div className="body">
-            {/* TODO: mudar questionario.pdf[respostas.respostaIndex].url para pegar um pdf aleatorio */}
-            <PdfViwer url={questionario.pdf[respostas.respostaIndex].url} />
+            <PdfViwer url={questionario.pdf.url} />
             <Perguntas/>
         </div>
     )

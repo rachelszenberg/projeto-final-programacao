@@ -48,6 +48,7 @@ export const Perguntas = () => {
 
     const onVoltar = (e) => {
         e.preventDefault();
+        dispatch(setAvaliacaoRespostas({ id: questionario.id, respostasPergunta: respostasTmp }));
         dispatch(decrementIndex());
     };
 
