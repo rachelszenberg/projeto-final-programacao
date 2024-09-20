@@ -29,23 +29,17 @@ export const db = getDatabase(app);
 //   console.log('Error: ',e)
 // })
 
-// set(ref(db, 'questionarios/-O7157lV0k3um_Zecaz2/perguntas'), 
-// [
-//                   "Qual é o objetivo principal desta cláusula no acordo?",
-//                   "Que aspectos específicos a cláusula cobre?",
-//                   "Quais são os direitos e obrigações estabelecidos pela cláusula para cada parte envolvida?",
-//                   "Como as responsabilidades são distribuídas entre as partes de acordo com esta cláusula?",
-//                   "Quais são os prazos ou condições estabelecidos nesta cláusula?"
-//               ],
+// set(ref(db, 'avaliacoes/-O7157lV0k3um_Zecaz2/-O7B6ikebbmk6mFhUhIo/-O7Fr337x3F8gDbMzf_R/0'),
+//   [[ 2, 4, 2, 1, 5 ], [ 2, 5, 3, 2, 5 ], [ 4, 2, 3, 3, 3 ]],
 // );
 
-// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'),
 // "https://www.gov.br/mme/pt-br/acesso-a-informacao/entidades/chesf/poli_corp/PoliticadeCelebraodeAcordosJudiciaiseExtrajudiciaisdasEmpresasEletrobras.pdf"
 // )
-// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'),
 // "https://www.tjmg.jus.br/data/files/8D/20/B5/1A/87D67710AAE827676ECB08A8/Minuta%20versao%20final.pdf.pdf"
 // )
-// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'), 
+// push(ref(db, 'questionarios/-O71T95HcomD_tVRwVxN/pdf'),
 // "https://www.tjmg.jus.br/data/files/8D/20/B5/1A/87D67710AAE827676ECB08A8/Minuta%20versao%20final.pdf.pdf"
 // )
 

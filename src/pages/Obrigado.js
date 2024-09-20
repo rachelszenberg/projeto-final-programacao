@@ -9,7 +9,7 @@ export const Obrigado = () => {
         <BasicScreen
             title="Obrigado pela sua resposta!"
             under_text="Salvamos a sua resposta para a avaliação"
-            button_click={() => navigate('/')}
+            button_click={() => {navigate('/'); window.location.reload()}}
             button_text="Responder novamente"
             img=<ObrigadoSvg/>
         />

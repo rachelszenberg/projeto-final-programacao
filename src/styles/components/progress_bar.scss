@@ -1,17 +1,14 @@
 .container {
-    display: flex;
-    align-items: center; /* Garante que o texto fique alinhado verticalmente com a barra */
-    width: 100%;
+    width: 20vw;
     height: 8px;
-    background-color: #e5e5e5;
-    border-radius: 4px;
-    margin-bottom: 10px;
+    background-color: #D0D0D0;
+    border-radius: $radius;
     position: relative;
   }
   
   .bar {
     height: 100%;
-    background-color: #2c3e50;
+    background-color: $cor-primaria;
     border-radius: 4px;
     transition: width 0.3s ease;
   }
@@ -24,6 +21,5 @@
   .text {
     margin-left: 10px; /* Adiciona espaço entre a barra e o número */
     font-size: 14px;
-    color: #7f8c8d;
   }
   

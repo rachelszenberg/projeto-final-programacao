@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "./Button";
 import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
-// import { AiOutlineSend } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
 import { decrementIndex, incrementIndex, selectAllRespostas, setAvaliacaoRespostas, addResposta } from "../features/RespostasSlice";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
-import { ProgressBar } from "./ProgressBar";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
+import { ProgressBar } from "./ProgressBar";
 
 export const Perguntas = () => {
     const dispatch = useDispatch();
@@ -18,15 +17,16 @@ export const Perguntas = () => {
     const navigate = useNavigate();
 
     const questionario = questionarios[respostas.respostaIndex];
-    
-    const perguntaTemResposta = respostas.listRespostas.find(respostas => respostas.id === questionario.id);
-    const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
 
     const [respostasTmp, setRespostasTmp] = useState([]);
     const [listIndexErros, setListIndexErros] = useState([]);
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
+    const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
+
+    const regex = /([a-zA-Z0-9].*){3,}/;
+    
 
     let perguntas = [];
     questionario.perguntas.map((p_id) => {
@@ -35,16 +35,38 @@ export const Perguntas = () => {
     });
 
     useEffect(() => {
+        const perguntaTemResposta = respostas.listRespostas[respostas.respostaIndex];
+        const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
         setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
         setListIndexErros([]);
     }, [questionario.perguntas])
 
+    useEffect(() => {
+        let temp = 0;
+        respostasTmp.forEach((r) => { if (regex.test(r)) { temp += 1; } })
+        setQtdRespondidas(temp);
+    }, [respostasTmp])
+
     const handleRespostaChange = (index, value) => {
         const novasRespostas = [...respostasTmp];
         novasRespostas[index] = value;
         setRespostasTmp(novasRespostas);
+    };
+
+    const handleBlur = (index) => {
+        const novasRespostas = [...respostasTmp];
+        let erros = [...listIndexErros];
+
+        if (!regex.test(novasRespostas[index])) {
+            if (!erros.includes(index)) {
+                erros.push(index);
+            }
+        } else {
+            erros = erros.filter((i) => i !== index);
+        }
+        setListIndexErros(erros);
     };
 
     const onVoltar = (e) => {
@@ -56,11 +78,7 @@ export const Perguntas = () => {
     const onProximo = (e) => {
         e.preventDefault();
         let erros = []
-        respostasTmp.map((r, index) => {
-            if (!r) {
-                erros.push(index);
-            }
-        });
+        respostasTmp.map((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             dispatch(incrementIndex());
@@ -73,11 +91,7 @@ export const Perguntas = () => {
     const onEnviar = (e) => {
         e.preventDefault();
         let erros = []
-        respostasTmp.map((r, index) => {
-            if (!r) {
-                erros.push(index);
-            }
-        });
+        respostasTmp.map((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             setShowModal(true);
@@ -96,19 +110,21 @@ export const Perguntas = () => {
         <form className="div-form">
             <div className="div-title-avaliacao">
                 <p className="title-avaliacao">Avaliação {respostas.respostaIndex + 1}/{questionarios.length}</p>
+                <ProgressBar total={questionarios.length} ind={qtdRespondidas === perguntas.length ? respostas.respostaIndex + 1 : respostas.respostaIndex} />
             </div>
             <div className="form">
-                {listIndexErros.length > 0 && <p className="form_error">Por favor, preencha todos os campos!</p>}
                 {perguntas.map((pergunta, index) => (
                     <div key={index}>
-                        <p className={`text-question ${(listIndexErros.includes(index) && respostasTmp[index] === "") && 'text-error'}`}>{index+1}. {pergunta}</p>
+                        <p className="text-question">{index + 1}. {pergunta} <span className="obrigatorio">*</span></p>
                         <textarea
                             rows={4}
                             className={(listIndexErros.includes(index) && respostasTmp[index] === "") && "input-error"}
                             type="text"
-                            value={respostasTmp[index]}
-                            onChange={(e) => handleRespostaChange(index, e.target.value)}
+                            value={respostasTmp[index]} 
+                            onChange={(e) => handleRespostaChange(index, e.target.value)} 
+                            onBlur={() => handleBlur(index)}
                             placeholder={`Resposta ${index + 1}`} />
+                        {listIndexErros.includes(index) && <p className="obrigatorio">Obrigatório</p>}
                     </div>
                 ))}
             </div>
@@ -122,16 +138,16 @@ export const Perguntas = () => {
                 <div className="button-right">
                     {temProximo
                         ? <Button
+                            class={qtdRespondidas !== perguntas.length && "button-disabled no-hover"}
                             onClick={onProximo}
                             label="Próximo"
-                            class="button-save"
-                            iconRight=<RxChevronRight/>
+                            iconRight=<RxChevronRight />
                         />
                         :
                         <Button
+                            class={qtdRespondidas !== perguntas.length && "button-disabled no-hover"}
                             onClick={onEnviar}
                             label="Enviar"
-                            class="button-send"
                         />
                     }
                 </div>

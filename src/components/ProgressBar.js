@@ -1,8 +1,7 @@
 import React from 'react';
 
-export const ProgressBar = ({ total, ind }) => {
-  // Calcula a porcentagem do progresso
-  const percentage = (ind / total) * 100;
+export const ProgressBar = (props) => {
+  const percentage = (props.ind / props.total) * 100;
 
   return (
     <div className="progress-container">

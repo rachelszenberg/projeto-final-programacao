@@ -12,7 +12,7 @@ export const addResposta = createAsyncThunk(
     async (_, { getState }) => {
         const state = getState();
         const respostas = state.respostas;
-        
+
         {
             respostas.listRespostas.forEach(async (r) => {
                 await push(ref(db, `respostas/${r.idQuestionario}/${r.idPdf}`),
@@ -34,7 +34,7 @@ export const respostasSlice = createSlice({
             state.respostaIndex -= 1;
         },
         setAvaliacaoRespostas: (state, action) => {
-            state.listRespostas.push(action.payload);
+            state.listRespostas[state.respostaIndex] = (action.payload);
         },
     },
     extraReducers: (builder) => {
