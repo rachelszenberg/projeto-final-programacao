@@ -9,9 +9,6 @@ export const ProgressBar = ({ total, ind }) => {
       <div className="container">
         <div className="bar" style={{ width: `${percentage}%` }}></div>
       </div>
-      <span className="text">
-        {ind}/{total}
-      </span>
     </div>
   );
 };

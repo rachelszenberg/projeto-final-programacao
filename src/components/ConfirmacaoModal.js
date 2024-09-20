@@ -1,5 +1,6 @@
 import Modal from 'react-modal'
 import { ReactComponent as Enviar } from '../svg/enviar.svg'
+import { Button } from './Button';
 
 export const ConfirmacaoModal = (props) => (
     <Modal
@@ -17,8 +18,8 @@ export const ConfirmacaoModal = (props) => (
                 <p className="modal-text">Após o envio, não será possível editar ou excluir as respostas.</p>
             </div>
             <div className="modal-buttons">
-                <button className="confirm-button" onClick={props.confirmButton}>Sim</button>
-                <button className="cancel-button" onClick={props.cancelButton}>Não</button>
+                <Button class="confirm-button" onClick={props.confirmButton} label="Sim"/>
+                <Button class="cancel-button" onClick={props.cancelButton} label="Não"/>
             </div>
         </div>
     </Modal>

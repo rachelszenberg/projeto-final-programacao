@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "./Button";
-// import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
+import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
 // import { AiOutlineSend } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
@@ -26,14 +26,14 @@ export const Perguntas = () => {
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
     const [showModal, setShowModal] = useState(false);
-    
+
     let perguntas = [];
     questionario.perguntas.map((p_id) => {
         const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id).pergunta;
         perguntas.push(perguntaTemp);
     });
 
-    useEffect(() => {      
+    useEffect(() => {
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
         setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
@@ -94,10 +94,7 @@ export const Perguntas = () => {
     return (
         <form className="div-form">
             <div className="div-title-avaliacao">
-                <p className="title-avaliacao">Avaliação</p>
-                <div>
-                    <ProgressBar total={questionarios.length} ind={respostas.respostaIndex} />
-                </div>
+                <p className="title-avaliacao">Avaliação {respostas.respostaIndex + 1}/{questionarios.length}</p>
             </div>
             <div className="form">
                 {listIndexErros.length > 0 && <p className="form_error">Por favor, preencha todos os campos!</p>}
@@ -119,6 +116,7 @@ export const Perguntas = () => {
                     onClick={onVoltar}
                     label="Voltar"
                     class="button-cancel"
+                    iconLeft=<RxChevronLeft />
                 />}
                 <div className="button-right">
                     {temProximo
@@ -126,6 +124,7 @@ export const Perguntas = () => {
                             onClick={onProximo}
                             label="Próximo"
                             class="button-save"
+                            iconRight=<RxChevronRight/>
                         />
                         :
                         <Button

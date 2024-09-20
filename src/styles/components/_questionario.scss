@@ -36,7 +36,7 @@
 }
 
 .form::-webkit-scrollbar-track {
-    background-color: #B0B0B0;
+    background-color: #D0D0D0;
     border-radius: 3px;
 }
 
@@ -100,4 +100,10 @@ textarea {
 
 .form_error{
   color: $error;
+}
+
+.div-button{
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
