@@ -1,25 +1,17 @@
-import { ReactComponent as Error } from '../svg/error.svg'
+import { BasicScreen } from '../components/BasicScreen';
+import { ReactComponent as Error } from '../svg/error.svg';
 import { useNavigate } from 'react-router-dom';
 
-export const PageError = (props) => {
-
-    
+export const PageError = () => {
     const navigate = useNavigate()
-    
+
     return (
-        
-    <div className="thank-you-container">
-        <h1>Ops!</h1>
-
-        <p>Essa tela não existe no sistema</p>
-
-        <div className="illustration">
-            <Error/>
-        </div>
-
-        <p className="retry-button" onClick={() => navigate('/')}>
-            Ir para a tela de avaliação
-        </p>
-    </div>
+        <BasicScreen
+            title="Ops!"
+            upper_text="Essa tela não existe no sistema"
+            button_click={() => navigate('/')}
+            button_text="Ir para a tela de avaliação"
+            img=<Error/>
+        />
     );
 }

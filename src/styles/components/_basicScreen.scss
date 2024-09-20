@@ -1,0 +1,26 @@
+.screen-global-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: $cor-fundo-avaliacao;
+  gap: $m-size;
+}
+
+.screen-title {
+  font-size: $font-size-xlarge; 
+  font-weight: bold;
+  color: $cor-primaria;
+}
+
+.screen-img img {
+  width: 150px;
+  height: auto;
+}
+
+.screen-text {
+  font-size: $font-size-medium;
+  color: $botao-secundario;
+}

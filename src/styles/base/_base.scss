@@ -3,19 +3,28 @@ body {
     margin: 0px;
     font-size: $font-size-small;
     background-color: $cor-primaria;
+    height: 100vh;
 }
 
 button {
-    width: 120px;
-    height: 40px;
+    min-width: 120px;
+    min-height: 40px;
+    padding: 12px 24px;
     border-radius: $radius;
     text-align: center;
     justify-content: center;
     border-width: 0px;
+    background-color: $botao-primario;
+    color: $off-white;
 
     &:hover {
         cursor: pointer;
+        background-color: $botao-primario-hover;
     }
+}
+
+p {
+    margin: 0px;
 }
 
 .body {
@@ -24,4 +33,5 @@ button {
     gap: 32px;
     padding: 0px 32px;
     justify-content: space-between;
+    height: 95vh;
 }
