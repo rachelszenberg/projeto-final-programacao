@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "./Button";
 import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,11 +25,11 @@ export const Perguntas = () => {
     const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
-    const regex = /([a-zA-Z0-9].*){3,}/;
+    const regex = useMemo(() => /([a-zA-Z0-9].*){3,}/, []);
     
 
     let perguntas = [];
-    questionario.perguntas.map((p_id) => {
+    questionario.perguntas.forEach((p_id) => {
         const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id).pergunta;
         perguntas.push(perguntaTemp);
     });
@@ -41,13 +41,13 @@ export const Perguntas = () => {
         setPodeVoltar(respostas.respostaIndex !== 0);
         setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
         setListIndexErros([]);
-    }, [questionario.perguntas])
+    }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, questionarios.length, perguntas.length])
 
     useEffect(() => {
         let temp = 0;
         respostasTmp.forEach((r) => { if (regex.test(r)) { temp += 1; } })
         setQtdRespondidas(temp);
-    }, [respostasTmp])
+    }, [respostasTmp, regex])
 
     const handleRespostaChange = (index, value) => {
         const novasRespostas = [...respostasTmp];
@@ -78,7 +78,7 @@ export const Perguntas = () => {
     const onProximo = (e) => {
         e.preventDefault();
         let erros = []
-        respostasTmp.map((r, index) => { if (!regex.test(r)) { erros.push(index); } });
+        respostasTmp.forEach((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             dispatch(incrementIndex());
@@ -91,7 +91,7 @@ export const Perguntas = () => {
     const onEnviar = (e) => {
         e.preventDefault();
         let erros = []
-        respostasTmp.map((r, index) => { if (!regex.test(r)) { erros.push(index); } });
+        respostasTmp.forEach((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             setShowModal(true);
@@ -120,7 +120,7 @@ export const Perguntas = () => {
                             rows={4}
                             className={(listIndexErros.includes(index) && respostasTmp[index] === "") ? "input-error" : undefined}
                             type="text"
-                            value={`I${respostas.respostaIndex}${index} ${respostasTmp[index]}` }
+                            value={respostasTmp[index]}
                             onChange={(e) => handleRespostaChange(index, e.target.value)} 
                             onBlur={() => handleBlur(index)}
                             placeholder={`Resposta ${index + 1}`} />

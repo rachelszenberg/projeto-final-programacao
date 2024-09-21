@@ -13,16 +13,16 @@ export const addResposta = createAsyncThunk(
         const state = getState();
         const respostas = state.respostas;
 
-        {
-            respostas.listRespostas.forEach(async (respostas) => {
-                const dbRef = ref(db, `respostas/${respostas.idQuestionario}/${respostas.idPdf}`);
-                const newListRef = push(dbRef);
-                respostas.respostasPergunta.forEach(async (r) => {
-                    const itemRef = push(newListRef);
-                    set(itemRef, r);
-                })
+
+        respostas.listRespostas.forEach(async (respostas) => {
+            const dbRef = ref(db, `respostas/${respostas.idQuestionario}/${respostas.idPdf}`);
+            const newListRef = push(dbRef);
+            respostas.respostasPergunta.forEach(async (r) => {
+                const itemRef = push(newListRef);
+                set(itemRef, r);
             })
-        }
+        })
+
     }
 );
 
