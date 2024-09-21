@@ -4,15 +4,18 @@ import { RightButtonsComponent } from "./RightButtonsComponent";
 
 export const RightComponent = (props) => {
     return (
-        <div>
+        <div className="div-right">
+            <div className="div-top">
             <RightTitleComponent
                 index={props.index}
                 questionariosLength={props.questionariosLength}
                 perguntasLength={props.perguntasLength}
                 progressBar={props.progressBar}
-                qtdRespondidas={props.qtdRespondidas} />
+                qtdRespondidas={props.qtdRespondidas} 
+                titleText={props.titleText} />
             {props.children}
-            <RightButtonsComponent
+            </div>
+            <RightButtonsComponent className="div-bottom"
                 podeVoltar={props.podeVoltar}
                 temProximo={props.temProximo}
                 onVoltar={props.onVoltar}
@@ -25,5 +28,8 @@ export const RightComponent = (props) => {
 }
 
 RightComponent.defaultProps = {
-    progressBar: 0,  // Valor padrão se progressBar não for passado
+    progressBar: false, 
+    perguntasLength: 0,
+    qtdRespondidas: 0,
+    titleText: "Avaliação",
 };

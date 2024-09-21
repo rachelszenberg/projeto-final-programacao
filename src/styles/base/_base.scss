@@ -1,6 +1,6 @@
 body {
     font-family: Helvetica, Arial, sans-serif;
-    margin: 0px;
+    margin: 0px 0px $xs-size;
     font-size: $font-size-small;
     background-color: $cor-primaria;
     height: 100vh;
@@ -27,13 +27,13 @@ p {
     margin: 0px;
 }
 
-.body {
+.questionario-div {
     display: flex;
     max-width: 100%;
-    gap: 32px;
-    padding: 0px 32px;
+    gap: $l-size;
+    padding: 0px $l-size;
     justify-content: space-between;
-    height: 95vh;
+    height: 80vh;
 }
 
 ::-webkit-scrollbar-thumb {

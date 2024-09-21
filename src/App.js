@@ -1,11 +1,9 @@
 import React from 'react';
 import { Header } from './components/Header';
-import { Body } from './pages/Body';
+import { Questionario } from './pages/Questionario';
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
-// import { PageError } from './components/PageError';
-import './firebase/firebase';
 import { Avaliacao } from './pages/Avaliacao';
 
 function App() {
@@ -19,7 +17,7 @@ function App() {
           path: '/', element:
             <div>
               <Header headerText={"Avaliação de linguagem"} />
-              <Body />
+              <Questionario />
             </div>
         },
         { path: '/obrigado', element: <Obrigado /> },

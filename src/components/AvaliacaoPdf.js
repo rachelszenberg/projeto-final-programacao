@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { PdfViwer } from "./PdfViwer";
-import { Button } from "./Button";
 import { RxChevronLeft, RxChevronRight } from "react-icons/rx";
 
 export const AvaliacaoPdf = (props) => {
@@ -21,7 +20,7 @@ export const AvaliacaoPdf = (props) => {
                 <p className="title-avaliacao">PDF Modelo {index + 1}</p>
                 <RxChevronRight className={index === (props.listPdf.length - 1) ? "no-button" : "icon"} onClick={onNextClick}/>
             </div>
-            <PdfViwer class="avaliar-pdf" url={props.listPdf[index].url} />
+            <PdfViwer pdfClass={"div-pdf-avaliacao"} url={props.listPdf[index].url} />
         </div>
     )
 }

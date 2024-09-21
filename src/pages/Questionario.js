@@ -5,14 +5,14 @@ import { Perguntas } from "../components/Perguntas";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice"
 import { selectRespostasAtuais } from "../features/RespostaAtualSlice";
 
-export const Body = () => {
+export const Questionario = () => {
     const questionarios = useSelector(selectAllQuestionarios);
     const respostas = useSelector(selectRespostasAtuais);
     const questionario = questionarios[respostas.respostaIndex];    
 
     return (
-        <div className="body">
-            <PdfViwer className="div-pdf" class="questionario-pdf" url={questionario.pdf.url} />
+        <div className="questionario-div">
+            <PdfViwer pdfClass={"div-pdf-questionario"} url={questionario.pdf.url} />
             <Perguntas/>
         </div>
     )

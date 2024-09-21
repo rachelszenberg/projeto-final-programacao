@@ -1,21 +1,29 @@
 .pdf {
+  background-color: antiquewhite;
   width: 100%;
+  height: 100%;
 }
 
-.div-pdf {
+.div-pdf-questionario {
   width: 50%;
+  height: 100%;
+  .pdf{
+    border-radius: $radius;
+  }
 }
 
-.questionario-pdf {
-  width: 50%;
-  height: 83vh;
-  border-radius: $radius;
+.div-pdf-avaliacao {
+  border-radius: 0px;
+  width: 100%;
+  height: 100%;
+  .pdf{
+    border-radius: 0px 0px $radius $radius;
+  }
 }
 
 .avaliacao-pdf {
   width: 50%;
-}
-
-.avaliar-pdf {
-  height: 71vh;border-radius: 0px 0px $radius $radius;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }

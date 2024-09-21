@@ -9,8 +9,8 @@ export const Avaliacao = () => {
     const questionario = questionarios[0]; // TODO: VERIFICAR PARA IR INCREMENTANDO
 
     return (
-        <div className="body">
-            <AvaliacaoPdf className="div-pdf" listPdf={questionario.listPdf} />
+        <div className="questionario-div">
+            <AvaliacaoPdf listPdf={questionario.listPdf} />
             <AvaliacaoPorQuestionario questionario={questionario} />
         </div>
     )

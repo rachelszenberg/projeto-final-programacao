@@ -14,19 +14,14 @@
     justify-content: space-between;
 }
 
-.avaliacao-pdf-view {
-    width: 50vw;
-    background-color: aqua;
-}
-
 .avaliacao-perguntas-view {
-    border-radius: $radius;
+    border-radius: 0px 0px $radius $radius;
     background-color: $cor-fundo-avaliacao;
     padding: $l-size;
-    height: 67vh;
+    height: 50vh;
     overflow-y: scroll;
     margin-bottom: $m-size;
-  }
+}
 
 .no-button {
     visibility: hidden;
@@ -38,11 +33,10 @@
 
 .resposta-field {
     border: 1.5px solid red;
-    background-color: aqua;
     border-radius: $radius;
     height: auto;
     padding: $xs-size;
     margin: 10px;
     overflow: auto;
     resize: none;
-  }
+}

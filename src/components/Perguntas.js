@@ -5,9 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoRespostas, addResposta } from "../features/RespostaAtualSlice";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
-import { ProgressBar } from "./ProgressBar";
-import { RightButtonsComponent } from "./RightButtonsComponent";
-import { RightTitleComponent } from "./RightTitleComponent";
 import { RightComponent } from "./RightComponent";
 
 export const Perguntas = () => {
@@ -115,6 +112,7 @@ export const Perguntas = () => {
                 perguntasLength={perguntas.length}
                 progressBar={true}
                 qtdRespondidas={qtdRespondidas}
+                titleText="Questionário"
 
                 podeVoltar={podeVoltar}
                 temProximo={temProximo}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export const ListaExpandivelComponent = (props) => {
+export const ListaExpansivelComponent = (props) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleItem = (index) => {
