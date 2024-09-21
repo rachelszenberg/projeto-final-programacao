@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get, push, ref } from "firebase/database";
+import { push, ref, set } from "firebase/database";
 import { db } from "../firebase/firebase";
 
 const initialState = {
@@ -14,10 +14,13 @@ export const addResposta = createAsyncThunk(
         const respostas = state.respostas;
 
         {
-            respostas.listRespostas.forEach(async (r) => {
-                await push(ref(db, `respostas/${r.idQuestionario}/${r.idPdf}`),
-                    r.respostasPergunta
-                );
+            respostas.listRespostas.forEach(async (respostas) => {
+                const dbRef = ref(db, `respostas/${respostas.idQuestionario}/${respostas.idPdf}`);
+                const newListRef = push(dbRef);
+                respostas.respostasPergunta.forEach(async (r) => {
+                    const itemRef = push(newListRef);
+                    set(itemRef, r);
+                })
             })
         }
     }

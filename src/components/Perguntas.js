@@ -118,9 +118,9 @@ export const Perguntas = () => {
                         <p className="text-question">{index + 1}. {pergunta} <span className="obrigatorio">*</span></p>
                         <textarea
                             rows={4}
-                            className={(listIndexErros.includes(index) && respostasTmp[index] === "") && "input-error"}
+                            className={(listIndexErros.includes(index) && respostasTmp[index] === "") ? "input-error" : undefined}
                             type="text"
-                            value={respostasTmp[index]} 
+                            value={`I${respostas.respostaIndex}${index} ${respostasTmp[index]}` }
                             onChange={(e) => handleRespostaChange(index, e.target.value)} 
                             onBlur={() => handleBlur(index)}
                             placeholder={`Resposta ${index + 1}`} />
@@ -138,14 +138,14 @@ export const Perguntas = () => {
                 <div className="button-right">
                     {temProximo
                         ? <Button
-                            class={qtdRespondidas !== perguntas.length && "button-disabled no-hover"}
+                            class={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
                             onClick={onProximo}
                             label="Próximo"
                             iconRight=<RxChevronRight />
                         />
                         :
                         <Button
-                            class={qtdRespondidas !== perguntas.length && "button-disabled no-hover"}
+                            class={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
                             onClick={onEnviar}
                             label="Enviar"
                         />
