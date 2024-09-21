@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "./Button";
-import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +6,9 @@ import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoResp
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
 import { ProgressBar } from "./ProgressBar";
+import { RightButtonsComponent } from "./RightButtonsComponent";
+import { RightTitleComponent } from "./RightTitleComponent";
+import { RightComponent } from "./RightComponent";
 
 export const Perguntas = () => {
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export const Perguntas = () => {
     const [showModal, setShowModal] = useState(false);
 
     const regex = useMemo(() => /([a-zA-Z0-9].*){3,}/, []);
-    
+
 
     let perguntas = [];
     questionario.perguntas.forEach((p_id) => {
@@ -108,50 +109,37 @@ export const Perguntas = () => {
 
     return (
         <form className="div-form">
-            <div className="div-title-avaliacao">
-                <p className="title-avaliacao">Avaliação {respostas.respostaIndex + 1}/{questionarios.length}</p>
-                <ProgressBar total={questionarios.length} ind={qtdRespondidas === perguntas.length ? respostas.respostaIndex + 1 : respostas.respostaIndex} />
-            </div>
-            <div className="form">
-                {perguntas.map((pergunta, index) => (
-                    <div key={index}>
-                        <p className="text-question">{index + 1}. {pergunta} <span className="obrigatorio">*</span></p>
-                        <textarea
-                            rows={4}
-                            className={(listIndexErros.includes(index) && respostasTmp[index] === "") ? "input-error" : undefined}
-                            type="text"
-                            value={`K${respostas.respostaIndex}${index} ${respostasTmp[index]}`}
-                            onChange={(e) => handleRespostaChange(index, e.target.value)} 
-                            onBlur={() => handleBlur(index)}
-                            placeholder={`Resposta ${index + 1}`} />
-                        {listIndexErros.includes(index) && <p className="obrigatorio">Obrigatório</p>}
-                    </div>
-                ))}
-            </div>
-            <div className="div-form-button">
-                {podeVoltar && <Button
-                    onClick={onVoltar}
-                    label="Voltar"
-                    class="button-cancel"
-                    iconLeft=<RxChevronLeft />
-                />}
-                <div className="button-right">
-                    {temProximo
-                        ? <Button
-                            class={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
-                            onClick={onProximo}
-                            label="Próximo"
-                            iconRight=<RxChevronRight />
-                        />
-                        :
-                        <Button
-                            class={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
-                            onClick={onEnviar}
-                            label="Enviar"
-                        />
-                    }
+            <RightComponent
+                index={respostas.respostaIndex}
+                questionariosLength={questionarios.length}
+                perguntasLength={perguntas.length}
+                progressBar={true}
+                qtdRespondidas={qtdRespondidas}
+
+                podeVoltar={podeVoltar}
+                temProximo={temProximo}
+                onVoltar={onVoltar}
+                onProximo={onProximo}
+                onEnviar={onEnviar}
+                buttonNextOrSaveClass={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
+            >
+                <div className="form">
+                    {perguntas.map((pergunta, index) => (
+                        <div key={index}>
+                            <p className="text-question">{index + 1}. {pergunta} <span className="obrigatorio">*</span></p>
+                            <textarea
+                                rows={4}
+                                className={(listIndexErros.includes(index) && respostasTmp[index] === "") ? "input-error" : undefined}
+                                type="text"
+                                value={respostasTmp[index]}
+                                onChange={(e) => handleRespostaChange(index, e.target.value)}
+                                onBlur={() => handleBlur(index)}
+                                placeholder={`Resposta ${index + 1}`} />
+                            {listIndexErros.includes(index) && <p className="obrigatorio">Obrigatório</p>}
+                        </div>
+                    ))}
                 </div>
-            </div>
+            </RightComponent>
             <ConfirmacaoModal showModal={showModal} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
         </form>
     )
