@@ -6,22 +6,29 @@ import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
 // import { PageError } from './components/PageError';
 import './firebase/firebase';
+import { Avaliacao } from './pages/Avaliacao';
 
 function App() {
 
   const router = createBrowserRouter([
     {
       element: <Outlet />,
-      errorElement: <PageError/>,
+      errorElement: <PageError />,
       children: [
         {
           path: '/', element:
             <div>
-              <Header />
+              <Header headerText={"Avaliação de linguagem"} />
               <Body />
             </div>
         },
         { path: '/obrigado', element: <Obrigado /> },
+        {
+          path: '/avaliacao', element: <div>
+            <Header headerText={"Respostas dos Questionarios"}/>
+            <Avaliacao />
+          </div>
+        },
       ]
     }
   ])

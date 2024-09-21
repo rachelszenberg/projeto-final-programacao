@@ -16,6 +16,7 @@ export const fetchQuestionarios = createAsyncThunk(
                        
             questionarios.push({
                 id: childSnapShot.key,
+                listPdf,
                 pdf: randomPdf,
                 perguntas: childSnapShot.val().perguntas
             })

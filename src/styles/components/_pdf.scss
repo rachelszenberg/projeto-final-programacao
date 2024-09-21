@@ -1,5 +1,21 @@
 .pdf {
-    border-radius: $radius;
-    width: 50%;
-    height: 83vh;
-  }
+  width: 100%;
+}
+
+.div-pdf {
+  width: 50%;
+}
+
+.questionario-pdf {
+  width: 50%;
+  height: 83vh;
+  border-radius: $radius;
+}
+
+.avaliacao-pdf {
+  width: 50%;
+}
+
+.avaliar-pdf {
+  height: 71vh;border-radius: 0px 0px $radius $radius;
+}

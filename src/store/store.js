@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import perguntasReducer from "../features/PerguntasSlice";
 import questionarioReducer from "../features/QuestionarioSlice";
-import respostasReducer from "../features/RespostasSlice";
+import respostaAtualReducer from "../features/RespostaAtualSlice";
+import todasRespostasReducer from "../features/CarregaRespostasSlice";
 
 export default configureStore({
     reducer: {
         perguntas: perguntasReducer,
         questionario: questionarioReducer,
-        respostas: respostasReducer,
+        respostaAtual: respostaAtualReducer,
+        todasRespostas: todasRespostasReducer
     },
 })

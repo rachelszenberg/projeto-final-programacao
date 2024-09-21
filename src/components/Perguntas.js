@@ -4,7 +4,7 @@ import { RxChevronRight, RxChevronLeft } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
-import { decrementIndex, incrementIndex, selectAllRespostas, setAvaliacaoRespostas, addResposta } from "../features/RespostasSlice";
+import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoRespostas, addResposta } from "../features/RespostaAtualSlice";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
 import { ProgressBar } from "./ProgressBar";
@@ -12,7 +12,7 @@ import { ProgressBar } from "./ProgressBar";
 export const Perguntas = () => {
     const dispatch = useDispatch();
     const questionarios = useSelector(selectAllQuestionarios);
-    const respostas = useSelector(selectAllRespostas);
+    const respostas = useSelector(selectRespostasAtuais);
     const allPerguntas = useSelector(selectAllPerguntas);
     const navigate = useNavigate();
 
@@ -102,7 +102,7 @@ export const Perguntas = () => {
     };
 
     const confirmar = () => {
-        dispatch(addResposta())
+        dispatch(addResposta({ perguntas }))
         navigate('/obrigado')
     }
 
@@ -120,7 +120,7 @@ export const Perguntas = () => {
                             rows={4}
                             className={(listIndexErros.includes(index) && respostasTmp[index] === "") ? "input-error" : undefined}
                             type="text"
-                            value={respostasTmp[index]}
+                            value={`K${respostas.respostaIndex}${index} ${respostasTmp[index]}`}
                             onChange={(e) => handleRespostaChange(index, e.target.value)} 
                             onBlur={() => handleBlur(index)}
                             placeholder={`Resposta ${index + 1}`} />

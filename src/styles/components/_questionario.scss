@@ -28,22 +28,6 @@
   margin-bottom: $m-size;
 }
 
-
-.form::-webkit-scrollbar-thumb {
-  background-color: #808080;
-  border-radius: 3px;
-}
-
-.form::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.form::-webkit-scrollbar-track {
-  background-color: #D0D0D0;
-  border-radius: 3px;
-}
-
 .text-question {
   margin: $m-size 0px $xs-size !important;
   font-size: $font-size-small;
@@ -109,6 +93,6 @@ textarea {
   &:hover {
     cursor: default;
     background-color: $cor-primaria;
-    pointer-events: none;  
-}
+    pointer-events: none;
+  }
 }

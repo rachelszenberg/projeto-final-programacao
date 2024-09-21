@@ -1,0 +1,48 @@
+.avaliacao-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-color: $cor-fundo-avaliacao;
+    gap: $m-size;
+}
+
+.avaliacao-body {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avaliacao-pdf-view {
+    width: 50vw;
+    background-color: aqua;
+}
+
+.avaliacao-perguntas-view {
+    border-radius: $radius;
+    background-color: $cor-fundo-avaliacao;
+    padding: $l-size;
+    height: 67vh;
+    overflow-y: scroll;
+    margin-bottom: $m-size;
+  }
+
+.no-button {
+    visibility: hidden;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+.resposta-field {
+    border: 1.5px solid red;
+    background-color: aqua;
+    border-radius: $radius;
+    height: auto;
+    padding: $xs-size;
+    margin: 10px;
+    overflow: auto;
+    resize: none;
+  }

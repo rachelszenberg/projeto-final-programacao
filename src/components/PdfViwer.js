@@ -2,6 +2,6 @@ import React from "react";
 
 export const PdfViwer = (props) => {
     return (
-        <embed className="pdf" src={props.url} />
+        <embed className={`pdf ${props.class}`} src={props.url} />
     )
 }
