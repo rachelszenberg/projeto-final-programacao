@@ -5,14 +5,14 @@ import { RightButtonsComponent } from "./RightButtonsComponent";
 export const RightComponent = (props) => {
     return (
         <div className="div-right">
-            <div className="div-top">
-            <RightTitleComponent
+            <RightTitleComponent className="div-top"
                 index={props.index}
                 questionariosLength={props.questionariosLength}
                 perguntasLength={props.perguntasLength}
                 progressBar={props.progressBar}
                 qtdRespondidas={props.qtdRespondidas} 
                 titleText={props.titleText} />
+            <div className="div-children">
             {props.children}
             </div>
             <RightButtonsComponent className="div-bottom"
@@ -32,4 +32,6 @@ RightComponent.defaultProps = {
     perguntasLength: 0,
     qtdRespondidas: 0,
     titleText: "Avaliação",
+    podeVoltar: false,
+    index: 0
 };

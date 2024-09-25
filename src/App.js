@@ -22,8 +22,9 @@ function App() {
         },
         { path: '/obrigado', element: <Obrigado /> },
         {
-          path: '/avaliacao', element: <div>
-            <Header headerText={"Respostas dos Questionarios"}/>
+          path: '/avaliacao',
+          element: <div>
+            <Header headerText={"Respostas dos Questionarios"} />
             <Avaliacao />
           </div>
         },

@@ -18,8 +18,8 @@ export const ConfirmacaoModal = (props) => (
                 <p className="modal-text">Após o envio, não será possível editar ou excluir as respostas.</p>
             </div>
             <div className="modal-buttons">
-                <Button class="confirm-button" onClick={props.confirmButton} label="Sim"/>
-                <Button class="cancel-button" onClick={props.cancelButton} label="Não"/>
+                <Button classButton="confirm-button" onClick={props.confirmButton} label="Sim"/>
+                <Button classButton="cancel-button" onClick={props.cancelButton} label="Não"/>
             </div>
         </div>
     </Modal>

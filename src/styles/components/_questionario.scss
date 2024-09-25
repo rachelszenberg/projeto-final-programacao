@@ -11,11 +11,19 @@
 }
 
 .div-top{
-  height: 72%;
+  flex-grow: 1;
+}
+
+.div-children {
+  
+  background-color: $cor-fundo-avaliacao;
+  flex-grow: 1;
+  overflow: auto;
+  border-radius: 0px 0px $radius $radius;
 }
 
 .div-bottom {
-  height: 28%;
+  flex-grow: 1;
 }
 
 .div-title-avaliacao {
@@ -36,11 +44,6 @@
 
 .form {
   padding: 0px 2*$l-size $l-size $l-size;
-  overflow-y: auto;
-  flex-grow: 1;
-  max-height: 100%;
-  border-radius: 0px 0px $radius $radius;
-  background-color: $cor-fundo-avaliacao;
 }
 
 .text-question {
@@ -81,6 +84,7 @@ textarea {
 }
 
 .div-form-button {
+  margin-top: $m-size;
   display: flex;
   max-width: 100%;
   justify-content: space-between;
