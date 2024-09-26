@@ -3,7 +3,7 @@ import { ReactComponent as Error } from '../svg/error.svg';
 import { useNavigate } from 'react-router-dom';
 
 export const PageError = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
         <BasicScreen

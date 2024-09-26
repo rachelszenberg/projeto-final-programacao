@@ -22,7 +22,7 @@ function App() {
         },
         { path: '/obrigado', element: <Obrigado /> },
         {
-          path: '/avaliacao',
+          path: '/avaliacao/:idQuestionario',
           element: <div>
             <Header headerText={"Respostas dos Questionarios"} />
             <Avaliacao />

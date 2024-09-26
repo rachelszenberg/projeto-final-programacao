@@ -2,36 +2,41 @@ import React from "react";
 import { RightTitleComponent } from "./RightTitleComponent";
 import { RightButtonsComponent } from "./RightButtonsComponent";
 
-export const RightComponent = (props) => {
+export const RightComponent = ({
+    index = 0,
+    questionariosLength,
+    perguntasLength = 0,
+    progressBar = false, 
+    qtdRespondidas = 0,
+    titleText = "Avaliação",
+    podeVoltar = false,
+    temProximo,
+    onVoltar,
+    onProximo,
+    onEnviar,
+    buttonNextOrSaveClass,
+    children
+}) => {
     return (
         <div className="div-right">
             <RightTitleComponent className="div-top"
-                index={props.index}
-                questionariosLength={props.questionariosLength}
-                perguntasLength={props.perguntasLength}
-                progressBar={props.progressBar}
-                qtdRespondidas={props.qtdRespondidas} 
-                titleText={props.titleText} />
+                index={index}
+                questionariosLength={questionariosLength}
+                perguntasLength={perguntasLength}
+                progressBar={progressBar}
+                qtdRespondidas={qtdRespondidas} 
+                titleText={titleText} />
             <div className="div-children">
-            {props.children}
+            {children}
             </div>
             <RightButtonsComponent className="div-bottom"
-                podeVoltar={props.podeVoltar}
-                temProximo={props.temProximo}
-                onVoltar={props.onVoltar}
-                onProximo={props.onProximo}
-                onEnviar={props.onEnviar}
-                buttonNextOrSaveClass={props.buttonNextOrSaveClass}
+                podeVoltar={podeVoltar}
+                temProximo={temProximo}
+                onVoltar={onVoltar}
+                onProximo={onProximo}
+                onEnviar={onEnviar}
+                buttonNextOrSaveClass={buttonNextOrSaveClass}
             />
         </div>
     )
 }
-
-RightComponent.defaultProps = {
-    progressBar: false, 
-    perguntasLength: 0,
-    qtdRespondidas: 0,
-    titleText: "Avaliação",
-    podeVoltar: false,
-    index: 0
-};

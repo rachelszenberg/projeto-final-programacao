@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { AvaliacaoPdf } from "../components/AvaliacaoPdf";
 import { AvaliacaoPorQuestionario } from "../components/AvaliacaoPorQuestionario";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Avaliacao = () => {
+    const params = useParams()
     const questionarios = useSelector(selectAllQuestionarios);
-    const questionario = questionarios[0]; // TODO: VERIFICAR PARA IR INCREMENTANDO
+    const [questionario, setQuestionario] = useState();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const temp = questionarios.find(q => q.id === params.idQuestionario);
+        console.log(temp);
+
+        if (temp) {
+            setQuestionario(temp);
+        } else {
+            navigate('/error')
+        }
+    }, [params.idQuestionario, questionarios, navigate])
+
 
     return (
-        <div className="questionario-div">
-            <AvaliacaoPdf listPdf={questionario.listPdf} />
-            <AvaliacaoPorQuestionario questionario={questionario} />
-        </div>
+        <>
+            {questionario && <div className="questionario-div">
+                <AvaliacaoPdf listPdf={questionario.listPdf} />
+                <AvaliacaoPorQuestionario questionario={questionario} />
+            </div>}
+        </>
     )
 }
