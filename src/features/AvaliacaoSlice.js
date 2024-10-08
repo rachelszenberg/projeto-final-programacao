@@ -25,7 +25,8 @@ export const avaliacaoSlice = createSlice({
     name: 'avaliacao',
     initialState: {
         notas: [],
-        respostasSemNota: []
+        respostasSemNota: [],
+        showErrors: false,
     },
     reducers: {
         setAvaliacaoNotas: (state, action) => {
@@ -35,7 +36,7 @@ export const avaliacaoSlice = createSlice({
             const { perguntas, respostasDoQuestionario, listIndex } = action.payload;
             state.respostasSemNota = []
             perguntas.forEach((pergunta, index) => {
-                if (!listIndex || listIndex.includes(index)) {
+                if (state.showErrors || listIndex.includes(index)) {
                     respostasDoQuestionario.forEach((resposta) => {
                         const nota = selectNota(state, { idPdf: resposta.idPdf, idPergunta: pergunta, idResposta: resposta.idResposta });
                         if (nota === 0) {
@@ -47,6 +48,9 @@ export const avaliacaoSlice = createSlice({
                     })
                 };
             });
+        },
+        setShowErrors: (state) => {
+            state.showErrors = true;
         },
         removeItemFromRespostasSemNota: (state, action) => {
             const { idPergunta, idResposta } = action.payload;
@@ -77,6 +81,6 @@ export const selectNota = createSelector(
     }
 );
 
-export const { getNota, setAvaliacaoNotas, setRespostasSemNota, removeItemFromRespostasSemNota } = avaliacaoSlice.actions;
+export const { getNota, setAvaliacaoNotas, setRespostasSemNota, removeItemFromRespostasSemNota, setShowErrors } = avaliacaoSlice.actions;
 
 export default avaliacaoSlice.reducer;

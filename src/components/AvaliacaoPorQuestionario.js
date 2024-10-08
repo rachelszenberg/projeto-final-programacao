@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAllRespostas } from "../features/CarregaRespostasSlice";
 import { ListaExpansivelComponent } from "./ListaExpansivelComponent";
 import { RightComponent } from "./RightComponent";
-import { addAvaliacao, selectNota, setRespostasSemNota } from "../features/AvaliacaoSlice";
+import { addAvaliacao, selectNota, setRespostasSemNota, setShowErrors } from "../features/AvaliacaoSlice";
+import { ConfirmacaoModal } from "./ConfirmacaoModal";
+import { useNavigate } from "react-router-dom";
 
 export const AvaliacaoPorQuestionario = (props) => {
     const perguntasAll = useSelector(selectAllPerguntas);
@@ -12,7 +14,9 @@ export const AvaliacaoPorQuestionario = (props) => {
     const avaliacao = useSelector((state) => state.avaliacao);
     const dispatch = useDispatch();
     const [podeEnviar, setPodeEnviar] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
+    const navigate = useNavigate();
     const respostasDoQuestionario = respostas.find(r => r.id === props.questionario.id).respostasPorQuestionario;
 
 
@@ -22,12 +26,19 @@ export const AvaliacaoPorQuestionario = (props) => {
     };
 
     const onCheck = () => {
-        dispatch(setRespostasSemNota({ perguntas: props.questionario.perguntas, respostasDoQuestionario }))
+        dispatch(setShowErrors());
+        dispatch(setRespostasSemNota({ perguntas: props.questionario.perguntas, respostasDoQuestionario }));
     };
 
     const onEnviar = () => {
-        dispatch(addAvaliacao(props.questionario.id));
+        setShowModal(true);
     };
+
+
+    const confirmar = () => {
+        dispatch(addAvaliacao(props.questionario.id));
+        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário." } });
+    }
 
     useEffect(() => {
         setPodeEnviar(true);
@@ -54,6 +65,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                     respostasDoQuestionario={respostasDoQuestionario}
                 />
             </RightComponent>
+            <ConfirmacaoModal showModal={showModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
         </div>
     )
 }

@@ -14,8 +14,8 @@ export const ConfirmacaoModal = (props) => (
                 <Enviar />
             </div>
             <div>
-                <p className="modal-title">Você tem certeza que deseja enviar a Avaliação?</p>
-                <p className="modal-text">Após o envio, não será possível editar ou excluir as respostas.</p>
+                <p className="modal-title">{props.title}</p>
+                <p className="modal-text">{props.text}</p>
             </div>
             <div className="modal-buttons">
                 <Button classButton="confirm-button" onClick={props.confirmButton} label="Sim"/>

@@ -101,7 +101,7 @@ export const Perguntas = () => {
 
     const confirmar = () => {
         dispatch(addResposta({ perguntas }))
-        navigate('/obrigado')
+        navigate('/obrigado', { state: { title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
     }
 
     return (
@@ -138,7 +138,7 @@ export const Perguntas = () => {
                     ))}
                 </div>
             </RightComponent>
-            <ConfirmacaoModal showModal={showModal} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
+            <ConfirmacaoModal showModal={showModal} title={"Você tem certeza que deseja enviar as respostas do questionário?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
         </form>
     )
 }

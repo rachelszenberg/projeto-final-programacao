@@ -1,16 +1,20 @@
 import { BasicScreen } from '../components/BasicScreen';
 import { ReactComponent as ObrigadoSvg } from '../svg/obrigado.svg'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Obrigado = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
+    const title = location.state?.title || "Obrigado!";
+    const text = location.state?.text || "Salvamos suas respostas!";
+    const buttonText = location.state?.buttonText || "Voltar a tela inicial";
 
     return (
         <BasicScreen
-            title="Obrigado pela sua resposta!"
-            under_text="Salvamos a sua resposta para a avaliação"
+            title={title}
+            under_text={text}
             button_click={() => {navigate('/'); window.location.reload()}}
-            button_text="Responder novamente"
+            button_text={buttonText}
             img=<ObrigadoSvg/>
         />
     );
