@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
 import { StarComponent } from './StarComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAvaliacaoNotas } from '../features/AvaliacaoSlice';
+import { setAvaliacaoNotas, selectNota, setRespostasSemNota, removeItemFromRespostasSemNota } from '../features/AvaliacaoSlice';
 
 export const ListaExpansivelComponent = (props) => {
   const [openIndex, setOpenIndex] = useState(null);
-  const notasTemp = useSelector((state) => state.avaliacao);
+  const [listIndex, setListIndex] = useState([]);
+  const avaliacao = useSelector((state) => state.avaliacao);
+  const notasTemp = avaliacao.notas;
+  const respostasSemNota = avaliacao.respostasSemNota;
   const dispatch = useDispatch();
 
   const getNota = (idPdf, idPergunta, idResposta) => {
-    const pdf = notasTemp.find(p => p.idPdf === idPdf);
-    if (pdf) {
-      const pergunta = pdf.listNotasPorPdf.find(p => p.idPergunta === idPergunta);
-      if (pergunta) {
-        const resposta = pergunta.listNotasPorPerguntas.find(p => p.idResposta === idResposta);
-        if (resposta) {
-          return resposta.nota;
-        }
-      }
-    }
-    return 0;
+    const nota = selectNota(avaliacao, { idPdf, idPergunta, idResposta });
+    return nota;
   };
 
   const handleClick = (rate, idPdf, idPergunta, idResposta) => {
@@ -53,10 +47,19 @@ export const ListaExpansivelComponent = (props) => {
         ...pergunta.listNotasPorPerguntas.slice(respostaIndex + 1)
       ];
     }
+    
+    dispatch(removeItemFromRespostasSemNota({idPergunta, idResposta}));
     dispatch(setAvaliacaoNotas(updatedNotas));
   };
 
   const toggleItem = (index) => {
+    if (openIndex >= 0 && !listIndex.includes(openIndex)) {
+      let temp = listIndex;
+      temp.push(openIndex);
+      setListIndex(temp);
+    }
+    dispatch(setRespostasSemNota({ perguntas: props.perguntas, respostasDoQuestionario: props.respostasDoQuestionario, listIndex: listIndex }))
+
     if (openIndex === index) {
       setOpenIndex(null);
     } else {
@@ -66,30 +69,37 @@ export const ListaExpansivelComponent = (props) => {
 
   return (
     <div className="avaliacao-perguntas-view">
-      {props.perguntas.map((pergunta, indexPergunta) => (
-        <div key={indexPergunta} className='div-pergunta-avaliacao'>
-          <div
-            onClick={() => toggleItem(indexPergunta)}
-            className='avaliacao-perguntas-title'
-          >
-            <p>{indexPergunta + 1}. {props.perguntasAll.find(p => p.id === pergunta).pergunta}</p>
-            <span style={{ transform: openIndex === indexPergunta ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', cursor: 'pointer' }}>
-              ▶
-            </span>
+      {props.perguntas.map((pergunta, indexPergunta) => {
+        const respostasSemNotaPorPergunta = respostasSemNota.filter(item => item.perguntaId === pergunta);
+
+        return (
+          <div key={indexPergunta} className={`div-pergunta-avaliacao ${respostasSemNotaPorPergunta.length ? 'pergunta-sem-nota' : undefined}`}>
+            <div
+              onClick={() => toggleItem(indexPergunta)}
+              className='avaliacao-perguntas-title'
+            >
+              <p>{indexPergunta + 1}. {props.perguntasAll.find(p => p.id === pergunta).pergunta}</p>
+              <span style={{ transform: openIndex === indexPergunta ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', cursor: 'pointer' }}>
+                ▶
+              </span>
+            </div>
+            <div>
+              {openIndex === indexPergunta && props.respostasDoQuestionario.map((respostas, indexResposta) => {
+                const temNota = respostasSemNotaPorPergunta.find(r => r.respostaId === respostas.idResposta);
+                return (
+                  <div key={indexResposta} className={`resposta-field ${temNota ? 'resposta-sem-nota' : undefined}`}>
+                    <p>{respostas.listRespostas[indexPergunta]}</p>
+                    <StarComponent
+                      rating={getNota(respostas.idPdf, pergunta, respostas.idResposta)}
+                      handleClick={(rate) => handleClick(rate, respostas.idPdf, pergunta, respostas.idResposta)}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </div>
-          <div>
-            {openIndex === indexPergunta && props.respostasDoQuestionario.map((respostas, indexResposta) => (
-              <div key={indexResposta} className='resposta-field'>
-                <p>{respostas.listRespostas[indexPergunta]}</p>
-                <StarComponent
-                  rating={getNota(respostas.idPdf, pergunta, respostas.idResposta)}
-                  handleClick={(rate) => handleClick(rate, respostas.idPdf, pergunta, respostas.idResposta)}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   );
 };

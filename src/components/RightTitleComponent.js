@@ -4,8 +4,7 @@ import { ProgressBar } from "./ProgressBar";
 export const RightTitleComponent = (props) => {
     return (
         <div className="div-title-avaliacao">
-            <p className="title-avaliacao">{props.titleText}
-                {props.progressBar && <span>
+            <p className="title-avaliacao">{props.titleText} {props.progressBar && <span>
                     {props.index + 1}/{props.questionariosLength}
                 </span>}
             </p>

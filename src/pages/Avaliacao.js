@@ -13,8 +13,6 @@ export const Avaliacao = () => {
 
     useEffect(() => {
         const temp = questionarios.find(q => q.id === params.idQuestionario);
-        console.log(temp);
-
         if (temp) {
             setQuestionario(temp);
         } else {
