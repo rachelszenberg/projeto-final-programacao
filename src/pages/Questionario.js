@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PdfViwer } from "../components/PdfViwer";
 import { useSelector } from "react-redux";
 import { Perguntas } from "../components/Perguntas";
 import { selectAllQuestionarios } from "../features/QuestionarioSlice"
 import { selectRespostasAtuais } from "../features/RespostaAtualSlice";
+import { useNavigate } from "react-router-dom";
 
 export const Questionario = () => {
     const questionarios = useSelector(selectAllQuestionarios);
+    const [questionariosAbertos, setQuestionariosAbertos] = useState();
+    const [questionario, setQuestionario] = useState();
     const respostas = useSelector(selectRespostasAtuais);
-    const questionario = questionarios[respostas.respostaIndex];    
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const temp = questionarios.filter(questionario => questionario.aberto === true);
+        if (temp.lenght) {
+            setQuestionariosAbertos(temp);
+            setQuestionario(questionariosAbertos[respostas.respostaIndex]);
+        } else {
+            navigate('/error');
+        }
+    })
 
     return (
-        <div className="questionario-div">
-            <PdfViwer pdfClass={"div-pdf-questionario"} url={questionario.pdf.url} />
-            <Perguntas/>
-        </div>
+        <>
+            {questionariosAbertos && <div className="questionario-div">
+                <PdfViwer pdfClass={"div-pdf-questionario"} url={questionario.pdf.url} />
+                <Perguntas questionariosAbertos={questionariosAbertos} />
+            </div>}
+        </>
     )
 }

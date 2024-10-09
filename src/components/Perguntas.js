@@ -3,18 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
 import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoRespostas, addResposta } from "../features/RespostaAtualSlice";
-import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
 import { RightComponent } from "./RightComponent";
 
-export const Perguntas = () => {
+export const Perguntas = (props) => {
     const dispatch = useDispatch();
-    const questionarios = useSelector(selectAllQuestionarios);
     const respostas = useSelector(selectRespostasAtuais);
     const allPerguntas = useSelector(selectAllPerguntas);
     const navigate = useNavigate();
 
-    const questionario = questionarios[respostas.respostaIndex];
+    const questionario = props.questionariosAbertos[respostas.respostaIndex];
 
     const [respostasTmp, setRespostasTmp] = useState([]);
     const [listIndexErros, setListIndexErros] = useState([]);
@@ -37,9 +35,9 @@ export const Perguntas = () => {
         const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
-        setTemProximo(respostas.respostaIndex !== questionarios.length - 1)
+        setTemProximo(respostas.respostaIndex !== props.questionariosAbertos.length - 1)
         setListIndexErros([]);
-    }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, questionarios.length, perguntas.length])
+    }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, props.questionariosAbertos.length, perguntas.length])
 
     useEffect(() => {
         let temp = 0;
@@ -108,7 +106,7 @@ export const Perguntas = () => {
         <form className="div-form">
             <RightComponent
                 index={respostas.respostaIndex}
-                questionariosLength={questionarios.length}
+                questionariosLength={props.questionariosAbertos.length}
                 perguntasLength={perguntas.length}
                 progressBar={true}
                 qtdRespondidas={qtdRespondidas}

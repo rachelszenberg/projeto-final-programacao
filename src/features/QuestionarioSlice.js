@@ -19,7 +19,8 @@ export const fetchQuestionarios = createAsyncThunk(
                 listPdf,
                 pdf: randomPdf,
                 perguntas: childSnapShot.val().perguntas,
-                nome: childSnapShot.val().nome
+                nome: childSnapShot.val().nome,
+                aberto: childSnapShot.val().aberto
             })
         })
         return questionarios;
