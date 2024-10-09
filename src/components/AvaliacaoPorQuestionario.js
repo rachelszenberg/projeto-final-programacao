@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllRespostas } from "../features/CarregaRespostasSlice";
@@ -19,11 +19,10 @@ export const AvaliacaoPorQuestionario = (props) => {
     const navigate = useNavigate();
     const respostasDoQuestionario = respostas.find(r => r.id === props.questionario.id).respostasPorQuestionario;
 
-
-    const getNota = (idPdf, idPergunta, idResposta) => {
+    const getNota = useCallback((idPdf, idPergunta, idResposta) => {
         const nota = selectNota(avaliacao, { idPdf, idPergunta, idResposta });
         return nota;
-    };
+    }, [avaliacao]);
 
     const onCheck = () => {
         dispatch(setShowErrors());
@@ -42,8 +41,8 @@ export const AvaliacaoPorQuestionario = (props) => {
 
     useEffect(() => {
         setPodeEnviar(true);
-        props.questionario.perguntas.map((pergunta) => {
-            respostasDoQuestionario.map((respostas) => {
+        props.questionario.perguntas.forEach((pergunta) => {
+            respostasDoQuestionario.forEach((respostas) => {
                 const nota = getNota(respostas.idPdf, pergunta, respostas.idResposta);
                 if (!nota) {
                     setPodeEnviar(false);
@@ -51,7 +50,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                 }
             });
         });
-    })
+    }, [props.questionario.perguntas, respostasDoQuestionario, getNota])
 
     return (
         <div className="div-form">

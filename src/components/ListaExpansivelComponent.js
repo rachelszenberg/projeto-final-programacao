@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StarComponent } from './StarComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAvaliacaoNotas, selectNota, setRespostasSemNota, removeItemFromRespostasSemNota } from '../features/AvaliacaoSlice';
@@ -10,6 +10,7 @@ export const ListaExpansivelComponent = (props) => {
   const notasTemp = avaliacao.notas;
   const respostasSemNota = avaliacao.respostasSemNota;
   const dispatch = useDispatch();
+  const itemRefs = useRef([]);
 
   const getNota = (idPdf, idPergunta, idResposta) => {
     const nota = selectNota(avaliacao, { idPdf, idPergunta, idResposta });
@@ -58,7 +59,7 @@ export const ListaExpansivelComponent = (props) => {
       temp.push(openIndex);
       setListIndex(temp);
     }
-    dispatch(setRespostasSemNota({ perguntas: props.perguntas, respostasDoQuestionario: props.respostasDoQuestionario, listIndex: listIndex }))
+    dispatch(setRespostasSemNota({ perguntas: props.perguntas, respostasDoQuestionario: props.respostasDoQuestionario, listIndex: listIndex }));
 
     if (openIndex === index) {
       setOpenIndex(null);
@@ -67,16 +68,27 @@ export const ListaExpansivelComponent = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (openIndex !== null && itemRefs.current[openIndex]) {
+      itemRefs.current[openIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [openIndex]);
+
   return (
     <div className="avaliacao-perguntas-view">
       {props.perguntas.map((pergunta, indexPergunta) => {
         const respostasSemNotaPorPergunta = respostasSemNota.filter(item => item.perguntaId === pergunta);
 
         return (
-          <div key={indexPergunta} className={`div-pergunta-avaliacao ${respostasSemNotaPorPergunta.length ? 'pergunta-sem-nota' : undefined}`}>
+          <div
+            key={indexPergunta}
+            className={`div-pergunta-avaliacao ${respostasSemNotaPorPergunta.length ? 'pergunta-sem-nota' : undefined}`}
+            ref={(el) => (itemRefs.current[indexPergunta] = el)} // Atribui a ref ao item correspondente
+          >
             <div
               onClick={() => toggleItem(indexPergunta)}
               className='avaliacao-perguntas-title'
+              id={indexPergunta}
             >
               <p>{indexPergunta + 1}. {props.perguntasAll.find(p => p.id === pergunta).pergunta}</p>
               <span style={{ transform: openIndex === indexPergunta ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', cursor: 'pointer' }}>
@@ -94,11 +106,11 @@ export const ListaExpansivelComponent = (props) => {
                       handleClick={(rate) => handleClick(rate, respostas.idPdf, pergunta, respostas.idResposta)}
                     />
                   </div>
-                )
+                );
               })}
             </div>
           </div>
-        )
+        );
       })}
     </div>
   );
