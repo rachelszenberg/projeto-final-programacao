@@ -57,6 +57,7 @@ export const AvaliacaoPorQuestionario = (props) => {
             <RightComponent
                 onEnviar={!podeEnviar ? onCheck : onEnviar}
                 buttonNextOrSaveClass={!podeEnviar ? "button-disabled" : undefined}
+                titleText={`Avaliação - ${props.questionario.nome}`}
             >
                 <ListaExpansivelComponent
                     perguntas={props.questionario.perguntas}

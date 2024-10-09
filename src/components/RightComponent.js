@@ -8,7 +8,7 @@ export const RightComponent = ({
     perguntasLength = 0,
     progressBar = false, 
     qtdRespondidas = 0,
-    titleText = "Avaliação",
+    titleText,
     nomeQuestionario,
     podeVoltar = false,
     temProximo,
