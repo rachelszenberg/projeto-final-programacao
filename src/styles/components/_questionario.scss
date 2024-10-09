@@ -26,14 +26,22 @@
   flex-grow: 1;
 }
 
-.div-title-avaliacao {
+.div-avaliacao {
   border-radius: $radius $radius 0px 0px;
   background-color: $off-white;
   margin: 0px;
   padding: $m-size;
+}
+
+.div-title-avaliacao {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.nome-questionario{
+  margin-top: $xs-size;
+  color: #808080;
 }
 
 .title-avaliacao {

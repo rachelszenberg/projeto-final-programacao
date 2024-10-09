@@ -7,7 +7,7 @@ export const fetchQuestionarios = createAsyncThunk(
     async () => {
         const snapshot = await get(ref(db, 'questionarios'))
         const questionarios = [];
-        snapshot.forEach((childSnapShot) => {
+        snapshot.forEach((childSnapShot) => {            
             const pdfTemp = childSnapShot.val().pdf;
             const listPdf = Object.entries(pdfTemp).map(([key, value]) => ({id: key, url: value}));
             
@@ -18,7 +18,8 @@ export const fetchQuestionarios = createAsyncThunk(
                 id: childSnapShot.key,
                 listPdf,
                 pdf: randomPdf,
-                perguntas: childSnapShot.val().perguntas
+                perguntas: childSnapShot.val().perguntas,
+                nome: childSnapShot.val().nome
             })
         })
         return questionarios;

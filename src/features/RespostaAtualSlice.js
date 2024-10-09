@@ -14,7 +14,7 @@ export const addResposta = createAsyncThunk(
         const respostas = state.respostaAtual;
 
         respostas.listRespostas.forEach(async (respostas) => {
-            await push(ref(db, `respostasTeste2/${respostas.idQuestionario}`), {
+            await push(ref(db, `respostas/${respostas.idQuestionario}`), {
                 idPdf: respostas.idPdf,
                 listRespostas: respostas.respostasPergunta
             });

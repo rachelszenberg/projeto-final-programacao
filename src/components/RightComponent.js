@@ -9,6 +9,7 @@ export const RightComponent = ({
     progressBar = false, 
     qtdRespondidas = 0,
     titleText = "Avaliação",
+    nomeQuestionario,
     podeVoltar = false,
     temProximo,
     onVoltar,
@@ -25,7 +26,9 @@ export const RightComponent = ({
                 perguntasLength={perguntasLength}
                 progressBar={progressBar}
                 qtdRespondidas={qtdRespondidas} 
-                titleText={titleText} />
+                titleText={titleText}
+                nomeQuestionario={nomeQuestionario}
+            />
             <div className="div-children">
             {children}
             </div>

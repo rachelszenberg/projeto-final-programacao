@@ -113,6 +113,7 @@ export const Perguntas = () => {
                 progressBar={true}
                 qtdRespondidas={qtdRespondidas}
                 titleText="Questionário"
+                nomeQuestionario={questionario.nome}
 
                 podeVoltar={podeVoltar}
                 temProximo={temProximo}

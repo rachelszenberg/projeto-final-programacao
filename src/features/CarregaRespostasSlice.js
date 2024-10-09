@@ -5,7 +5,7 @@ import { db } from "../firebase/firebase";
 export const fetchRespostas = createAsyncThunk(
     'resposta/fetchResposta',
     async () => {
-        const snapshot = await get(ref(db, 'respostasTeste2'))
+        const snapshot = await get(ref(db, 'respostas'))
         const todasRespostas = [];
         snapshot.forEach((childSnapShot) => {
             const respostas = Object.entries(childSnapShot.val()).map(([key, value]) => ({idResposta: key, idPdf: value.idPdf, listRespostas: value.listRespostas}));
