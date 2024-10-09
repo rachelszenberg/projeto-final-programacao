@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { RightTitleComponent } from "./RightTitleComponent";
 import { RightButtonsComponent } from "./RightButtonsComponent";
 
@@ -18,6 +18,12 @@ export const RightComponent = ({
     buttonNextOrSaveClass,
     children
 }) => {
+    const childrenRef = useRef(null);
+
+    useEffect(() => {
+        childrenRef.current.scrollTop = 0;
+    })
+
     return (
         <div className="div-right">
             <RightTitleComponent className="div-top"
@@ -29,7 +35,7 @@ export const RightComponent = ({
                 titleText={titleText}
                 nomeQuestionario={nomeQuestionario}
             />
-            <div className="div-children">
+            <div className="div-children" ref={childrenRef}>
             {children}
             </div>
             <RightButtonsComponent className="div-bottom"
