@@ -5,6 +5,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
 import { Avaliacao } from './pages/Avaliacao';
+import { QuestionariosFechados } from './pages/QuestionariosFechados';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             </div>
         },
         { path: '/obrigado', element: <Obrigado /> },
+        { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
         {
           path: '/avaliacao/:idQuestionario',
           element: <div>

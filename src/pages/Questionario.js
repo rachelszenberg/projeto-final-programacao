@@ -19,9 +19,9 @@ export const Questionario = () => {
             setQuestionariosAbertos(temp);
             setQuestionario(questionariosAbertos[respostas.respostaIndex]);
         } else {
-            navigate('/error');
+            navigate('/questionarios-fechados');
         }
-    })
+    }, [questionarios, questionariosAbertos, respostas.respostaIndex, navigate])
 
     return (
         <>
