@@ -15,13 +15,14 @@ export const Questionario = () => {
 
     useEffect(() => {
         const temp = questionarios.filter(questionario => questionario.aberto === true);
-        if (temp.lenght) {
+        
+        if (temp.length) {            
             setQuestionariosAbertos(temp);
-            setQuestionario(questionariosAbertos[respostas.respostaIndex]);
+            setQuestionario(temp[respostas.respostaIndex]);
         } else {
             navigate('/questionarios-fechados');
         }
-    }, [questionarios, questionariosAbertos, respostas.respostaIndex, navigate])
+    }, [questionarios, respostas.respostaIndex, navigate])
 
     return (
         <>
