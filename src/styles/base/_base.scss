@@ -37,7 +37,7 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #808080;
+    background-color: $dark-grey;
     border-radius: 3px;
   }
   
@@ -47,6 +47,6 @@ p {
   }
   
   ::-webkit-scrollbar-track {
-    background-color: #D0D0D0;
+    background-color: $off-grey;
     border-radius: 3px;
   }

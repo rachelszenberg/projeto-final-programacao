@@ -22,7 +22,7 @@ export const RightComponent = ({
 
     useEffect(() => {
         childrenRef.current.scrollTop = 0;
-    })
+    }, [index])
 
     return (
         <div className="div-right">

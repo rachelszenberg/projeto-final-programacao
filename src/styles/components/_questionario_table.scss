@@ -1,0 +1,70 @@
+.questionarios-container {
+  margin: $l-size;
+  padding: $l-size;
+  background-color: $cor-fundo-avaliacao;
+  border-radius: $radius;
+
+  .filtros {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    input {
+      padding: $xs-size;
+      border: 1px solid $dark-grey;
+      border-radius: $radius;
+      width: 60%;
+    }
+
+    select {
+      padding: $xs-size;
+      border: 1px solid $dark-grey;
+      border-radius: $radius;
+      width: 30%;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $off-white;
+    border-radius: $radius;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+
+      &:nth-child(1), &:nth-child(4) {
+        width: 10%;
+      }
+
+      &:nth-child(2) {
+        width: 40%;
+      }
+
+      &:nth-child(3), &:nth-child(5) {
+        width: 20%;
+      }
+    }
+
+    th {
+      background-color: $off-grey;
+      font-weight: bold;
+    }
+
+    td {
+      border-bottom: 1px solid $off-grey;
+    }
+  }
+
+  .status-feito {
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  .status-nao-feito {
+    color: #6c757d;
+    font-weight: bold;
+  }
+}

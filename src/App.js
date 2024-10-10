@@ -6,6 +6,7 @@ import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
 import { Avaliacao } from './pages/Avaliacao';
 import { QuestionariosFechados } from './pages/QuestionariosFechados';
+import QuestionarioTable from './pages/QuestionariosTable';
 
 function App() {
 
@@ -29,6 +30,13 @@ function App() {
             <Header headerText={"Respostas dos Questionarios"} />
             <Avaliacao />
           </div>
+        },
+        {
+          path: '/avaliacao', element:
+            <div>
+              <Header headerText={"Esses são os seus questionários"} />
+              <QuestionarioTable />
+            </div>
         },
       ]
     }
