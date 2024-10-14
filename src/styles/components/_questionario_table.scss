@@ -31,20 +31,30 @@
     border-radius: $radius;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    th, td {
+    th {
       padding: 15px;
       text-align: left;
 
-      &:nth-child(1), &:nth-child(4) {
+      &:nth-child(1) {
         width: 10%;
+        border-top-left-radius: $radius;
       }
 
       &:nth-child(2) {
-        width: 40%;
+        width: 36%;
       }
 
-      &:nth-child(3), &:nth-child(5) {
+      &:nth-child(3) {
         width: 20%;
+      }
+
+      &:nth-child(4) {
+        width: 12%;
+      }
+
+      &:nth-child(5) {
+        width: 22%;
+        border-top-right-radius: $radius;
       }
     }
 
@@ -54,17 +64,48 @@
     }
 
     td {
-      border-bottom: 1px solid $off-grey;
+      padding: 15px;
+      border-top: 1px solid $off-grey;
+    }
+
+    tbody {
+      tr {
+        &:hover {
+          background-color: $table-hover;
+        }
+      }
     }
   }
 
+  .status-circle {
+    display: inline-block;
+    width: $xs-size;
+    height: $xs-size;
+    border-radius: 50%;
+    margin-right: $xs-size; 
+  }
+
   .status-feito {
-    color: #28a745;
+    color: $feito-dark-green;
     font-weight: bold;
+    background-color: $feito-off-green;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-green;
+    }
   }
 
   .status-nao-feito {
-    color: #6c757d;
+    color: $feito-dark-grey;
     font-weight: bold;
+    background-color: $feito-off-grey;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-grey;
+    }
   }
 }

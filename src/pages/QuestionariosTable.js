@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
 const Questionarios = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('Todos os status');
-
   const questionarios = [
     { numero: 1, nome: 'Acordo com a Light', aberto: false, respostas: 5, avaliado: 'Feito' },
     { numero: 2, nome: 'Acordo com a Gol', aberto: true, respostas: 6, avaliado: 'Feito' },
@@ -13,11 +10,26 @@ const Questionarios = () => {
     { numero: 6, nome: 'Acordo com a Apple', aberto: true, respostas: 9, avaliado: 'Não Feito' },
   ];
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('Todos os status');
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  const handleSort = (column) => {
+    const direction = sortDirection === 'asc' ? 'desc' : 'asc';
+    setSortDirection(direction)
+    console.log(direction);
+  };
+
+  const sortByNumero = (a, b) => {
+    return sortDirection === 'asc' ? a.numero - b.numero : b.numero - a.numero;
+  };
+
   const filteredQuestionarios = questionarios
     .filter(q =>
       q.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (statusFilter === 'Todos os status' || (statusFilter === 'Em andamento' && q.aberto) || (statusFilter === 'Não aceita mais respostas' && !q.aberto))
-    );
+    )
+    .sort(sortByNumero);
 
   return (
     <div className="questionarios-container">
@@ -37,7 +49,7 @@ const Questionarios = () => {
       <table>
         <thead>
           <tr>
-            <th>Número</th>
+            <th>Número <span onClick={() => handleSort()}>{(sortDirection === 'asc' ? '▼' : '▲')}</span></th>
             <th>Nome</th>
             <th>Status</th>
             <th>Respostas</th>
@@ -47,13 +59,13 @@ const Questionarios = () => {
         <tbody>
           {filteredQuestionarios.map((q, index) => (
             <tr key={index}>
-              <td>{index + 1}</td>
+              <td>{q.numero}</td>
               <td>{q.nome}</td>
               <td>{q.aberto ? 'Em andamento' : 'Não aceita mais respostas'}</td>
               <td>{q.respostas}</td>
               <td>
                 <span className={q.avaliado === 'Feito' ? 'status-feito' : 'status-nao-feito'}>
-                  {q.avaliado}
+                  <span className="status-circle"></span> {q.avaliado}
                 </span>
               </td>
             </tr>
