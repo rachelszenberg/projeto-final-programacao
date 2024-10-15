@@ -24,20 +24,8 @@ function App() {
         },
         { path: '/obrigado', element: <Obrigado /> },
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
-        {
-          path: '/avaliacao/:idQuestionario',
-          element: <div>
-            <Header headerText={"Respostas dos Questionarios"} />
-            <Avaliacao />
-          </div>
-        },
-        {
-          path: '/avaliacao', element:
-            <div>
-              <Header headerText={"Esses são os seus questionários"} />
-              <QuestionarioTable />
-            </div>
-        },
+        { path: '/avaliacao/:idQuestionario', element: <Avaliacao />},
+        { path: '/avaliacao', element: <QuestionarioTable /> },
       ]
     }
   ])
