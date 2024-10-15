@@ -4,6 +4,7 @@ import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { AvaliacaoPdf } from "../components/AvaliacaoPdf";
 import { AvaliacaoPorQuestionario } from "../components/AvaliacaoPorQuestionario";
 import { useNavigate, useParams } from "react-router-dom";
+import { Header } from "../components/Header";
 
 export const Avaliacao = () => {
     const params = useParams()
@@ -20,9 +21,9 @@ export const Avaliacao = () => {
         }
     }, [params.idQuestionario, questionarios, navigate])
 
-
     return (
         <>
+            <Header headerText={"Respostas dos Questionarios"} onVoltar={() => navigate(-1)}/>
             {questionario && <div className="questionario-div">
                 <AvaliacaoPdf listPdf={questionario.listPdf} />
                 <AvaliacaoPorQuestionario questionario={questionario} />

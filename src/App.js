@@ -6,6 +6,7 @@ import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
 import { Avaliacao } from './pages/Avaliacao';
 import { QuestionariosFechados } from './pages/QuestionariosFechados';
+import QuestionarioTable from './pages/QuestionariosTable';
 
 function App() {
 
@@ -23,13 +24,8 @@ function App() {
         },
         { path: '/obrigado', element: <Obrigado /> },
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
-        {
-          path: '/avaliacao/:idQuestionario',
-          element: <div>
-            <Header headerText={"Respostas dos Questionarios"} />
-            <Avaliacao />
-          </div>
-        },
+        { path: '/avaliacao/:idQuestionario', element: <Avaliacao />},
+        { path: '/avaliacao', element: <QuestionarioTable /> },
       ]
     }
   ])
