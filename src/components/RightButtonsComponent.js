@@ -11,6 +11,12 @@ export const RightButtonsComponent = (props) => {
                 classButton="button-cancel"
                 iconLeft=<RxChevronLeft />
             />}
+            {props.podeSalvar && <Button
+                onClick={props.onSalvar}
+                label="Salvar"
+                classButton="button-cancel"
+            />}
+            
             <div className="button-right">
                 {props.temProximo
                     ? <Button

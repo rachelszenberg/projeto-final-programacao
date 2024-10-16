@@ -11,8 +11,10 @@ export const RightComponent = ({
     titleText,
     nomeQuestionario,
     podeVoltar = false,
+    podeSalvar = false,
     temProximo,
     onVoltar,
+    onSalvar,
     onProximo,
     onEnviar,
     buttonNextOrSaveClass,
@@ -40,8 +42,10 @@ export const RightComponent = ({
             </div>
             <RightButtonsComponent className="div-bottom"
                 podeVoltar={podeVoltar}
+                podeSalvar={podeSalvar}
                 temProximo={temProximo}
                 onVoltar={onVoltar}
+                onSalvar={onSalvar}
                 onProximo={onProximo}
                 onEnviar={onEnviar}
                 buttonNextOrSaveClass={buttonNextOrSaveClass}

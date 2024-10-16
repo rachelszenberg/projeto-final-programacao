@@ -21,6 +21,25 @@ export const addAvaliacao = createAsyncThunk(
     }
 );
 
+export const addSalvarAvaliacao = createAsyncThunk(
+    'avaliacoesSalvas/addSalvarAvaliacao',
+    async (idQuestionario, { getState }) => {
+        const state = getState();
+        const avaliacao = state.avaliacao.notas;
+        
+        avaliacao.forEach(async (av) => {
+            av.listNotasPorPdf.forEach(async (notas) => {
+                const listNotas = notas.listNotasPorPerguntas.map(item => item.nota);
+                await set(ref(db, `avaliacoesSalvas/avaliador1/${idQuestionario}/${av.idPdf}/${notas.idPergunta}`), {
+                    ...listNotas
+                });
+            })
+
+        })
+
+    }
+);
+
 export const avaliacaoSlice = createSlice({
     name: 'avaliacao',
     initialState: {
@@ -65,8 +84,10 @@ export const avaliacaoSlice = createSlice({
 
 export const selectNota = createSelector(
     (state) => state?.notas,
-    (state, props) => [props.idPdf, props.idPergunta, props.idResposta],
-    (notas, [idPdf, idPergunta, idResposta]) => {
+    (state, props) => props.idPdf,
+    (state, props) => props.idPergunta,
+    (state, props) => props.idResposta,
+    (notas, idPdf, idPergunta, idResposta) => {
         const pdf = notas.find(p => p.idPdf === idPdf);
         if (pdf) {
             const pergunta = pdf.listNotasPorPdf?.find(p => p.idPergunta === idPergunta);

@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAllRespostas } from "../features/CarregaRespostasSlice";
 import { ListaExpansivelComponent } from "./ListaExpansivelComponent";
 import { RightComponent } from "./RightComponent";
-import { addAvaliacao, selectNota, setRespostasSemNota, setShowErrors } from "../features/AvaliacaoSlice";
+import { addAvaliacao, addSalvarAvaliacao, selectNota, setRespostasSemNota, setShowErrors } from "../features/AvaliacaoSlice";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
+import { SalvarModal } from "./SalvarModal";
 
 export const AvaliacaoPorQuestionario = (props) => {
     const perguntasAll = useSelector(selectAllPerguntas);
@@ -14,7 +15,8 @@ export const AvaliacaoPorQuestionario = (props) => {
     const avaliacao = useSelector((state) => state.avaliacao);
     const dispatch = useDispatch();
     const [podeEnviar, setPodeEnviar] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showEnviarModal, setShowEnviarModal] = useState(false);
+    const [showSalvarModal, setShowSalvarModal] = useState(false);
 
     const navigate = useNavigate();
     const respostasDoQuestionario = respostas.find(r => r.id === props.questionario.id).respostasPorQuestionario;
@@ -30,13 +32,20 @@ export const AvaliacaoPorQuestionario = (props) => {
     };
 
     const onEnviar = () => {
-        setShowModal(true);
+        setShowEnviarModal(true);
     };
 
+    const onSalvar = () => {
+        dispatch(addSalvarAvaliacao(props.questionario.id));
+        setShowSalvarModal(true);
+        setTimeout(() => {
+            setShowSalvarModal(false);
+        }, 1500);
+    }
 
     const confirmar = () => {
         dispatch(addAvaliacao(props.questionario.id));
-        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: '/avaliacao'} });
+        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: '/avaliacao' } });
     }
 
     useEffect(() => {
@@ -55,6 +64,8 @@ export const AvaliacaoPorQuestionario = (props) => {
     return (
         <div className="div-form">
             <RightComponent
+                podeSalvar={true}
+                onSalvar={onSalvar}
                 onEnviar={!podeEnviar ? onCheck : onEnviar}
                 buttonNextOrSaveClass={!podeEnviar ? "button-disabled" : undefined}
                 titleText={`Avaliação - ${props.questionario.nome}`}
@@ -65,7 +76,8 @@ export const AvaliacaoPorQuestionario = (props) => {
                     respostasDoQuestionario={respostasDoQuestionario}
                 />
             </RightComponent>
-            <ConfirmacaoModal showModal={showModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
+            <SalvarModal showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />
+            <ConfirmacaoModal showModal={showEnviarModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowEnviarModal(false)} confirmButton={confirmar} />
         </div>
     )
 }
