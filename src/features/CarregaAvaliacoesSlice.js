@@ -3,7 +3,7 @@ import { get, ref } from "firebase/database";
 import { db } from "../firebase/firebase";
 
 export const fetchAvaliacoes = createAsyncThunk(
-    'avaliacoes/fetchResposta',
+    'avaliacoes/fetchAvaliacoes',
     async () => {
         const snapshot = await get(ref(db, 'avaliacoes'))
         const todasAvaliacoes = [];

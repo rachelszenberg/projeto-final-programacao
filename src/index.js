@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -10,22 +10,30 @@ import { fetchQuestionarios } from './features/QuestionarioSlice';
 import { fetchPerguntas } from './features/PerguntasSlice';
 import { fetchRespostas } from './features/CarregaRespostasSlice';
 import { fetchAvaliacoes } from './features/CarregaAvaliacoesSlice';
+import { fetchAvaliacoesSalvas } from './features/AvaliacaoSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-store.dispatch(fetchQuestionarios()).then(() => {
-  store.dispatch(fetchPerguntas()).then(() => {
-    store.dispatch(fetchRespostas()).then(() => {
-      store.dispatch(fetchAvaliacoes()).then(() => {
-        root.render(
-          <React.StrictMode>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </React.StrictMode>
-        );
-      })
-    })
-  })
-})
+
+const loadInitialData = async () => {
+  try {
+    await store.dispatch(fetchQuestionarios());
+    await store.dispatch(fetchPerguntas());
+    await store.dispatch(fetchRespostas());
+    await store.dispatch(fetchAvaliacoes());
+    await store.dispatch(fetchAvaliacoesSalvas());
+
+    root.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error("Erro ao carregar os dados iniciais: ", error);
+  }
+};
+
+loadInitialData();
 
 reportWebVitals();

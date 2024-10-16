@@ -19,16 +19,18 @@ export const AvaliacaoPorQuestionario = (props) => {
     const [showSalvarModal, setShowSalvarModal] = useState(false);
 
     const navigate = useNavigate();
-    const respostasDoQuestionario = respostas.find(r => r.id === props.questionario.id).respostasPorQuestionario;
+    const temp = respostas.find(r => r.id === props.questionario.id);
+    const respostasDoQuestionario = temp.respostasPorQuestionario;
+    const idDoQuestionario = temp.id;
 
     const getNota = useCallback((idPdf, idPergunta, idResposta) => {
-        const nota = selectNota(avaliacao, { idPdf, idPergunta, idResposta });
+        const nota = selectNota(avaliacao, { idDoQuestionario, idPdf, idPergunta, idResposta });
         return nota;
-    }, [avaliacao]);
+    }, [avaliacao, idDoQuestionario]);
 
     const onCheck = () => {
         dispatch(setShowErrors());
-        dispatch(setRespostasSemNota({ perguntas: props.questionario.perguntas, respostasDoQuestionario }));
+        dispatch(setRespostasSemNota({ idQuestionario: idDoQuestionario, perguntas: props.questionario.perguntas, respostasDoQuestionario }));
     };
 
     const onEnviar = () => {
@@ -36,7 +38,7 @@ export const AvaliacaoPorQuestionario = (props) => {
     };
 
     const onSalvar = () => {
-        dispatch(addSalvarAvaliacao(props.questionario.id));
+        dispatch(addSalvarAvaliacao());
         setShowSalvarModal(true);
         setTimeout(() => {
             setShowSalvarModal(false);
@@ -74,6 +76,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                     perguntas={props.questionario.perguntas}
                     perguntasAll={perguntasAll}
                     respostasDoQuestionario={respostasDoQuestionario}
+                    idDoQuestionario={idDoQuestionario}
                 />
             </RightComponent>
             <SalvarModal showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />

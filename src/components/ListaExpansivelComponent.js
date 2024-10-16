@@ -1,34 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StarComponent } from './StarComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAvaliacaoNotas, selectNota, setRespostasSemNota, removeItemFromRespostasSemNota } from '../features/AvaliacaoSlice';
+import { setRespostasSemNota, removeItemFromRespostasSemNota, setAvaliacaoNotas, selectNota } from '../features/AvaliacaoSlice';
 
 export const ListaExpansivelComponent = (props) => {
   const [openIndex, setOpenIndex] = useState(null);
   const [listIndex, setListIndex] = useState([]);
   const avaliacao = useSelector((state) => state.avaliacao);
+  const idQuestionario = props.idDoQuestionario;
   const notasTemp = avaliacao.notas;
   const respostasSemNota = avaliacao.respostasSemNota;
   const dispatch = useDispatch();
   const itemRefs = useRef([]);
 
   const getNota = (idPdf, idPergunta, idResposta) => {
-    const nota = selectNota(avaliacao, { idPdf, idPergunta, idResposta });
+    const nota = selectNota(avaliacao, { idQuestionario, idPdf, idPergunta, idResposta });
     return nota;
   };
 
   const handleClick = (rate, idPdf, idPergunta, idResposta) => {
-    const updatedNotas = [...notasTemp.map(pdf => ({
-      ...pdf,
-      listNotasPorPdf: pdf.listNotasPorPdf.map(pergunta => ({
-        ...pergunta,
-        listNotasPorPerguntas: [...pergunta.listNotasPorPerguntas]
+    const updatedNotas = [...notasTemp.map(questionario => ({
+      ...questionario,
+      listNotasPorQuestionario: questionario.listNotasPorQuestionario.map(pdf => ({
+        ...pdf,
+        listNotasPorPdf: [...pdf.listNotasPorPdf].map(pergunta => ({
+          ...pergunta,
+          listNotasPorPerguntas: [...pergunta.listNotasPorPerguntas]
+        }))
       }))
     }))];
-    let pdf = updatedNotas.find(p => p.idPdf === idPdf);
+    
+    let questionario = updatedNotas.find(p => p.idQuestionario === idQuestionario);
+    if (!questionario) {
+      questionario = { idQuestionario, listNotasPorQuestionario: [] };
+      updatedNotas.push(questionario);
+    }
+    let pdf = questionario.listNotasPorQuestionario.find(p => p.idPdf === idPdf);
     if (!pdf) {
       pdf = { idPdf, listNotasPorPdf: [] };
-      updatedNotas.push(pdf);
+      questionario.listNotasPorQuestionario.push(pdf);
     }
 
     let pergunta = pdf.listNotasPorPdf.find(p => p.idPergunta === idPergunta);
@@ -59,7 +69,7 @@ export const ListaExpansivelComponent = (props) => {
       temp.push(openIndex);
       setListIndex(temp);
     }
-    dispatch(setRespostasSemNota({ perguntas: props.perguntas, respostasDoQuestionario: props.respostasDoQuestionario, listIndex: listIndex }));
+    dispatch(setRespostasSemNota({ idQuestionario: idQuestionario, perguntas: props.perguntas, respostasDoQuestionario: props.respostasDoQuestionario, listIndex: listIndex }));
 
     if (openIndex === index) {
       setOpenIndex(null);
@@ -77,6 +87,7 @@ export const ListaExpansivelComponent = (props) => {
   return (
     <div className="avaliacao-perguntas-view">
       {props.perguntas.map((pergunta, indexPergunta) => {
+        
         const respostasSemNotaPorPergunta = respostasSemNota.filter(item => item.perguntaId === pergunta);
 
         return (
