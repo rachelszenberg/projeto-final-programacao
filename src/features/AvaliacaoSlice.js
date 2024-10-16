@@ -11,7 +11,7 @@ export const addAvaliacao = createAsyncThunk(
         avaliacao.forEach(async (av) => {
             av.listNotasPorPdf.forEach(async (notas) => {
                 const listNotas = notas.listNotasPorPerguntas.map(item => item.nota);
-                await set(ref(db, `avaliacoes/${idQuestionario}/${av.idPdf}/${notas.idPergunta}`), {
+                await set(ref(db, `avaliacoes/avaliador1/${idQuestionario}/${av.idPdf}/${notas.idPergunta}`), {
                     ...listNotas
                 });
             })
