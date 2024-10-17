@@ -24,9 +24,10 @@ export const AvaliacaoPorQuestionario = (props) => {
     const idDoQuestionario = temp.id;
 
     const getNota = useCallback((idPdf, idPergunta, idResposta) => {
-        const nota = selectNota(avaliacao, { idDoQuestionario, idPdf, idPergunta, idResposta });
+        const nota = selectNota(avaliacao, { idQuestionario: idDoQuestionario, idPdf, idPergunta, idResposta });
         return nota;
     }, [avaliacao, idDoQuestionario]);
+    
 
     const onCheck = () => {
         dispatch(setShowErrors());

@@ -108,4 +108,16 @@
       background-color: $feito-dark-grey;
     }
   }
+
+  .status-salvo {
+    color: $feito-dark-yellow;
+    font-weight: bold;
+    background-color: $feito-off-yellow;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-yellow;
+    }
+  }
 }
