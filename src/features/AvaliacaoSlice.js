@@ -8,16 +8,16 @@ export const addAvaliacao = createAsyncThunk(
         const state = getState();
         const avaliacao = state.avaliacao.notas;
 
-        avaliacao.forEach(async (av) => {
-            av.listNotasPorPdf.forEach(async (notas) => {
-                const listNotas = notas.listNotasPorPerguntas.map(item => item.nota);
-                await set(ref(db, `avaliacoes/avaliador1/${idQuestionario}/${av.idPdf}/${notas.idPergunta}`), {
-                    ...listNotas
-                });
+        avaliacao.forEach((av) => {
+            if (av.idQuestionario === idQuestionario){
+            av.listNotasPorQuestionario.forEach((notasPorQuestionario) => {
+                notasPorQuestionario.listNotasPorPdf.forEach(async (notas) => {
+                    await set(ref(db, `avaliacoes/avaliador1/${av.idQuestionario}/${notasPorQuestionario.idPdf}/${notas.idPergunta}`), {
+                        ...notas.listNotasPorPerguntas
+                    });
+                })
             })
-
-        })
-
+        }});
     }
 );
 
@@ -27,8 +27,10 @@ export const addSalvarAvaliacao = createAsyncThunk(
         const state = getState();
         const avaliacao = state.avaliacao.notas;
 
-        await set(ref(db, 'avaliacoesSalvas/avaliador1'), {
-            ...avaliacao
+        avaliacao.forEach(async (av) => {
+            await set(ref(db, `avaliacoesSalvas/avaliador1/${av.idQuestionario}`), {
+                ...av.listNotasPorQuestionario
+            })
         })
     }
 );
@@ -37,16 +39,15 @@ export const fetchAvaliacoesSalvas = createAsyncThunk(
     'avaliacoesSalvas/fetchAvaliacoesSalvas',
     async () => {
         const snapshot = await get(ref(db, 'avaliacoesSalvas'))
-        const todasAvaliacoes = [];
+        const todasAvaliacoesSalvas = [];
 
         snapshot.forEach((childSnapShot) => {
-            childSnapShot.val().forEach((childChildSnapShot) => {
-                todasAvaliacoes.push({
-                    ...childChildSnapShot
-                })
+            const avaliacoesSalvas = Object.entries(childSnapShot.val()).map(([key, value]) => ({ idQuestionario: key, listNotasPorQuestionario: value }));
+            avaliacoesSalvas.forEach((av) => {
+                todasAvaliacoesSalvas.push(av)
             })
         });
-        return todasAvaliacoes;
+        return todasAvaliacoesSalvas;
     }
 );
 

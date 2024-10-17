@@ -12,6 +12,7 @@ const Questionarios = () => {
   const questionarios = useSelector(selectAllQuestionarios);
   const respostas = useSelector(selectAllRespostas);
   const avaliacoes = useSelector(selectAllAvaliacoes);
+  const avaliacoesSalvas = useSelector((state) => state.avaliacao).notas;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos os status');
@@ -31,9 +32,15 @@ const Questionarios = () => {
   }
 
   const getQuestionarioRespondido = (idQuestionario) => {
-    const index = avaliacoes.findIndex(r => r.id === idQuestionario);
-    if (index === -1) {
-      return "Não feito"
+    const indexAvaliacao = avaliacoes.findIndex(r => r.id === idQuestionario);
+    if (indexAvaliacao === -1) {
+      console.log(avaliacoesSalvas);
+      
+      const indexAvaliacaoSalva = avaliacoesSalvas.findIndex(r => r.idQuestionario === idQuestionario);
+      if (indexAvaliacaoSalva === -1){
+        return "Não feito"
+      }
+      return "Salvo"
     }
     return "Feito"
   }
@@ -84,7 +91,7 @@ const Questionarios = () => {
                 <td>{q.aberto ? 'Em andamento' : 'Não aceita mais respostas'}</td>
                 <td>{getTotalRespostasPorQuestionario(q.id)}</td>
                 <td>
-                  <span className={getQuestionarioRespondido(q.id) === 'Feito' ? 'status-feito' : 'status-nao-feito'}>
+                  <span className={getQuestionarioRespondido(q.id) === 'Feito' ? 'status-feito' : getQuestionarioRespondido(q.id) === 'Salvo' ? 'status-salvo' : 'status-nao-feito'}>
                     <span className="status-circle"></span> {getQuestionarioRespondido(q.id)}
                   </span>
                 </td>
