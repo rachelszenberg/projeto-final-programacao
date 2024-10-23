@@ -4,7 +4,7 @@ import { RxChevronLeft, RxChevronRight } from "react-icons/rx";
 
 export const RightButtonsComponent = (props) => {
     return (
-        <div className="div-form-button">
+        <div className={props.noMarginTop ? "div-form-button-no-margin" : "div-form-button"}>
             {props.podeVoltar && <Button
                 onClick={props.onVoltar}
                 label="Voltar"
@@ -22,7 +22,7 @@ export const RightButtonsComponent = (props) => {
                     ? <Button
                         classButton={props.buttonNextOrSaveClass}
                         onClick={props.onProximo}
-                        label="Próximo"
+                        label={props.textProximo || "Próximo"}
                         iconRight=<RxChevronRight />
                     />
                     :

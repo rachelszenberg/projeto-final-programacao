@@ -15,7 +15,6 @@
 }
 
 .div-children {
-  
   background-color: $cor-fundo-avaliacao;
   flex-grow: 1;
   overflow: auto;
@@ -52,22 +51,22 @@
 
 .form {
   padding: 0px 2*$l-size $l-size $l-size;
+
+  textarea {
+    border-width: 0px 0px 1.5px 0px;
+    border-color: $light-grey;
+    border-radius: $radius;
+    height: auto;
+    padding: $xs-size;
+    width: 100%;
+    overflow: auto;
+    resize: none;
+  }
 }
 
 .text-question {
   margin: $m-size 0px $xs-size !important;
   font-size: $font-size-small;
-}
-
-textarea {
-  border-width: 0px 0px 1.5px 0px;
-  border-color: $light-grey;
-  border-radius: $radius;
-  height: auto;
-  padding: $xs-size;
-  width: 100%;
-  overflow: auto;
-  resize: none;
 }
 
 .input-error {
@@ -93,6 +92,12 @@ textarea {
 
 .div-form-button {
   margin-top: $m-size;
+  display: flex;
+  max-width: 100%;
+  justify-content: space-between;
+}
+
+.div-form-button-no-margin {
   display: flex;
   max-width: 100%;
   justify-content: space-between;

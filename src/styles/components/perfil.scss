@@ -1,0 +1,53 @@
+.perfil-container {
+    margin: $xl-size;
+    padding: $l-size;
+    background-color: $cor-fundo-avaliacao;
+    border-radius: $radius;
+    display: grid;
+    gap: $l-size;
+
+    .perfil-div {
+        .text-question-perfil {
+            font-size: $font-size-small;
+            margin-bottom: $xs-size;
+          }
+
+        textarea {
+            box-sizing: border-box;
+            border-width: 0px 0px 1.5px 0px;
+            border-color: $light-grey;
+            border-radius: $radius;
+            height: $l-size + $s-size;
+            padding: $xs-size;
+            width: 100%;
+            overflow: auto;
+            resize: none;
+        }
+
+        select {
+            border-width: 0px 0px 1.5px 0px;
+            border-color: $light-grey;
+            border-radius: $radius;
+            height: $l-size + $s-size;
+            padding: $xs-size;
+            width: 100%;
+            overflow: auto;
+            resize: none;
+        }
+    }
+
+    .perfil-div:not(:has(> div)) {
+        display: none;
+    }
+}
+
+.button-disabled-perfil {
+    background-color: $cor-fundo-avaliacao;
+    color: $cor-secundaria;
+    border: 1px solid $cor-secundaria;
+  
+    &:hover {
+      cursor: default;
+      background-color: $cor-fundo-avaliacao;
+    }
+}

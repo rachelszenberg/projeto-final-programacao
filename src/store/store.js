@@ -5,6 +5,7 @@ import respostaAtualReducer from "../features/RespostaAtualSlice";
 import todasRespostasReducer from "../features/CarregaRespostasSlice";
 import avaliacaoReducer from "../features/AvaliacaoSlice";
 import todasAvaliacoesReducer from "../features/CarregaAvaliacoesSlice";
+import perfilReducer from "../features/PerfilSlice";
 
 export default configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
         todasRespostas: todasRespostasReducer,
         avaliacao: avaliacaoReducer,
         todasAvaliacoes: todasAvaliacoesReducer,
+        perfil: perfilReducer,
     },
 })

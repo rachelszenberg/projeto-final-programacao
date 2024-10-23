@@ -6,7 +6,7 @@ import { selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 
-const Questionarios = () => {
+export const QuestionariosTable = () => {
   const navigate = useNavigate();
 
   const questionarios = useSelector(selectAllQuestionarios);
@@ -101,5 +101,3 @@ const Questionarios = () => {
     </div>
   );
 };
-
-export default Questionarios;

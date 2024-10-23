@@ -11,6 +11,7 @@ import { fetchPerguntas } from './features/PerguntasSlice';
 import { fetchRespostas } from './features/CarregaRespostasSlice';
 import { fetchAvaliacoes } from './features/CarregaAvaliacoesSlice';
 import { fetchAvaliacoesSalvas } from './features/AvaliacaoSlice';
+import { fetchPerguntasPerfil } from './features/PerfilSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -21,6 +22,7 @@ const loadInitialData = async () => {
     await store.dispatch(fetchRespostas());
     await store.dispatch(fetchAvaliacoes());
     await store.dispatch(fetchAvaliacoesSalvas());
+    await store.dispatch(fetchPerguntasPerfil());
 
     root.render(
       <React.StrictMode>
