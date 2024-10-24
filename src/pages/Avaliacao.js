@@ -13,7 +13,7 @@ export const Avaliacao = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const temp = questionarios.find(q => q.id === params.idQuestionario);
+        const temp = questionarios.todosQuestionarios.find(q => q.id === params.idQuestionario);
         if (temp) {
             setQuestionario(temp);
         } else {

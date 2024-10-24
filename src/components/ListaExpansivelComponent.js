@@ -94,7 +94,7 @@ export const ListaExpansivelComponent = (props) => {
           <div
             key={indexPergunta}
             className={`div-pergunta-avaliacao ${respostasSemNotaPorPergunta.length ? 'pergunta-sem-nota' : undefined}`}
-            ref={(el) => (itemRefs.current[indexPergunta] = el)} // Atribui a ref ao item correspondente
+            ref={(el) => (itemRefs.current[indexPergunta] = el)} 
           >
             <div
               onClick={() => toggleItem(indexPergunta)}

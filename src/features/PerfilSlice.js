@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get, push, ref } from "firebase/database";
+import { get, push, ref, set } from "firebase/database";
 import { db } from "../firebase/firebase";
 
 export const fetchPerguntasPerfil = createAsyncThunk(
@@ -23,10 +23,9 @@ export const fetchPerguntasPerfil = createAsyncThunk(
 export const addPerfil = createAsyncThunk(
     'perfil/addPerfil',
     async (selecoes) => {
-        await push(ref(db, 'usuarios'),
-            selecoes
-        );
-
+        const newRef = push(ref(db, 'usuarios'));
+        await set(newRef, selecoes); 
+        return newRef.key; 
     }
 );
 export const PerfilSlice = createSlice({

@@ -8,7 +8,7 @@ export const fetchAvaliacoes = createAsyncThunk(
         const snapshot = await get(ref(db, 'avaliacoes'))
         const todasAvaliacoes = [];
         snapshot.forEach((childSnapShot) => {
-            const avaliacoes = Object.entries(childSnapShot.val()).map(([key, value]) => ({id: key, value: value}));
+            const avaliacoes = Object.entries(childSnapShot.val()).map(([key, value]) => ({ id: key, value: value }));
             avaliacoes.forEach((avaliacao) => {
                 todasAvaliacoes.push({
                     id: avaliacao.id,
@@ -22,15 +22,17 @@ export const fetchAvaliacoes = createAsyncThunk(
 
 export const carregaAvaliacoesSlice = createSlice({
     name: 'todasAvaliacoes',
-    initialState: [],
+    initialState: {
+        avaliacoes: []
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAvaliacoes.fulfilled, (state, action) => {
-                state.push(action.payload)
+                state.avaliacoes = action.payload;
             })
     }
 });
 
-export const selectAllAvaliacoes = (state) => state.todasAvaliacoes[0];
+export const selectAllAvaliacoes = (state) => state.todasAvaliacoes.avaliacoes;
 
 export default carregaAvaliacoesSlice.reducer;

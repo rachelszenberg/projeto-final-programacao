@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 import { selectAllRespostas } from '../features/CarregaRespostasSlice';
-import { selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
+import { fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 
 export const QuestionariosTable = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const questionarios = useSelector(selectAllQuestionarios);
+  const questionarios = useSelector(selectAllQuestionarios).todosQuestionarios;
   const respostas = useSelector(selectAllRespostas);
   const avaliacoes = useSelector(selectAllAvaliacoes);
   const avaliacoesSalvas = useSelector((state) => state.avaliacao).notas;
+
+  useEffect(() => {
+    dispatch(fetchAvaliacoes());
+  }, [dispatch]);
+  
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos os status');
@@ -27,11 +33,11 @@ export const QuestionariosTable = () => {
     return sortDirection === 'asc' ? a.numero - b.numero : b.numero - a.numero;
   };
 
-  const getTotalRespostasPorQuestionario = (idQuestionario) => {
+  const getTotalRespostasPorQuestionario = (idQuestionario) => {  
     return respostas.find(r => r.id === idQuestionario).respostasPorQuestionario.length;
   }
 
-  const getQuestionarioRespondido = (idQuestionario) => {
+  const getQuestionarioRespondido = (idQuestionario) => {   
     const indexAvaliacao = avaliacoes.findIndex(r => r.id === idQuestionario);
     if (indexAvaliacao === -1) {      
       const indexAvaliacaoSalva = avaliacoesSalvas.findIndex(r => r.idQuestionario === idQuestionario);

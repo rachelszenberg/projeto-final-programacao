@@ -8,13 +8,14 @@ export const Obrigado = () => {
     const title = location.state?.title || "Obrigado!";
     const text = location.state?.text || "Salvamos suas respostas!";
     const buttonText = location.state?.buttonText || "Voltar a tela inicial";
-    const buttonNavigate = location.state?.buttonNavigateTo || '/';
+    const buttonNavigate = location.state?.buttonNavigateTo || '/questionario';
+    const idUsuario = location.state?.idUsuario || null;
 
     return (
         <BasicScreen
             title={title}
             under_text={text}
-            button_click={() => {navigate(buttonNavigate); window.location.reload()}}
+            button_click={() => {navigate(buttonNavigate, { state: { idUsuario: idUsuario } })}}
             button_text={buttonText}
             img=<ObrigadoSvg/>
         />

@@ -12,8 +12,7 @@ export const fetchPerguntas = createAsyncThunk(
             perguntas.push({
                 id: childSnapShot.key,
                 pergunta: childSnapShot.val()
-            }
-            )
+            })
         })
         return perguntas;
     }

@@ -3,9 +3,11 @@ import { Header } from '../components/Header';
 import { selectAllPerguntasPerfil, addPerfil } from '../features/PerfilSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RightButtonsComponent } from '../components/RightButtonsComponent';
+import { useNavigate } from 'react-router-dom';
 
 export const PerfilUsuario = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
     const [selecoes, setSelecoes] = useState({});
     const [podeEnviar, setPodeEnviar] = useState(false);
@@ -24,8 +26,9 @@ export const PerfilUsuario = () => {
         });
     };
 
-    const onButtonClick = () => {
-        dispatch(addPerfil(selecoes))
+    const onButtonClick = async () => {
+        const id = await dispatch(addPerfil(selecoes)).unwrap(); 
+        navigate('/questionario', { state: { idUsuario: id } });
     }
 
     const verificarRespostas = useCallback(() => {

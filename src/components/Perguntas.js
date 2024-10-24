@@ -11,7 +11,6 @@ export const Perguntas = (props) => {
     const respostas = useSelector(selectRespostasAtuais);
     const allPerguntas = useSelector(selectAllPerguntas);
     const navigate = useNavigate();
-
     const questionario = props.questionariosAbertos[respostas.respostaIndex];
 
     const [respostasTmp, setRespostasTmp] = useState([]);
@@ -22,7 +21,6 @@ export const Perguntas = (props) => {
     const [showModal, setShowModal] = useState(false);
 
     const regex = useMemo(() => /([a-zA-Z0-9].*){3,}/, []);
-
 
     let perguntas = [];
     questionario.perguntas.forEach((p_id) => {
@@ -98,8 +96,8 @@ export const Perguntas = (props) => {
     };
 
     const confirmar = () => {
-        dispatch(addResposta({ perguntas }))
-        navigate('/obrigado', { state: { title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
+        dispatch(addResposta(props.idUsuario))
+        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
     }
 
     return (

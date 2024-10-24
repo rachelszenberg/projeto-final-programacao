@@ -26,11 +26,11 @@ export const carregaRespostasSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchRespostas.fulfilled, (state, action) => {
-                state.push(action.payload)
+                return action.payload;
             })
     }
 })
 
-export const selectAllRespostas = (state) => state.todasRespostas[0];
+export const selectAllRespostas = (state) => state.todasRespostas;
 
 export default carregaRespostasSlice.reducer;

@@ -47,6 +47,7 @@ export const AvaliacaoPorQuestionario = (props) => {
     }
 
     const confirmar = () => {
+        dispatch(addSalvarAvaliacao());
         dispatch(addAvaliacao(props.questionario.id));
         navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: '/avaliacao' } });
     }

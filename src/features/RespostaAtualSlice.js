@@ -9,14 +9,15 @@ const initialState = {
 
 export const addResposta = createAsyncThunk(
     'respostas/addResposta',
-    async (_, { getState }) => {
+    async (idUsuario, { getState }) => {
         const state = getState();
         const respostas = state.respostaAtual;
-
+    
         respostas.listRespostas.forEach(async (respostas) => {
             await push(ref(db, `respostas/${respostas.idQuestionario}`), {
                 idPdf: respostas.idPdf,
-                listRespostas: respostas.respostasPergunta
+                listRespostas: respostas.respostasPergunta,
+                idUsuario
             });
         })
 

@@ -15,12 +15,12 @@ function App() {
       element: <Outlet />,
       errorElement: <PageError />,
       children: [
-        { path: '/', element: <Questionario /> },
+        { path: '/', element: <PerfilUsuario /> },
+        { path: '/questionario', element: <Questionario /> },
         { path: '/obrigado', element: <Obrigado /> },
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
         { path: '/avaliacao/:idQuestionario', element: <Avaliacao /> },
         { path: '/avaliacao', element: <QuestionariosTable /> },
-        { path: '/perfil', element: <PerfilUsuario /> },
       ]
     }
   ])
