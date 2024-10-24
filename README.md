@@ -15,9 +15,8 @@ npm install
 ```
 
 ## Script
-1. No diretório do projeto, você execute:
+1. No diretório do projeto, execute:
 ```
 npm start
 ```
-2. Executa o aplicativo no modo de desenvolvimento.
-Abra [http://localhost:3000](http://localhost:3000) para visualizá-lo em seu navegador.
+2. Execute o aplicativo no modo de desenvolvimento: abra [http://localhost:3000](http://localhost:3000) para visualizá-lo em seu navegador.
