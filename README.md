@@ -1,7 +1,7 @@
 # Avalia simples
 Avalia Simples é um sistema feito em React para auxiliar autores de documentos a verificar qual tipo de documento é mais compreendido pelos usuários.
 
-## Motivaçã
+## Motivação
 A linguagem simples é um tema de crescente estudo.... mas ainda está faltando ferramentas de testes, para ajudar os autores, o Avalia Simples vem com esse objetivo.
 
 ## Instalação
