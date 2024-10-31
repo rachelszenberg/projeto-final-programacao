@@ -54,6 +54,10 @@ export const AvaliacaoPorQuestionario = (props) => {
 
     useEffect(() => {
         setPodeEnviar(true);
+        if (props.questionario.aberto){
+            setPodeEnviar(false);
+            return ;
+        }
         props.questionario.perguntas.forEach((pergunta) => {
             respostasDoQuestionario.forEach((respostas) => {
                 const nota = getNota(respostas.idPdf, pergunta, respostas.idResposta);
@@ -73,6 +77,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                 onEnviar={!podeEnviar ? onCheck : onEnviar}
                 buttonNextOrSaveClass={!podeEnviar ? "button-disabled" : undefined}
                 titleText={`Avaliação - ${props.questionario.nome}`}
+                nomeQuestionario={props.questionario.aberto && "Esse é um questionário que esta está aberto. Você não poderá enviar suas respostas, mas pode dar notas e salvar!"}
             >
                 <ListaExpansivelComponent
                     perguntas={props.questionario.perguntas}
