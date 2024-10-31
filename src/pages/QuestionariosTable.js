@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../components/Header';
+import { fetchAvaliacoesSalvas } from '../features/AvaliacaoSlice';
 
 export const QuestionariosTable = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,9 +18,9 @@ export const QuestionariosTable = () => {
   const avaliacoesSalvas = useSelector((state) => state.avaliacao).notas;
 
   useEffect(() => {
-    dispatch(fetchAvaliacoes());
-  }, [dispatch]);
-  
+    dispatch(fetchAvaliacoesSalvas(params.idAvaliador));
+    dispatch(fetchAvaliacoes(params.idAvaliador));
+  }, [dispatch, params.idAvaliador]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos os status');
@@ -33,15 +35,16 @@ export const QuestionariosTable = () => {
     return sortDirection === 'asc' ? a.numero - b.numero : b.numero - a.numero;
   };
 
-  const getTotalRespostasPorQuestionario = (idQuestionario) => {  
-    return respostas.find(r => r.id === idQuestionario).respostasPorQuestionario.length;
+  const getTotalRespostasPorQuestionario = (idQuestionario) => {
+    const total = respostas.find(r => r.id === idQuestionario)?.respostasPorQuestionario.length;
+    return total || "Sem resposta";
   }
 
-  const getQuestionarioRespondido = (idQuestionario) => {   
+  const getQuestionarioRespondido = (idQuestionario) => {
     const indexAvaliacao = avaliacoes.findIndex(r => r.id === idQuestionario);
-    if (indexAvaliacao === -1) {      
+    if (indexAvaliacao === -1) {
       const indexAvaliacaoSalva = avaliacoesSalvas.findIndex(r => r.idQuestionario === idQuestionario);
-      if (indexAvaliacaoSalva === -1){
+      if (indexAvaliacaoSalva === -1) {
         return "Não feito"
       }
       return "Salvo"
@@ -50,19 +53,19 @@ export const QuestionariosTable = () => {
   }
 
   const navigateToAvaliaQuestionario = (idQuestionario) => {
-    navigate(`/avaliacao/${idQuestionario}`)
+    navigate(`/${params.idAvaliador}/avaliacao/${idQuestionario}`)
   }
 
   const filteredQuestionarios = questionarios
     .filter(q =>
       q.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (statusFilter === 'Todos os status' || (statusFilter === 'Em andamento' && q.aberto) || (statusFilter === 'Não aceita mais respostas' && !q.aberto))
+      (statusFilter === 'Todos os status' || (statusFilter === 'Em andamento' && q.aberto) || (statusFilter === 'Fechado' && !q.aberto))
     )
     .sort(sortByNumero);
 
   return (
     <div>
-      <Header headerText={"Esses são os seus questionários"}/>
+      <Header headerText={"Esses são os seus questionários"} />
       <div className="questionarios-container">
         <div className="filtros">
           <input
@@ -73,7 +76,7 @@ export const QuestionariosTable = () => {
           />
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option>Todos os status</option>
-            <option>Não aceita mais respostas</option>
+            <option>Fechado</option>
             <option>Em andamento</option>
           </select>
         </div>
@@ -92,7 +95,7 @@ export const QuestionariosTable = () => {
               <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
                 <td>{q.numero}</td>
                 <td>{q.nome}</td>
-                <td>{q.aberto ? 'Em andamento' : 'Não aceita mais respostas'}</td>
+                <td>{q.aberto ? 'Em andamento' : 'Fechado'}</td>
                 <td>{getTotalRespostasPorQuestionario(q.id)}</td>
                 <td>
                   <span className={getQuestionarioRespondido(q.id) === 'Feito' ? 'status-feito' : getQuestionarioRespondido(q.id) === 'Salvo' ? 'status-salvo' : 'status-nao-feito'}>

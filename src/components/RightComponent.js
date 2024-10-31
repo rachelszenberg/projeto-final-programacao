@@ -18,6 +18,7 @@ export const RightComponent = ({
     onProximo,
     onEnviar,
     buttonNextOrSaveClass,
+    noAnswer = false,
     children
 }) => {
     const childrenRef = useRef(null);
@@ -37,7 +38,7 @@ export const RightComponent = ({
                 titleText={titleText}
                 nomeQuestionario={nomeQuestionario}
             />
-            <div className="div-children" ref={childrenRef}>
+            <div className={noAnswer ? 'div-no-answer' : 'div-children'} ref={childrenRef}>
             {children}
             </div>
             <RightButtonsComponent className="div-bottom"

@@ -4,31 +4,32 @@ import { db } from "../firebase/firebase";
 
 export const addAvaliacao = createAsyncThunk(
     'avaliacoes/addAvaliacao',
-    async (idQuestionario, { getState }) => {
+    async ({ idQuestionario, idAvaliador }, { getState }) => {
         const state = getState();
         const avaliacao = state.avaliacao.notas;
 
         avaliacao.forEach((av) => {
-            if (av.idQuestionario === idQuestionario){
-            av.listNotasPorQuestionario.forEach((notasPorQuestionario) => {
-                notasPorQuestionario.listNotasPorPdf.forEach(async (notas) => {
-                    await set(ref(db, `avaliacoes/avaliador1/${av.idQuestionario}/${notasPorQuestionario.idPdf}/${notas.idPergunta}`), {
-                        ...notas.listNotasPorPerguntas
-                    });
+            if (av.idQuestionario === idQuestionario) {
+                av.listNotasPorQuestionario.forEach((notasPorQuestionario) => {
+                    notasPorQuestionario.listNotasPorPdf.forEach(async (notas) => {
+                        await set(ref(db, `avaliacoes/${idAvaliador}/${av.idQuestionario}/${notasPorQuestionario.idPdf}/${notas.idPergunta}`), {
+                            ...notas.listNotasPorPerguntas
+                        });
+                    })
                 })
-            })
-        }});
+            }
+        });
     }
 );
 
 export const addSalvarAvaliacao = createAsyncThunk(
     'avaliacoesSalvas/addSalvarAvaliacao',
-    async (_, { getState }) => {
+    async (idAvaliador, { getState }) => {
         const state = getState();
         const avaliacao = state.avaliacao.notas;
 
         avaliacao.forEach(async (av) => {
-            await set(ref(db, `avaliacoesSalvas/avaliador1/${av.idQuestionario}`), {
+            await set(ref(db, `avaliacoesSalvas/${idAvaliador}/${av.idQuestionario}`), {
                 ...av.listNotasPorQuestionario
             })
         })
@@ -37,15 +38,17 @@ export const addSalvarAvaliacao = createAsyncThunk(
 
 export const fetchAvaliacoesSalvas = createAsyncThunk(
     'avaliacoesSalvas/fetchAvaliacoesSalvas',
-    async () => {
-        const snapshot = await get(ref(db, 'avaliacoesSalvas'))
+    async (idAvaliador) => {
+        const snapshot = await get(ref(db, `avaliacoesSalvas/${idAvaliador}`))
         const todasAvaliacoesSalvas = [];
 
         snapshot.forEach((childSnapShot) => {
-            const avaliacoesSalvas = Object.entries(childSnapShot.val()).map(([key, value]) => ({ idQuestionario: key, listNotasPorQuestionario: value }));
-            avaliacoesSalvas.forEach((av) => {
-                todasAvaliacoesSalvas.push(av)
+            todasAvaliacoesSalvas.push({
+                idQuestionario: childSnapShot.key,
+                listNotasPorQuestionario: childSnapShot.val()
             })
+            console.log(todasAvaliacoesSalvas);
+
         });
         return todasAvaliacoesSalvas;
     }

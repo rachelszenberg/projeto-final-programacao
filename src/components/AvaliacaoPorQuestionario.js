@@ -20,8 +20,8 @@ export const AvaliacaoPorQuestionario = (props) => {
 
     const navigate = useNavigate();
     const temp = respostas.find(r => r.id === props.questionario.id);
-    const respostasDoQuestionario = temp.respostasPorQuestionario;
-    const idDoQuestionario = temp.id;
+    const respostasDoQuestionario = temp?.respostasPorQuestionario;
+    const idDoQuestionario = temp?.id;
 
     const getNota = useCallback((idPdf, idPergunta, idResposta) => {
         const nota = selectNota(avaliacao, { idQuestionario: idDoQuestionario, idPdf, idPergunta, idResposta });
@@ -39,7 +39,7 @@ export const AvaliacaoPorQuestionario = (props) => {
     };
 
     const onSalvar = () => {
-        dispatch(addSalvarAvaliacao());
+        dispatch(addSalvarAvaliacao(props.idAvaliador));
         setShowSalvarModal(true);
         setTimeout(() => {
             setShowSalvarModal(false);
@@ -47,14 +47,14 @@ export const AvaliacaoPorQuestionario = (props) => {
     }
 
     const confirmar = () => {
-        dispatch(addSalvarAvaliacao());
-        dispatch(addAvaliacao(props.questionario.id));
-        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: '/avaliacao' } });
+        dispatch(addSalvarAvaliacao(props.idAvaliador));
+        dispatch(addAvaliacao({idQuestionario: props.questionario.id, idAvaliador: props.idAvaliador}));
+        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao` } });
     }
 
     useEffect(() => {
         setPodeEnviar(true);
-        if (props.questionario.aberto){
+        if (props.questionario.aberto || !temp){
             setPodeEnviar(false);
             return ;
         }
@@ -67,24 +67,27 @@ export const AvaliacaoPorQuestionario = (props) => {
                 }
             });
         });
-    }, [props.questionario.perguntas, respostasDoQuestionario, getNota])
+    }, [props.questionario.perguntas, temp, props.questionario.aberto, respostasDoQuestionario, getNota])
 
     return (
         <div className="div-form">
             <RightComponent
-                podeSalvar={true}
+                podeSalvar={temp}
                 onSalvar={onSalvar}
                 onEnviar={!podeEnviar ? onCheck : onEnviar}
                 buttonNextOrSaveClass={!podeEnviar ? "button-disabled" : undefined}
                 titleText={`Avaliação - ${props.questionario.nome}`}
                 nomeQuestionario={props.questionario.aberto && "Esse é um questionário que esta está aberto. Você não poderá enviar suas respostas, mas pode dar notas e salvar!"}
+                noAnswer={!temp}
             >
-                <ListaExpansivelComponent
+                {temp 
+                ? <ListaExpansivelComponent
                     perguntas={props.questionario.perguntas}
                     perguntasAll={perguntasAll}
                     respostasDoQuestionario={respostasDoQuestionario}
                     idDoQuestionario={idDoQuestionario}
                 />
+                : <p className="no-answers">Esse questionário ainda não tem respostas</p>}
             </RightComponent>
             <SalvarModal showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />
             <ConfirmacaoModal showModal={showEnviarModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowEnviarModal(false)} confirmButton={confirmar} />

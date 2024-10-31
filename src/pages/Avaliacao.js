@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../components/Header";
 
 export const Avaliacao = () => {
-    const params = useParams()
+    const params = useParams();
     const questionarios = useSelector(selectAllQuestionarios);
     const [questionario, setQuestionario] = useState();
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const Avaliacao = () => {
             <Header headerText={"Respostas dos Questionarios"} onVoltar={() => navigate(-1)}/>
             {questionario && <div className="questionario-div">
                 <AvaliacaoPdf listPdf={questionario.listPdf} />
-                <AvaliacaoPorQuestionario questionario={questionario} />
+                <AvaliacaoPorQuestionario questionario={questionario} idAvaliador={params.idAvaliador}/>
             </div>}
         </>
     )

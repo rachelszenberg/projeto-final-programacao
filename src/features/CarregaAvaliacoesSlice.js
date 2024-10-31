@@ -4,18 +4,16 @@ import { db } from "../firebase/firebase";
 
 export const fetchAvaliacoes = createAsyncThunk(
     'avaliacoes/fetchAvaliacoes',
-    async () => {
-        const snapshot = await get(ref(db, 'avaliacoes'))
+    async (idAvaliador) => {
+        const snapshot = await get(ref(db, `avaliacoes/${idAvaliador}`));
         const todasAvaliacoes = [];
         snapshot.forEach((childSnapShot) => {
-            const avaliacoes = Object.entries(childSnapShot.val()).map(([key, value]) => ({ id: key, value: value }));
-            avaliacoes.forEach((avaliacao) => {
-                todasAvaliacoes.push({
-                    id: avaliacao.id,
-                    ...avaliacao.value
-                })
-            })
+            todasAvaliacoes.push({
+                id: childSnapShot.key,
+                ...childSnapShot.val()
+            });
         });
+        
         return todasAvaliacoes;
     }
 );

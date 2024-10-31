@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.no-answers{
+  color: $dark-grey;
+}
+
 .div-right {
   height: 100%;
   display: flex;
@@ -19,6 +23,16 @@
   flex-grow: 1;
   overflow: auto;
   border-radius: 0px 0px $radius $radius;
+}
+
+.div-no-answer{
+  background-color: $cor-fundo-avaliacao;
+  flex-grow: 1;
+  overflow: auto;
+  border-radius: 0px 0px $radius $radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .div-bottom {

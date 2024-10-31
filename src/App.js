@@ -19,8 +19,8 @@ function App() {
         { path: '/questionario', element: <Questionario /> },
         { path: '/obrigado', element: <Obrigado /> },
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
-        { path: '/avaliacao/:idQuestionario', element: <Avaliacao /> },
-        { path: '/avaliacao', element: <QuestionariosTable /> },
+        { path: '/:idAvaliador/avaliacao/:idQuestionario', element: <Avaliacao /> },
+        { path: '/:idAvaliador/avaliacao', element: <QuestionariosTable /> },
       ]
     }
   ])
