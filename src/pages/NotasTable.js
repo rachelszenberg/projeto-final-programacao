@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
-import { fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
+import { fetchAllAvaliacoes, fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { fetchAvaliacoesSalvas } from '../features/AvaliacaoSlice';
 import { ModalInput } from '../components/ModalInput';
 
 export const NotasTable = () => {
-    const params = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -18,9 +17,8 @@ export const NotasTable = () => {
     const [showNaoAvaliadoModal, setShowNaoAvaliadoModal] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchAvaliacoesSalvas(params.idAvaliador));
-        dispatch(fetchAvaliacoes(params.idAvaliador));
-    }, [dispatch, params.idAvaliador]);
+        dispatch(fetchAllAvaliacoes());
+    }, [dispatch]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('Todos os status');

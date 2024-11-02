@@ -10,7 +10,6 @@ import { fetchQuestionarios } from './features/QuestionarioSlice';
 import { fetchPerguntas } from './features/PerguntasSlice';
 import { fetchRespostas } from './features/CarregaRespostasSlice';
 import { fetchPerguntasPerfil } from './features/PerfilSlice';
-import { fetchAllAvaliacoes } from './features/CarregaAvaliacoesSlice';
 import { fetchUsuarios } from './features/UsariosSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,7 +20,6 @@ const loadInitialData = async () => {
     await store.dispatch(fetchPerguntas());
     await store.dispatch(fetchRespostas());
     await store.dispatch(fetchPerguntasPerfil());
-    await store.dispatch(fetchAllAvaliacoes());
     await store.dispatch(fetchUsuarios());
 
     root.render(
