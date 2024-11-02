@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
-import { fetchAllAvaliacoes, fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import { fetchAllAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { fetchAvaliacoesSalvas } from '../features/AvaliacaoSlice';
 import { ModalInput } from '../components/ModalInput';
 
 export const NotasTable = () => {
