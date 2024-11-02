@@ -23,7 +23,7 @@ export const Avaliacao = () => {
 
     return (
         <>
-            <Header headerText={"Respostas dos Questionarios"} onVoltar={() => navigate(-1)}/>
+            <Header headerText={"Respostas dos Questionarios"} onVoltar={() => navigate(-1)} headerButtons avaliar={true}/>
             {questionario && <div className="questionario-div">
                 <AvaliacaoPdf listPdf={questionario.listPdf} />
                 <AvaliacaoPorQuestionario questionario={questionario} idAvaliador={params.idAvaliador}/>

@@ -27,7 +27,7 @@ export const PerfilUsuario = () => {
     };
 
     const onButtonClick = async () => {
-        const id = await dispatch(addPerfil(selecoes)).unwrap(); 
+        const id = await dispatch(addPerfil(selecoes)).unwrap();
         navigate('/questionario', { state: { idUsuario: id } });
     }
 
@@ -76,8 +76,10 @@ export const PerfilUsuario = () => {
                             <div>
                                 <p className="text-question-perfil">{p.pergunta}</p>
                                 <textarea
+                                    rows={1}
                                     value={selecoes[p.id] || ''}
                                     onChange={(e) => handleTextareaChange(p.id, e.target.value)}
+                                    placeholder="Digite sua área de formação"
                                 ></textarea>
                             </div>
                         }

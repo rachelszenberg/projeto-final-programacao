@@ -7,7 +7,7 @@ import { RightComponent } from "./RightComponent";
 import { addAvaliacao, addSalvarAvaliacao, selectNota, setRespostasSemNota, setShowErrors } from "../features/AvaliacaoSlice";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
-import { SalvarModal } from "./SalvarModal";
+import { ModalTexto } from "./ModalTexto";
 
 export const AvaliacaoPorQuestionario = (props) => {
     const perguntasAll = useSelector(selectAllPerguntas);
@@ -43,13 +43,13 @@ export const AvaliacaoPorQuestionario = (props) => {
         setShowSalvarModal(true);
         setTimeout(() => {
             setShowSalvarModal(false);
-        }, 1500);
+        }, 1000);
     }
 
     const confirmar = () => {
         dispatch(addSalvarAvaliacao(props.idAvaliador));
         dispatch(addAvaliacao({idQuestionario: props.questionario.id, idAvaliador: props.idAvaliador}));
-        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao` } });
+        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao`, buttonText: "Voltar a tela de avaliação", underlineButtonText: "Ver todas as avaliações", underlineButtonNavigateTo: '/notas' } });
     }
 
     useEffect(() => {
@@ -89,7 +89,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                 />
                 : <p className="no-answers">Esse questionário ainda não tem respostas</p>}
             </RightComponent>
-            <SalvarModal showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />
+            <ModalTexto showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />
             <ConfirmacaoModal showModal={showEnviarModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowEnviarModal(false)} confirmButton={confirmar} />
         </div>
     )

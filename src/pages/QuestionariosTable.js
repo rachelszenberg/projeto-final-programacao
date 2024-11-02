@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 import { selectAllRespostas } from '../features/CarregaRespostasSlice';
-import { fetchAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
+import { fetchAvaliacoes, selectAllAvaliacoesPorId } from '../features/CarregaAvaliacoesSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { fetchAvaliacoesSalvas } from '../features/AvaliacaoSlice';
@@ -14,7 +14,7 @@ export const QuestionariosTable = () => {
 
   const questionarios = useSelector(selectAllQuestionarios).todosQuestionarios;
   const respostas = useSelector(selectAllRespostas);
-  const avaliacoes = useSelector(selectAllAvaliacoes);
+  const avaliacoes = useSelector(selectAllAvaliacoesPorId);
   const avaliacoesSalvas = useSelector((state) => state.avaliacao).notas;
 
   useEffect(() => {
@@ -45,11 +45,11 @@ export const QuestionariosTable = () => {
     if (indexAvaliacao === -1) {
       const indexAvaliacaoSalva = avaliacoesSalvas.findIndex(r => r.idQuestionario === idQuestionario);
       if (indexAvaliacaoSalva === -1) {
-        return "Não feito"
+        return "Não avaliado"
       }
       return "Salvo"
     }
-    return "Feito"
+    return "Avaliado"
   }
 
   const navigateToAvaliaQuestionario = (idQuestionario) => {
@@ -65,7 +65,7 @@ export const QuestionariosTable = () => {
 
   return (
     <div>
-      <Header headerText={"Esses são os seus questionários"} />
+      <Header headerText={"Questionários - Avaliar"} headerButtons avaliar/>
       <div className="questionarios-container">
         <div className="filtros">
           <input
@@ -98,7 +98,7 @@ export const QuestionariosTable = () => {
                 <td>{q.aberto ? 'Em andamento' : 'Fechado'}</td>
                 <td>{getTotalRespostasPorQuestionario(q.id)}</td>
                 <td>
-                  <span className={getQuestionarioRespondido(q.id) === 'Feito' ? 'status-feito' : getQuestionarioRespondido(q.id) === 'Salvo' ? 'status-salvo' : 'status-nao-feito'}>
+                  <span className={getQuestionarioRespondido(q.id) === 'Avaliado' ? 'status-feito' : getQuestionarioRespondido(q.id) === 'Salvo' ? 'status-salvo' : 'status-nao-feito'}>
                     <span className="status-circle"></span> {getQuestionarioRespondido(q.id)}
                   </span>
                 </td>

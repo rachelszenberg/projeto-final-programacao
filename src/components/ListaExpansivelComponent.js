@@ -18,7 +18,7 @@ export const ListaExpansivelComponent = (props) => {
     return nota;
   };
 
-  const handleClick = (rate, idPdf, idPergunta, idResposta) => {
+  const handleClick = (rate, idPdf, idPergunta, idResposta, idUsuario) => {
     const updatedNotas = [...notasTemp.map(questionario => ({
       ...questionario,
       listNotasPorQuestionario: questionario.listNotasPorQuestionario.map(pdf => ({
@@ -28,8 +28,8 @@ export const ListaExpansivelComponent = (props) => {
           listNotasPorPerguntas: [...pergunta.listNotasPorPerguntas]
         }))
       }))
-    }))];
-    
+    }))];    
+
     let questionario = updatedNotas.find(p => p.idQuestionario === idQuestionario);
     if (!questionario) {
       questionario = { idQuestionario, listNotasPorQuestionario: [] };
@@ -49,17 +49,18 @@ export const ListaExpansivelComponent = (props) => {
 
     let respostaIndex = pergunta.listNotasPorPerguntas.findIndex(p => p.idResposta === idResposta);
     if (respostaIndex === -1) {
-      pergunta.listNotasPorPerguntas = [...pergunta.listNotasPorPerguntas, { idResposta, nota: rate + 1 }];
+      pergunta.listNotasPorPerguntas = [...pergunta.listNotasPorPerguntas, { idResposta, idUsuario: idUsuario, nota: rate + 1 }];
     } else {
-      const updatedResposta = { ...pergunta.listNotasPorPerguntas[respostaIndex], nota: rate + 1 };
+     
+      const updatedResposta = { ...pergunta.listNotasPorPerguntas[respostaIndex], idUsuario: idUsuario, nota: rate + 1 };
       pergunta.listNotasPorPerguntas = [
         ...pergunta.listNotasPorPerguntas.slice(0, respostaIndex),
         updatedResposta,
         ...pergunta.listNotasPorPerguntas.slice(respostaIndex + 1)
       ];
     }
-    
-    dispatch(removeItemFromRespostasSemNota({idPergunta, idResposta}));
+
+    dispatch(removeItemFromRespostasSemNota({ idPergunta, idResposta }));
     dispatch(setAvaliacaoNotas(updatedNotas));
   };
 
@@ -87,14 +88,14 @@ export const ListaExpansivelComponent = (props) => {
   return (
     <div className="avaliacao-perguntas-view">
       {props.perguntas.map((pergunta, indexPergunta) => {
-        
+
         const respostasSemNotaPorPergunta = respostasSemNota.filter(item => item.perguntaId === pergunta);
 
         return (
           <div
             key={indexPergunta}
             className={`div-pergunta-avaliacao ${respostasSemNotaPorPergunta.length ? 'pergunta-sem-nota' : undefined}`}
-            ref={(el) => (itemRefs.current[indexPergunta] = el)} 
+            ref={(el) => (itemRefs.current[indexPergunta] = el)}
           >
             <div
               onClick={() => toggleItem(indexPergunta)}
@@ -114,7 +115,7 @@ export const ListaExpansivelComponent = (props) => {
                     <p>{respostas.listRespostas[indexPergunta]}</p>
                     <StarComponent
                       rating={getNota(respostas.idPdf, pergunta, respostas.idResposta)}
-                      handleClick={(rate) => handleClick(rate, respostas.idPdf, pergunta, respostas.idResposta)}
+                      handleClick={(rate) => handleClick(rate, respostas.idPdf, pergunta, respostas.idResposta, respostas.idUsuario)}
                     />
                   </div>
                 );

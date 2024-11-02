@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 
-export const SalvarModal = (props) => (
+export const ModalTexto = (props) => (
     <Modal
         isOpen={props.showModal}
         ariaHideApp={false}

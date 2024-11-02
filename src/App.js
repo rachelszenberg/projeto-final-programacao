@@ -7,6 +7,8 @@ import { Avaliacao } from './pages/Avaliacao';
 import { QuestionariosFechados } from './pages/QuestionariosFechados';
 import { QuestionariosTable } from './pages/QuestionariosTable';
 import { PerfilUsuario } from './pages/PerfilUsuario';
+import { Notas } from './pages/Notas';
+import { NotasTable } from './pages/NotasTable';
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
         { path: '/:idAvaliador/avaliacao/:idQuestionario', element: <Avaliacao /> },
         { path: '/:idAvaliador/avaliacao', element: <QuestionariosTable /> },
+        { path: '/notas', element: <NotasTable /> },
+        { path: '/notas/:idQuestionario', element: <Notas /> },
       ]
     }
   ])

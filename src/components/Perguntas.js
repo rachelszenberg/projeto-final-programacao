@@ -20,7 +20,7 @@ export const Perguntas = (props) => {
     const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
-    const regex = useMemo(() => /([a-zA-Z0-9].*){3,}/, []);
+    const regex = useMemo(() => /([a-zA-Z0-9].*){2,}/, []);
 
     let perguntas = [];
     questionario.perguntas.forEach((p_id) => {

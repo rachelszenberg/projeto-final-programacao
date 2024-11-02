@@ -18,6 +18,11 @@ export const BasicScreen = (props) => {
                 onClick={props.button_click}
                 label={props.button_text}
             />}
+
+            {props.underline_button_text && <button
+                className="underline-button"
+                onClick={props.underline_button_click}
+            >{props.underline_button_text}</button>}
         </div>
     );
 }

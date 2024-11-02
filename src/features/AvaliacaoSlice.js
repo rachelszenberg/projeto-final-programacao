@@ -46,9 +46,7 @@ export const fetchAvaliacoesSalvas = createAsyncThunk(
             todasAvaliacoesSalvas.push({
                 idQuestionario: childSnapShot.key,
                 listNotasPorQuestionario: childSnapShot.val()
-            })
-            console.log(todasAvaliacoesSalvas);
-
+            });
         });
         return todasAvaliacoesSalvas;
     }
