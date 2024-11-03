@@ -23,7 +23,7 @@ npm start
 
 ### Fluxo Respondendo ao Questionário
   Este fluxo é destinado às pessoas que vão responder às perguntas dos questionários. Ao acessar a seção, o usuário encontrará alguns questionários, cada um com uma lista de perguntas associadas a um PDFs. O progresso de preenchimento é salvo automaticamente, permitindo voltar e alterar respostas, se necessário. Ao final, ele envia as respostas e, se optar, pode responder novamente o questionário, que virá cada questionário com as mesmas perguntas, mas outro pdf.
-  #### Passo a passo
+  ##### Passo a passo
   1. Acesse a rota principal, em [http://localhost:3000](http://localhost:3000)
   2. Responda as perguntas o perfil do usuário. 
   3. Se não tiver mais nenhuma questionário ativo, o usuário será levado para a tela [http://localhost:3000/questionarios-fechados](http://localhost:3000/questionarios-fechados). Caso ainda tenha pelo menos um questionário ativo, será levado para a rota [http://localhost:3000/questionario](http://localhost:3000/questionario), onde vai visualizar um pdf e algumas perguntas relacionadas
