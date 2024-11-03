@@ -22,29 +22,29 @@ npm start
 2. Execute o aplicativo no modo de desenvolvimento: abra [http://localhost:3000](http://localhost:3000) para visualizá-lo em seu navegador. O usuario pode seguir 3 fluxos:
 
 ### Fluxo Respondendo ao Questionário
-  Este fluxo é destinado às pessoas que vão responder às perguntas dos questionários. Ao acessar a seção, o usuário encontrará alguns questionários, cada um com uma lista de perguntas associadas a um PDFs. O progresso de preenchimento é salvo automaticamente, permitindo voltar e alterar respostas, se necessário. Ao final, ele envia as respostas e, se optar, pode responder novamente o questionário, que virá cada questionário com as mesmas perguntas, mas outro pdf.
+  Este fluxo é destinado aos usuários que responderão aos questionários. Ao acessar a seção principal, o usuário encontrará um questionário, contendo um PDF e perguntas associadas a ele. O progresso é salvo automaticamente, permitindo que o usuário volte e altere respostas, se necessário. Após o envio das respostas, o usuário pode optar por responder novamente o questionário onde as mesmas perguntas aparecerão, mas com PDFs diferentes.
   ##### Passo a passo
-  1. Acesse a rota principal, em [http://localhost:3000](http://localhost:3000)
-  2. Responda as perguntas o perfil do usuário. 
-  3. Se não tiver mais nenhuma questionário ativo, o usuário será levado para a tela [http://localhost:3000/questionarios-fechados](http://localhost:3000/questionarios-fechados). Caso ainda tenha pelo menos um questionário ativo, será levado para a rota [http://localhost:3000/questionario](http://localhost:3000/questionario), onde vai visualizar um pdf e algumas perguntas relacionadas
+  1. Acesse a rota principal, em [http://localhost:3000](http://localhost:3000).
+  2. Responda às perguntas relacionadas ao perfil do usuário.
+  3. Se não houver questionários ativos, o sistema direcionará o usuário para a tela [http://localhost:3000/questionarios-fechados](http://localhost:3000/questionarios-fechados). Caso ainda haja questionários ativos, o sistema redirecionará para [http://localhost:3000/questionario](http://localhost:3000/questionario), onde será exibido um PDF com perguntas relacionadas.
   4. Navegue pelos questionários e, ao final, envie as suas respostas.
 
 ### Fluxo Avaliando as Respostas
-  Esse fluxo permite que a pessoa responsável pela avaliação examine as respostas dos questionários enviados. Cada pergunta de cada questionário será apresentada com todas as respostas que tiveram, independente do PDF e o avaliador atribui uma nota de 1 a 5. Além das respostas, todos os PDF relacionados ao questionário são exibidos. Após a conclusão, o avaliador pode salvar as respostas para continuar o processo depois ou enviar se o questionário relativo já tiver fechado.
+  Esse fluxo permite que o avaliador examine as respostas enviadas para cada questionário. Todas as respostas são agrupadas por pergunta, independentemente do PDF visualizado, e o avaliador deve atribuir uma nota de 1 a 5 para cada resposta. Além das respostas, todos os PDFs do questionário são exibidos para consulta. O avaliador pode salvar o progresso e continuar posteriormente ou enviar a avaliação final, caso o questionário esteja concluído.
   ##### Passo a passo
-  1. Acesse a rota [http://localhost:3000/usuario-identificacao/avaliacao](http://localhost:3000/usuario-identificacao/avaliacao) (onde usuario-identificacao será escolhido pelo usuario).
-  2. Visualize a tabela que tem todos os questionário e informações relativas a ele.
-  3. Clique no questionário que deseja avaliar, que levará para a rota [http://localhost:3000/usuario-identificacao/avaliacao/questionario-identificacao](http://localhost:3000/usuario-identificacao/avaliacao/questionario-identificacao) (onde questionario-identificacao será substituido pelo identificador de cada questionário)
-  4. Visualize todos os PDFs existentes daquele questionário, as perguntas associdas e todas as respostas dadas.
-  5. Avalie as respostas com uma nota de 1 a 5.
-  6. Envie a avaliação.
+  1. Acesse a rota [http://localhost:3000/usuario-identificacao/avaliacao](http://localhost:3000/usuario-identificacao/avaliacao) (substitua "usuario-identificacao" pela identificação do usuário).
+  2. Visualize a tabela com todos os questionários disponíveis para avaliação e suas informações.
+  3. Clique no questionário desejado para abrir a página de avaliação em [http://localhost:3000/usuario-identificacao/avaliacao/questionario-identificacao](http://localhost:3000/usuario-identificacao/avaliacao/questionario-identificacao) (substitua "usuario-identificacao" pela identificação do usuário e questionario-identificacao será substituido pelo identificador de cada questionário)
+  4. Consulte os PDFs e as perguntas associadas a cada questionário, bem como todas as respostas fornecidas.
+  5. Avalie cada resposta com uma nota de 1 a 5.
+  6. Envie a avaliação final.
 
 
 ### Fluxo Visualizando as Avaliações
-  Esse fluxo permite que a pessoa responsável pela avaliação examine o gráfico das médias das notas de cada pergunta para cada pdf questionários avaliado. O objetivo é proporcionar uma visão consolidada do desempenho e qualidade das respostas para cada pergunta e para cada PDF que foi visualizado para se ter a resposta que ganhou a nota relativa, permitindo análises mais amplas ou específicas conforme a necessidade. Nesse fluxo, será possível aplicar filtros para se ter visualizações mais específicas por cada grupo
+  Este fluxo é voltado para visualização de gráficos com as médias das notas de cada pergunta por PDF para os questionários avaliados. Ele permite uma visão consolidada sobre o desempenho e a qualidade das respostas para cada pergunta e PDF visualizado. Filtros avançados estão disponíveis para que o usuário ajuste a visualização conforme a necessidade de análise, seja para grupos específicos ou para detalhamentos mais amplos.
   ##### Passo a passo
   1. Acesse a rota [http://localhost:3000/notas](http://localhost:3000/notas).
-  2. Visualize a tabela que tem todos os questionário e informações relativas a ele.
-  3. Clique no questionário que deseja visualizar as avaliações.
-  4. Visualize o gráfico com as médias das notas de cada pergunta para cada pdf
-  5. Utilize as ferramentas de filtro e busca para refinar a visualização das avaliações, conforme necessário.
+  2. Visualize a tabela com todos os questionários e suas informações.
+  3. Clique no questionário de interesse para acessar as avaliações.
+  4. Consulte o gráfico com as médias das notas atribuídas a cada pergunta e PDF.
+  5. Utilize as ferramentas de filtro e busca para ajustar a visualização das avaliações conforme necessário.
