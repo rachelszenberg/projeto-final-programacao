@@ -21,8 +21,12 @@ npm start
 ```
 2. Execute o aplicativo no modo de desenvolvimento: abra [http://localhost:3000](http://localhost:3000) para visualizá-lo em seu navegador. O usuario pode seguir 3 fluxos:
 
-  a) Seguindo pela rota principal, em [http://localhost:3000](http://localhost:3000), vai ser exibida uma tela de perguntas sobre o perfil do usuário. Ao responder as perguntas do perfil, o usuário pode ser levado para as telas
-    - [http://localhost:3000/questionario](http://localhost:3000/questionario), onde vai ver um pdf e algumas perguntas relacionadas ao pdf e pode ir navegando pelos questionários e, ao final, enviar as suas respostas
-    - [http://localhost:3000/questionarios-fechados](http://localhost:3000/questionarios-fechados) caso todos os questionários já tenham sido fechados
+### Fluxo Respondendo ao Questionário
+  Este fluxo é destinado às pessoas que vão responder às perguntas dos questionários. Ao acessar a seção, o usuário encontrará alguns questionários, cada um com uma lista de perguntas associadas a um PDFs. O progresso de preenchimento é salvo automaticamente, permitindo voltar e alterar respostas, se necessário. Ao final, ele envia as respostas e, se optar, pode responder novamente o questionário, que virá cada questionário com as mesmas perguntas, mas outro pdf.
+  Passo a passo
+  1. Acesse a rota principal, em [http://localhost:3000](http://localhost:3000)
+  2. Responda as perguntas o perfil do usuário. 
+  3. Se não tiver mais nenhuma questionário ativo, o usuário será levado para a tela [http://localhost:3000/questionarios-fechados](http://localhost:3000/questionarios-fechados). Caso ainda tenha pelo menos um questionário ativo, será levado para a rota [http://localhost:3000/questionario](http://localhost:3000/questionario), onde vai visualizar um pdf e algumas perguntas relacionadas
+  4. Navegue pelos questionários e, ao final, envie as suas respostas.
     
   c) Caso queira avaliar as respostas, pode ir para a tela [http://localhost:3000/usuario/avaliacao](http://localhost:3000/usuario/avaliacao) (onde usuario vai ser substitulo pelo usuario escolhido) e lá será possível
