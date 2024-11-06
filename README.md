@@ -45,6 +45,6 @@ npm start
   ##### Passo a passo
   1. Acesse a rota [http://localhost:3000/notas](http://localhost:3000/notas).
   2. Visualize a tabela com todos os questionários e suas informações.
-  3. Clique no questionário de interesse para acessar as avaliações.
+  3. Clique no questionário de interesse para acessar as avaliações para abrir a página de visualização de avaliação em http://localhost:3000/notas/questionario-identificacao (substitua questionario-identificacao pelo identificador de cada questionário)
   4. Consulte o gráfico com as médias das notas atribuídas a cada pergunta e PDF.
   5. Utilize as ferramentas de filtro e busca para ajustar a visualização das avaliações conforme necessário.
