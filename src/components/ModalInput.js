@@ -33,7 +33,7 @@ export const ModalInput = (props) => {
         >
             <div className="modal-content">
                     <p className="modal-text">{props.title}</p>
-                    <p className="modal-title">{props.text}</p>
+                    <p className="modal-title" style={{ whiteSpace: "pre-wrap" }}>{props.text}</p>
                         <div className="input-container">
                             <textarea
                                 className={error ? "input-error" : undefined}

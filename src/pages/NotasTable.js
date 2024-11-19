@@ -94,7 +94,7 @@ export const NotasTable = () => {
                     </tbody>
                 </table>
             </div>
-            <ModalInput showModal={showNaoAvaliadoModal} title={"Digite seu usuário, caso não tenha um, crie um que você irá lembrar depois"} text={"Ele será usado apenas como uma identificação para você poder ver as suas avaliações"} cancelButton={() => setShowNaoAvaliadoModal(false)}/>
+            <ModalInput showModal={showNaoAvaliadoModal} title={"Esse questionário ainda não tem avaliações salvas"} text={"Você pode avaliá-lo.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações"} cancelButton={() => setShowNaoAvaliadoModal(false)}/>
         </div>
     );
 };

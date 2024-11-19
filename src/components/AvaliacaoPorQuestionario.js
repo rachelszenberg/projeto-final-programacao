@@ -43,7 +43,7 @@ export const AvaliacaoPorQuestionario = (props) => {
         setShowSalvarModal(true);
         setTimeout(() => {
             setShowSalvarModal(false);
-        }, 1000);
+        }, 1500);
     }
 
     const confirmar = () => {
@@ -89,7 +89,7 @@ export const AvaliacaoPorQuestionario = (props) => {
                 />
                 : <p className="no-answers">Esse questionário ainda não tem respostas</p>}
             </RightComponent>
-            <ModalTexto showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, clique em Enviar"} />
+            <ModalTexto showModal={showSalvarModal} title={"Suas respostas foram salvas"} text={"Você pode voltar e editar quando quiser. Após avaliar todas as respostas, se o questionário estiver fechado, clique em Enviar"} />
             <ConfirmacaoModal showModal={showEnviarModal} title={"Você tem certeza que deseja enviar as notas?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowEnviarModal(false)} confirmButton={confirmar} />
         </div>
     )

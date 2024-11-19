@@ -4,13 +4,22 @@ import { selectAllPerguntasPerfil, addPerfil } from '../features/PerfilSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RightButtonsComponent } from '../components/RightButtonsComponent';
 import { useNavigate } from 'react-router-dom';
+import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 
 export const PerfilUsuario = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
+    const questionarios = useSelector(selectAllQuestionarios);
     const [selecoes, setSelecoes] = useState({});
     const [podeEnviar, setPodeEnviar] = useState(false);
+
+    useEffect(() => {
+        if (!questionarios.questionariosAbertos.length) {
+            navigate('/questionarios-fechados');
+        }
+    }, [navigate, questionarios.questionariosAbertos.length]);
+
 
     const handleSelectChange = (id, value) => {
         setSelecoes({
