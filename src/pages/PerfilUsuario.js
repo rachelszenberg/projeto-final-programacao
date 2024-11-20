@@ -97,7 +97,7 @@ export const PerfilUsuario = () => {
                 <RightButtonsComponent className="div-bottom"
                     temProximo={true}
                     onProximo={onButtonClick}
-                    textProximo={"Responder avaliação"}
+                    textProximo={"Responder questionário"}
                     noMarginTop
                     buttonNextOrSaveClass={!podeEnviar ? "button-disabled-perfil" : undefined}
 

@@ -58,6 +58,7 @@ export const avaliacaoSlice = createSlice({
         notas: [],
         respostasSemNota: [],
         showErrors: false,
+        temAlteracoes: false
     },
     reducers: {
         setAvaliacaoNotas: (state, action) => {
@@ -82,6 +83,9 @@ export const avaliacaoSlice = createSlice({
         },
         setShowErrors: (state) => {
             state.showErrors = true;
+        },
+        setTemAlteracoes: (state, action) => {
+            state.temAlteracoes = action.payload;
         },
         removeItemFromRespostasSemNota: (state, action) => {
             const { idPergunta, idResposta } = action.payload;
@@ -124,6 +128,6 @@ export const selectNota = createSelector(
     }
 );
 
-export const { getNota, setAvaliacaoNotas, setRespostasSemNota, removeItemFromRespostasSemNota, setShowErrors } = avaliacaoSlice.actions;
+export const { getNota, setAvaliacaoNotas, setRespostasSemNota, removeItemFromRespostasSemNota, setShowErrors, setTemAlteracoes } = avaliacaoSlice.actions;
 
 export default avaliacaoSlice.reducer;

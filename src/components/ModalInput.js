@@ -18,9 +18,13 @@ export const ModalInput = (props) => {
 
     const navegacao = () => {
         if (inputValue !== '') {
-            navigate(`/${inputValue}/avaliacao`)
+            if (props.idQuestionario){
+                navigate(`/${inputValue}/avaliacao/${props.idQuestionario}`);
+            } else {
+                navigate(`/${inputValue}/avaliacao`);
+            }
         } else {
-            setError(true)
+            setError(true);
         }
     }
 

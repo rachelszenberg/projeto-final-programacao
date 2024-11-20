@@ -11,10 +11,11 @@ import { addSalvarAvaliacao } from "../features/AvaliacaoSlice";
 export const Avaliacao = () => {
     const params = useParams();
     const questionarios = useSelector(selectAllQuestionarios);
+    const avaliacaoTemAlteracao = useSelector((state) => state.avaliacao).temAlteracoes;
     const [questionario, setQuestionario] = useState();
     const [showSalvarModal, setShowSalvarModal] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();    
 
     useEffect(() => {
         const temp = questionarios.todosQuestionarios.find(q => q.id === params.idQuestionario);
@@ -24,6 +25,14 @@ export const Avaliacao = () => {
             navigate('/error')
         }
     }, [params.idQuestionario, questionarios, navigate]);
+
+    const onVoltar = () => {
+        if (avaliacaoTemAlteracao) {
+            setShowSalvarModal(true);
+        } else {
+            navigate(`/${params.idAvaliador}/avaliacao`);
+        }
+    }
 
     const confirmar = () => {
         setShowSalvarModal(false);
@@ -38,12 +47,12 @@ export const Avaliacao = () => {
 
     return (
         <>
-            <Header headerText={"Respostas dos Questionarios"} onVoltar={() => setShowSalvarModal(true)} headerButtons avaliar={true} />
+            <Header headerText={"Respostas dos Questionarios"} onVoltar={onVoltar} headerButtons avaliar={true} />
             {questionario && <div className="questionario-div">
                 <AvaliacaoPdf listPdf={questionario.listPdf} />
                 <AvaliacaoPorQuestionario questionario={questionario} idAvaliador={params.idAvaliador} />
             </div>}
-            <ConfirmacaoModal showModal={showSalvarModal} title={"Você gostaria de salvar a avaliação antes de voltar?"} cancelButton={cancelar} confirmButton={confirmar} />
+            <ConfirmacaoModal showModal={showSalvarModal} title={"Algumas alterações não foram salvas. Você gostaria de salvar a avaliação antes de voltar?"} cancelButton={cancelar} confirmButton={confirmar} />
         </>
     )
 }

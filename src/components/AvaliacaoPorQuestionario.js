@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAllRespostas } from "../features/CarregaRespostasSlice";
 import { ListaExpansivelComponent } from "./ListaExpansivelComponent";
 import { RightComponent } from "./RightComponent";
-import { addAvaliacao, addSalvarAvaliacao, selectNota, setRespostasSemNota, setShowErrors } from "../features/AvaliacaoSlice";
+import { addAvaliacao, addSalvarAvaliacao, selectNota, setRespostasSemNota, setShowErrors, setTemAlteracoes } from "../features/AvaliacaoSlice";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
 import { ModalTexto } from "./ModalTexto";
@@ -40,6 +40,7 @@ export const AvaliacaoPorQuestionario = (props) => {
 
     const onSalvar = () => {
         dispatch(addSalvarAvaliacao(props.idAvaliador));
+        dispatch(setTemAlteracoes(false));
         setShowSalvarModal(true);
         setTimeout(() => {
             setShowSalvarModal(false);

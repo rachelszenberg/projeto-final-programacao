@@ -14,6 +14,7 @@ export const NotasTable = () => {
     const avaliacoes = useSelector(selectAllAvaliacoes);
 
     const [showNaoAvaliadoModal, setShowNaoAvaliadoModal] = useState(false);
+    const [idQuestionarioClicado, setIdQuestionarioClicado] = useState(null);
     const [showQuestionarioAbertoModal, setShowQuestionarioAbertoModal] = useState(false);
 
     useEffect(() => {
@@ -47,10 +48,17 @@ export const NotasTable = () => {
             navigate(`/notas/${idQuestionario}`)
         } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)){
             setShowQuestionarioAbertoModal(true);
+            setIdQuestionarioClicado(idQuestionario);
         }
         else {
             setShowNaoAvaliadoModal(true);
+            setIdQuestionarioClicado(idQuestionario);
         }
+    }
+
+    const cancel = () => {
+        setShowQuestionarioAbertoModal(false);
+        setIdQuestionarioClicado(null);
     }
 
     const filteredQuestionarios = questionarios.todosQuestionarios
@@ -108,8 +116,8 @@ export const NotasTable = () => {
                     </tbody>
                 </table>
             </div>
-            <ModalInput showModal={showNaoAvaliadoModal} title={"Esse questionário ainda não tem avaliações enviadas"} text={"Você pode avaliá-lo.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} cancelButton={() => setShowNaoAvaliadoModal(false)}/>
-            <ModalInput showModal={showQuestionarioAbertoModal} title={"Esse questionário ainda está aberto"} text={"Você pode avaliá-lo e salvar as notas, porém ainda não pode enviar.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} cancelButton={() => setShowQuestionarioAbertoModal(false)}/>
+            <ModalInput showModal={showNaoAvaliadoModal} title={"Esse questionário ainda não tem avaliações enviadas"} text={"Você pode avaliá-lo.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel}/>
+            <ModalInput showModal={showQuestionarioAbertoModal} title={"Esse questionário ainda está aberto"} text={"Você pode avaliá-lo e salvar as notas, porém ainda não pode enviar.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel}/>
         </div>
     );
 };

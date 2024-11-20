@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StarComponent } from './StarComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRespostasSemNota, removeItemFromRespostasSemNota, setAvaliacaoNotas, selectNota } from '../features/AvaliacaoSlice';
+import { setRespostasSemNota, removeItemFromRespostasSemNota, setAvaliacaoNotas, selectNota, setTemAlteracoes } from '../features/AvaliacaoSlice';
 
 export const ListaExpansivelComponent = (props) => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -62,6 +62,7 @@ export const ListaExpansivelComponent = (props) => {
 
     dispatch(removeItemFromRespostasSemNota({ idPergunta, idResposta }));
     dispatch(setAvaliacaoNotas(updatedNotas));
+    dispatch(setTemAlteracoes(true));
   };
 
   const toggleItem = (index) => {
