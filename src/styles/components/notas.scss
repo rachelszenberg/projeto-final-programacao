@@ -12,6 +12,7 @@
     width: 30%;
     background-color: $off-white;
     border-radius: $radius;
+    position: relative;
 
     .filtros-geral-title {
         font-weight: bold;
@@ -28,6 +29,12 @@
     input[type="checkbox"] {
         accent-color: $dark-grey;
     }
+}
+
+.limpar-filtro {
+    position: absolute;
+    bottom: $s-size !important;
+    right: $s-size;
 }
 
 .div-answer {

@@ -107,6 +107,7 @@ export const Notas = () => {
 
                 <div className='div-filtros'>
                     <p className='filtros-geral-title'>Filtros</p>
+                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({faixaEtaria: [], escolaridade: [], familiaridade: []})}>limpar filtros</button>
                     <div>
                         {perguntasPerfil.map((p) => (
                             <div key={p.id}>
