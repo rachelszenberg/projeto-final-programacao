@@ -88,18 +88,14 @@ export const Notas = () => {
         questionario.perguntas.forEach((p, index) => {
             medias.push(agruparPorPdf(p, index + 1, agruparPorPergunta));
         });
-
-        // const toPercentage = (value) => ((value / 5) * 100).toFixed(2);
+        
         medias.forEach((t) => {
-            let index = 1;
             for (const id in t.value) {
                 const respostas = t.value[id];
                 const totalNotas = respostas.reduce((soma, resposta) => soma + resposta.nota, 0);
                 const media = totalNotas / respostas.length;
-                // const mediaPorcentagem = toPercentage(media);
-
-                t["pdf" + index] = media.toFixed(2);
-                index++;
+                const index = questionario.listPdf.findIndex(item => item.id === id);
+                t["pdf" + (index+1)] = media.toFixed(2);
             }
         });
     }

@@ -81,7 +81,7 @@ export const PerfilUsuario = () => {
                                     ))}
                                 </select>
                             </div>
-                            : ["Ensino superior incompleto", "Ensino superior completo", "Pós-graduação"].includes(selecoes[perguntasPerfil[index - 1]?.id]) &&
+                            : ["Ensino superior incompleto", "Ensino superior completo", "Pós-graduação incompleta", "Pós-graduação completa"].includes(selecoes[perguntasPerfil[index - 1]?.id]) &&
                             <div>
                                 <p className="text-question-perfil">{p.pergunta}</p>
                                 <textarea
