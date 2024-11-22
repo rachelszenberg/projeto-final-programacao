@@ -1,6 +1,6 @@
 import React from 'react';
 import { Questionario } from './pages/Questionario';
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createHashRouter } from "react-router-dom";
 import { Obrigado } from './pages/Obrigado';
 import { PageError } from './pages/PageError';
 import { Avaliacao } from './pages/Avaliacao';
@@ -12,7 +12,7 @@ import { NotasTable } from './pages/NotasTable';
 
 function App() {
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       element: <Outlet />,
       errorElement: <PageError />,
