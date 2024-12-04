@@ -8,8 +8,8 @@ export const fetchRespostas = createAsyncThunk(
         const snapshot = await get(ref(db, 'respostas'))
         const todasRespostas = [];
         snapshot.forEach((childSnapShot) => {
-            const respostas = Object.entries(childSnapShot.val()).map(([key, value]) => ({idResposta: key, idPdf: value.idPdf, idUsuario: value.idUsuario, listRespostas: value.listRespostas}));
-    
+            const respostas = Object.entries(childSnapShot.val()).map(([key, value]) => ({idResposta: key, idPdf: value.idPdf, idUsuario: value.idUsuario, listRespostas: value.listRespostas, tempoPorQuestionario: value.tempoPorQuestionario, confiancaPorQuestionario: value.confiancaPorQuestionario}));
+
             todasRespostas.push({
                 id: childSnapShot.key,
                 respostasPorQuestionario: respostas

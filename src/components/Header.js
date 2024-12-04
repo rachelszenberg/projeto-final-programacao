@@ -21,7 +21,7 @@ export const Header = (props) => {
                 {props.avaliar &&
                     <div>
                         <Avaliar className="button-avaliar" alt="Descrição da imagem" />
-                        <GraficoCinza className="button-avaliar" alt="Descrição da imagem" onClick={() => navigate('/notas')} />
+                        <GraficoCinza className="button-avaliar" alt="Descrição da imagem" onClick={() => navigate('/graficos')} />
                     </div>}
                 {props.grafico &&
                     <div>

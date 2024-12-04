@@ -6,7 +6,8 @@ export const fetchAllAvaliacoes = createAsyncThunk(
     'avaliacoes/fetchAllAvaliacoes',
     async () => {
 
-        const snapshot = await get(ref(db, 'avaliacoes'))
+        const snapshot = await get(ref(db, 'avaliacoes'));
+        
         const todasAvaliacoes = [];
         snapshot.forEach((childSnapShot) => {
             Object.entries(childSnapShot.val()).map(([idQuestionario, respostasPorQuestionario]) => (

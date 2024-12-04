@@ -4,6 +4,8 @@ import { db } from "../firebase/firebase";
 
 const initialState = {
     respostaIndex: 0,
+    tempoPorQuestionario: [],
+    confiancaPorQuestionario: [],
     listRespostas: []
 }
 
@@ -12,11 +14,13 @@ export const addResposta = createAsyncThunk(
     async (idUsuario, { getState }) => {
         const state = getState();
         const respostas = state.respostaAtual;
-    
-        respostas.listRespostas.forEach(async (respostas) => {
-            await push(ref(db, `respostas/${respostas.idQuestionario}`), {
-                idPdf: respostas.idPdf,
-                listRespostas: respostas.respostasPergunta,
+
+        respostas.listRespostas.forEach(async (resposta, index) => {
+            await push(ref(db, `respostas/${resposta.idQuestionario}`), {
+                idPdf: resposta.idPdf,
+                listRespostas: resposta.respostasPergunta,
+                tempoPorQuestionario: respostas.tempoPorQuestionario[index],
+                confiancaPorQuestionario: respostas.confiancaPorQuestionario[index],
                 idUsuario
             });
         })
@@ -37,6 +41,12 @@ export const respostaAtualSlice = createSlice({
         setAvaliacaoRespostas: (state, action) => {
             state.listRespostas[state.respostaIndex] = (action.payload);
         },
+        setTempoPorQuestionario: (state, action) => {
+            state.tempoPorQuestionario[state.respostaIndex] = (action.payload);
+        },
+        setConfiancaPorQuestionario: (state, action) => {
+            state.confiancaPorQuestionario[state.respostaIndex] = (action.payload);
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -48,6 +58,6 @@ export const respostaAtualSlice = createSlice({
 
 export const selectRespostasAtuais = (state) => state.respostaAtual;
 
-export const { decrementIndex, incrementIndex, setAvaliacaoRespostas } = respostaAtualSlice.actions;
+export const { decrementIndex, incrementIndex, setAvaliacaoRespostas, setTempoPorQuestionario, setConfiancaPorQuestionario } = respostaAtualSlice.actions;
 
 export default respostaAtualSlice.reducer;

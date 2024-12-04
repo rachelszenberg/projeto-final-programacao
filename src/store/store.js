@@ -7,6 +7,7 @@ import avaliacaoReducer from "../features/AvaliacaoSlice";
 import todasAvaliacoesReducer from "../features/CarregaAvaliacoesSlice";
 import perfilReducer from "../features/PerfilSlice";
 import usuariosReducer from "../features/UsariosSlice";
+import tabelasReducer from "../features/TabelasSlice";
 
 export default configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
         todasAvaliacoes: todasAvaliacoesReducer,
         perfil: perfilReducer,
         usuarios: usuariosReducer,
+        tabelas: tabelasReducer,
     },
 })

@@ -60,12 +60,36 @@
     border-radius: $radius;
 }
 
+.div-geral-grafico-tempo {
+    width: 100%;
+    background-color: $cor-fundo-avaliacao;
+    border-radius: $radius;
+}
+
 .div-grafico {
     margin-top: $xs-size;
     width: 100%;
     height: 82%;
     display: flex;
     justify-content: space-between;
+}
+
+.div-grafico-confianca-container {
+    margin-top: $xs-size;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.div-graficos-confianca {
+    width: 100%;
+    height: 82%;
+
+    p{
+        font-weight: bold;
+        margin: $s-size $m-size $xs-size;
+    }
 }
 
 .div-grafico-legenda{

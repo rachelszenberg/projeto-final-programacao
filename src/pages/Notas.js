@@ -88,14 +88,14 @@ export const Notas = () => {
         questionario.perguntas.forEach((p, index) => {
             medias.push(agruparPorPdf(p, index + 1, agruparPorPergunta));
         });
-        
+
         medias.forEach((t) => {
             for (const id in t.value) {
                 const respostas = t.value[id];
                 const totalNotas = respostas.reduce((soma, resposta) => soma + resposta.nota, 0);
                 const media = totalNotas / respostas.length;
                 const index = questionario.listPdf.findIndex(item => item.id === id);
-                t["pdf" + (index+1)] = media.toFixed(2);
+                t["pdf" + (index + 1)] = media.toFixed(2);
             }
         });
     }
@@ -107,7 +107,7 @@ export const Notas = () => {
 
                 <div className='div-filtros'>
                     <p className='filtros-geral-title'>Filtros</p>
-                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({faixaEtaria: [], escolaridade: [], familiaridade: []})}>limpar filtros</button>
+                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
                     <div>
                         {perguntasPerfil.map((p) => (
                             <div key={p.id}>
@@ -175,8 +175,7 @@ export const Notas = () => {
                             </div>
                         </div>
                     </div>
-                    :
-                    <div className='div-notas-no-answer'>
+                    : <div className='div-notas-no-answer'>
                         <p className="no-answers">Não temos respostas para esse caso</p>
                     </div>}
             </div>

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 import { fetchAllAvaliacoes, selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { useNavigate } from 'react-router-dom';
-import { Header } from '../components/Header';
-import { ModalInput } from '../components/ModalInput';
+import { ModalInput } from './ModalInput';
 
 export const NotasTable = () => {
     const navigate = useNavigate();
@@ -22,7 +21,7 @@ export const NotasTable = () => {
     }, [dispatch]);
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('Todos os status');
+    const [statusFilter, setStatusFilter] = useState('Todos os status de avaliação');
     const [sortDirection, setSortDirection] = useState('asc');
 
     const handleSort = () => {
@@ -34,10 +33,10 @@ export const NotasTable = () => {
         return sortDirection === 'asc' ? a.numero - b.numero : b.numero - a.numero;
     };
 
-    const getQuestionarioAvaliado = (idQuestionario, index) => {        
+    const getQuestionarioAvaliado = (idQuestionario, index) => {
         if (avaliacoes[idQuestionario]) {
             return "Avaliado"
-        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)){
+        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
             return "Questionário aberto"
         }
         return "Não avaliado"
@@ -46,7 +45,7 @@ export const NotasTable = () => {
     const navigateToAvaliaQuestionario = (idQuestionario) => {
         if (avaliacoes[idQuestionario]) {
             navigate(`/notas/${idQuestionario}`)
-        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)){
+        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
             setShowQuestionarioAbertoModal(true);
             setIdQuestionarioClicado(idQuestionario);
         }
@@ -58,27 +57,27 @@ export const NotasTable = () => {
 
     const cancel = () => {
         setShowQuestionarioAbertoModal(false);
+        setShowNaoAvaliadoModal(false);
         setIdQuestionarioClicado(null);
     }
 
     const filteredQuestionarios = questionarios.todosQuestionarios
-    .filter(q => {
-        const status = getQuestionarioAvaliado(q.id);
-        return (
-            q.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            (statusFilter === 'Todos os status' ||
-                (statusFilter === 'Avaliado' && status === 'Avaliado') ||
-                (statusFilter === 'Não avaliado' && status === 'Não avaliado') ||
-                (statusFilter === 'Questionário aberto' && status === 'Questionário aberto'))
-        );
-    })
-    .sort(sortByNumero);
+        .filter(q => {
+            const status = getQuestionarioAvaliado(q.id);
+            return (
+                q.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                (statusFilter === 'Todos os status de avaliação' ||
+                    (statusFilter === 'Avaliado' && status === 'Avaliado') ||
+                    (statusFilter === 'Não avaliado' && status === 'Não avaliado') ||
+                    (statusFilter === 'Questionário aberto' && status === 'Questionário aberto'))
+            );
+        })
+        .sort(sortByNumero);
 
 
     return (
-        <div>
-            <Header headerText={"Questionários - Visualizar avaliações"} headerButtons grafico/>
-            <div className="questionarios-container">
+        <>
+            <div className="notas-container">
                 <div className="filtros">
                     <input
                         type="text"
@@ -87,7 +86,7 @@ export const NotasTable = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                        <option>Todos os status</option>
+                        <option>Todos os status de avaliação</option>
                         <option>Avaliado</option>
                         <option>Não avaliado</option>
                         <option>Questionário aberto</option>
@@ -98,7 +97,7 @@ export const NotasTable = () => {
                         <tr>
                             <th>Número <span onClick={() => handleSort()}>{(sortDirection === 'asc' ? '▼' : '▲')}</span></th>
                             <th>Nome</th>
-                            <th>Status</th>
+                            <th>Status de Avaliação</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -116,8 +115,8 @@ export const NotasTable = () => {
                     </tbody>
                 </table>
             </div>
-            <ModalInput showModal={showNaoAvaliadoModal} title={"Esse questionário ainda não tem avaliações enviadas"} text={"Você pode avaliá-lo.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel}/>
-            <ModalInput showModal={showQuestionarioAbertoModal} title={"Esse questionário ainda está aberto"} text={"Você pode avaliá-lo e salvar as notas, porém ainda não pode enviar.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel}/>
-        </div>
+            <ModalInput showModal={showNaoAvaliadoModal} title={"Esse questionário ainda não tem avaliações enviadas"} text={"Você pode avaliá-lo.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel} />
+            <ModalInput showModal={showQuestionarioAbertoModal} title={"Esse questionário ainda está aberto"} text={"Você pode avaliá-lo e salvar as notas, porém ainda não pode enviar.\nDigite seu usuário, caso não tenha um, crie um que você irá lembrar depois.\nEle será usado apenas como uma identificação para você poder ver as suas avaliações."} idQuestionario={idQuestionarioClicado} cancelButton={cancel} />
+        </>
     );
 };

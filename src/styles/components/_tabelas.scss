@@ -1,0 +1,46 @@
+.titulo-tabelas-container {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, #252525, #808080, #f5f5f5);
+    margin: 0px $l-size;
+    border-top-right-radius: $radius;
+    border-top-left-radius: $radius;
+
+    .aba-ativa {
+        border-top-right-radius: $radius;
+        border-top-left-radius: $radius;
+        padding: $m-size 0px;
+        background-color: $cor-fundo-avaliacao;
+        font-size: $font-size-xlarge;
+        width: 33.328%;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .aba-inativa {
+        border-top-right-radius: $radius;
+        border-top-left-radius: $radius;
+        padding: $m-size 0px;
+        background-color: $cor-terciaria;
+        font-size: $font-size-xlarge;
+        width: 33.328%;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .inativa-direita {
+        border-bottom-left-radius: $radius;
+        color: $cor-primaria;
+    }
+
+    .inativa-esquerda {
+        border-bottom-right-radius: $radius;
+        color: $cor-primaria;
+    }
+
+    .inativa-total {
+        color: $cor-primaria;
+    }
+}
