@@ -27,7 +27,6 @@ export const AvaliacaoPorQuestionario = (props) => {
         const nota = selectNota(avaliacao, { idQuestionario: idDoQuestionario, idPdf, idPergunta, idResposta });
         return nota;
     }, [avaliacao, idDoQuestionario]);
-    
 
     const onCheck = () => {
         dispatch(setShowErrors());
