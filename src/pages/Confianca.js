@@ -19,7 +19,7 @@ export const Confianca = () => {
     const allRrespostas = useSelector(selectAllRespostas);
     const respostasQuestionario = allRrespostas.find(r => r.id === questionario.id);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
-    const colors = ['#82ca9d', '#8884d8', '#AA12B1'];
+    const colors = ['#82ca9d', '#8884d8', '#AA12B1'];    
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -74,6 +74,9 @@ export const Confianca = () => {
     const listaFiltrada = filtrarLista(usuarios, filtros);
     const confiancaFiltrada = removerUsuarios(respostasQuestionario.respostasPorQuestionario, listaFiltrada);
     const confiancaPorPdf = agruparPorPdf(confiancaFiltrada);
+
+    console.log(confiancaFiltrada);
+    
 
     const result = confiancaPorPdf.map(item => {
         const confiancas = item.confiancaPorQuestionario.reduce((acc, valor) => {

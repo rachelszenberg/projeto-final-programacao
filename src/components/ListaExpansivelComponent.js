@@ -103,7 +103,7 @@ export const ListaExpansivelComponent = (props) => {
               className='avaliacao-perguntas-title'
               id={indexPergunta}
             >
-              <p>{indexPergunta + 1}. {props.perguntasAll.find(p => p.id === pergunta).pergunta}</p>
+              <p>{indexPergunta + 1}. {props.perguntasAll.find(p => p.id === pergunta).questao.pergunta}</p>
               <span style={{ transform: openIndex === indexPergunta ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', cursor: 'pointer' }}>
                 ▶
               </span>

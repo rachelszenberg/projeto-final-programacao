@@ -13,9 +13,9 @@ export const Perguntas = (props) => {
     const navigate = useNavigate();
     const questionario = props.questionariosAbertos[respostas.respostaIndex];
     const [segundos, setSegundos] = useState(0);
-    const [grauConfianca, setGrauConfianca] = useState("");
 
     const [respostasTmp, setRespostasTmp] = useState([]);
+    const [confiancasTmp, setConfiancasTmp] = useState([]);
     const [listIndexErros, setListIndexErros] = useState([]);
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
@@ -28,7 +28,8 @@ export const Perguntas = (props) => {
 
     let perguntas = [];
     questionario.perguntas.forEach((p_id) => {
-        const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id).pergunta;
+        const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id)?.questao.pergunta;
+
         perguntas.push(perguntaTemp);
     });
 
@@ -51,7 +52,7 @@ export const Perguntas = (props) => {
         setTemProximo(respostas.respostaIndex !== props.questionariosAbertos.length - 1)
         setListIndexErros([]);
         setSegundos(tempoInicial);
-        setGrauConfianca(confiancaInicial);
+        setConfiancasTmp(confiancaInicial.length ? confiancaInicial : Array(perguntas.length).fill(''));
     }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, props.questionariosAbertos.length, perguntas.length, respostas.tempoPorQuestionario, respostas.confiancaPorQuestionario])
 
     useEffect(() => {
@@ -64,6 +65,12 @@ export const Perguntas = (props) => {
         const novasRespostas = [...respostasTmp];
         novasRespostas[index] = value;
         setRespostasTmp(novasRespostas);
+    };
+
+    const handleConfiancaChange = (index, value) => {
+        const novasConfiancas = [...confiancasTmp];
+        novasConfiancas[index] = value;
+        setConfiancasTmp(novasConfiancas);
     };
 
     const handleBlur = (index) => {
@@ -84,7 +91,7 @@ export const Perguntas = (props) => {
         e.preventDefault();
         dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
         dispatch(setTempoPorQuestionario(segundos));
-        dispatch(setConfiancaPorQuestionario(grauConfianca));
+        dispatch(setConfiancaPorQuestionario(confiancasTmp));
         dispatch(decrementIndex());
     };
 
@@ -95,7 +102,7 @@ export const Perguntas = (props) => {
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             dispatch(setTempoPorQuestionario(segundos));
-            dispatch(setConfiancaPorQuestionario(grauConfianca));
+            dispatch(setConfiancaPorQuestionario(confiancasTmp));
             dispatch(incrementIndex());
         }
         else {
@@ -110,7 +117,7 @@ export const Perguntas = (props) => {
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
             dispatch(setTempoPorQuestionario(segundos));
-            dispatch(setConfiancaPorQuestionario(grauConfianca));
+            dispatch(setConfiancaPorQuestionario(confiancasTmp));
             setShowModal(true);
         }
         else {
@@ -123,17 +130,17 @@ export const Perguntas = (props) => {
         navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
     }
 
-    const formatarTempo = (segundosTotais) => {
-        const horas = Math.floor(segundosTotais / 3600);
-        const minutos = Math.floor((segundosTotais % 3600) / 60);
-        const segundos = segundosTotais % 60;
+    // const formatarTempo = (segundosTotais) => {
+    //     const horas = Math.floor(segundosTotais / 3600);
+    //     const minutos = Math.floor((segundosTotais % 3600) / 60);
+    //     const segundos = segundosTotais % 60;
 
-        const horasFormatadas = String(horas).padStart(2, "0");
-        const minutosFormatados = String(minutos).padStart(2, "0");
-        const segundosFormatados = String(segundos).padStart(2, "0");
+    //     const horasFormatadas = String(horas).padStart(2, "0");
+    //     const minutosFormatados = String(minutos).padStart(2, "0");
+    //     const segundosFormatados = String(segundos).padStart(2, "0");
 
-        return `${horasFormatadas}:${minutosFormatados}:${segundosFormatados}`;
-    };
+    //     return `${horasFormatadas}:${minutosFormatados}:${segundosFormatados}`;
+    // };
 
     return (
         <form className="div-form">
@@ -152,7 +159,7 @@ export const Perguntas = (props) => {
                 onVoltar={onVoltar}
                 onProximo={onProximo}
                 onEnviar={onEnviar}
-                buttonNextOrSaveClass={(qtdRespondidas !== perguntas.length || grauConfianca === "") ? "button-disabled no-hover" : undefined}
+                buttonNextOrSaveClass={(qtdRespondidas !== perguntas.length || confiancasTmp === "") ? "button-disabled no-hover" : undefined}
             >
                 <div className="form">
                     {perguntas.map((pergunta, index) => (
@@ -167,20 +174,22 @@ export const Perguntas = (props) => {
                                 onBlur={() => handleBlur(index)}
                                 placeholder={`Resposta ${index + 1}`} />
                             {listIndexErros.includes(index) && <p className="obrigatorio">Obrigatório</p>}
-                        </div>
-                    ))}
-                    <p className="text-question">{(perguntas.length + 1)}. Quão confiante você se sentiu para responder esse questionário? <span className="obrigatorio">*</span></p>
-                    {opcoes.map((opcao, index) => (
-                        <div key={index} className="radio-container">
-                            <label >
-                                <input
-                                    type="radio"
-                                    value={opcao}
-                                    checked={grauConfianca === opcao}
-                                    onChange={(e) => setGrauConfianca(e.target.value)}
-                                />
-                                {opcao}
-                            </label>
+                            <p className="text-question-confianca">Quão confiante você se sentiu para responder essa pergunta?</p>
+                            <div className="radio-group">
+                                {opcoes.map((opcao, index_radio) => (
+                                    <div key={index_radio} className="radio-container">
+                                        <label >
+                                            <input
+                                                type="radio"
+                                                value={opcao}
+                                                checked={confiancasTmp[index] === opcao}
+                                                onChange={(e) => handleConfiancaChange(index, e.target.value)}
+                                            />
+                                            {opcao}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>

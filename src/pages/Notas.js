@@ -151,19 +151,19 @@ export const Notas = () => {
                                 >
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="nome" />
-                                    <YAxis domain={[0, 5]} ticks={[1, 2, 3, 4, 5]} />
+                                    <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} />
                                     <Tooltip />
                                     <Legend />
                                     <Bar dataKey="pdf1" fill="#82ca9d" />
                                     <Bar dataKey="pdf2" fill="#8884d8" />
-                                    <Bar dataKey="pdf3" fill="#AA12B1" />
+                                    {/* <Bar dataKey="pdf3" fill="#AA12B1" /> */}
                                 </BarChart>
                             </ResponsiveContainer>
                             <div className="div-grafico-legenda">
                                 <h2>Legenda</h2>
                                 <h4>Perguntas</h4>
                                 {medias.map((m, index) => (
-                                    <p>{index + 1}. {perguntas.find(p => p.id === m.idPergunta).pergunta}</p>
+                                    <p>{index + 1}. {perguntas.find(p => p.id === m.idPergunta).questao.pergunta}</p>
                                 ))}
                                 <h4>Pdfs</h4>
                                 {questionario.listPdf.map((pdf, index) => (

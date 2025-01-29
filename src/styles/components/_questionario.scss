@@ -83,6 +83,12 @@
   font-size: $font-size-small;
 }
 
+.text-question-confianca {
+  margin: $xs-size 0px $xs-size !important;
+  font-size: $font-size-small;
+  color: $dark-grey-darker;
+}
+
 .input-error {
   border-color: $error !important;
 }
@@ -142,6 +148,13 @@
   }
 }
 
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .radio-container {
   display: flex;
   align-items: center; 
@@ -152,6 +165,7 @@
   display: flex;
   align-items: center;
   gap: $xs-size;
+  color: $dark-grey-darker;
 }
 
 .radio-container input[type="radio"] {

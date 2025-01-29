@@ -38,22 +38,22 @@ export const avaliacaoSlice = createSlice({
         selectRandomPdfs: (state, action) => {
             const questionariosAbertos = state.questionariosAbertos.map(q => JSON.parse(JSON.stringify(q)));
 
-            let zeroAdded = false;
+            // let zeroAdded = false;
             questionariosAbertos.forEach((q, i) => {
                 let pdfIdx;
                 const listPdf = q.listPdf;
-                if (!zeroAdded) {
-                    if (i === (questionariosAbertos.length - 1)) {
-                        pdfIdx = 0;
-                    } else {
-                        pdfIdx = Math.floor(Math.random() * listPdf.length);
-                        if (pdfIdx === 0) {
-                            zeroAdded = true;
-                        }
-                    }
-                } else {
-                    pdfIdx = Math.floor(Math.random() * (listPdf.length - 1)) + 1;
-                }
+                // if (!zeroAdded) {
+                //     if (i === (questionariosAbertos.length - 1)) {
+                //         pdfIdx = 0;
+                //     } else {
+                //         pdfIdx = Math.floor(Math.random() * listPdf.length);
+                //         if (pdfIdx === 0) {
+                //             zeroAdded = true;
+                //         }
+                //     }
+                // } else {
+                    pdfIdx = Math.floor(Math.random() * (listPdf.length));
+                // }
                 questionariosAbertos[i].pdf = listPdf[pdfIdx];
             });
             state.questionariosAbertos = questionariosAbertos;
