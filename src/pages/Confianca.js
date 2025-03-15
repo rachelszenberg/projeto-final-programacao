@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Bar, XAxis, YAxis, ResponsiveContainer, BarChart, Tooltip, CartesianGrid, LabelList } from 'recharts';
+import { Bar, XAxis, YAxis, ResponsiveContainer, BarChart, Tooltip, CartesianGrid, LabelList, Legend, Line, LineChart } from 'recharts';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { Header } from '../components/Header';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +8,8 @@ import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { RightTitleComponent } from '../components/RightTitleComponent';
 import { selectAllPerguntasPerfil } from '../features/PerfilSlice';
 import { selectAllUsuarios } from '../features/UsariosSlice';
+import { RxChevronLeft, RxChevronRight } from "react-icons/rx";
+import { selectAllPerguntas } from '../features/PerguntasSlice';
 
 export const Confianca = () => {
     const params = useParams();
@@ -19,7 +21,9 @@ export const Confianca = () => {
     const allRrespostas = useSelector(selectAllRespostas);
     const respostasQuestionario = allRrespostas.find(r => r.id === questionario.id);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
-    const colors = ['#82ca9d', '#8884d8', '#AA12B1'];    
+    const colors = ['#82ca9d', '#8884d8', '#AA12B1'];
+    const [questao, setQuestao] = useState(0);
+    const perguntas = useSelector(selectAllPerguntas);
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -75,11 +79,12 @@ export const Confianca = () => {
     const confiancaFiltrada = removerUsuarios(respostasQuestionario.respostasPorQuestionario, listaFiltrada);
     const confiancaPorPdf = agruparPorPdf(confiancaFiltrada);
 
-    console.log(confiancaFiltrada);
-    
-
     const result = confiancaPorPdf.map(item => {
-        const confiancas = item.confiancaPorQuestionario.reduce((acc, valor) => {
+        const transposto = item.confiancaPorQuestionario[0].map((_, i) =>
+            item.confiancaPorQuestionario.map(row => row[i])
+        );
+
+        const confiancas = transposto[questao].reduce((acc, valor) => {
             const existing = acc.find(c => c.valor === valor);
 
             if (existing) {
@@ -100,19 +105,20 @@ export const Confianca = () => {
     const valoresEsperados = ["1 - Nada confiante", "2", "3", "4", "5 - Muito confiante"];
 
     result.forEach((r) => {
-        const confiancas = r.confiancas;
-        valoresEsperados.forEach((valor) => {
-            if (!confiancas.some(c => c.valor === valor)) {
-                confiancas.push({ valor, quantidade: 0 });
+        let confiancas = r.confiancas;
+
+        confiancas = valoresEsperados.map(valor => {
+            const confianca = confiancas.find(c => c.valor === valor);
+            if (confianca) {
+                return confianca;
+            } else {
+                return { valor, quantidade: 0 };
             }
         });
 
-        r.confiancas.sort((a, b) => {
-            const valueA = valoresEsperados.indexOf(a.valor);
-            const valueB = valoresEsperados.indexOf(b.valor);
-            return valueA - valueB;
-        });
+        r.confiancas = confiancas;
     });
+
 
     const total = (data) => {
         return data.reduce((sum, item) => sum + item.quantidade, 0);
@@ -131,6 +137,29 @@ export const Confianca = () => {
         const indexA = questionario.listPdf.findIndex(pdf => pdf.id === a.idPdf);
         const indexB = questionario.listPdf.findIndex(pdf => pdf.id === b.idPdf);
         return indexA - indexB;
+    });
+
+    const onPreviousClick = () => {
+        setQuestao(questao - 1);
+    }
+
+    const onNextClick = () => {
+        setQuestao(questao + 1);
+    }
+
+    const onQuestaoClick = (q) => {
+        setQuestao(q);
+    }
+
+    const resultadoGrafico = valoresEsperados.map(valor => {
+        const obj = { valor };
+
+        result.forEach(pdf => {
+            const confianca = pdf.confiancas.find(c => c.valor === valor);
+            obj[`pdf${result.indexOf(pdf) + 1}`] = confianca ? confianca.quantidade : 0;
+        });
+
+        return obj;
     });
 
     return (
@@ -164,34 +193,61 @@ export const Confianca = () => {
                 {confiancaPorPdf.length ?
                     <div className='div-geral-grafico'>
                         <RightTitleComponent className="div-top"
-                            titleText={"Gráfico da confiança dos usuários para responder o questionário a partir de cada PDF"}
+                            titleText={"Gráfico da confiança dos usuários para responder cada questionário a partir de cada PDF"}
                         />
                         <div className='div-grafico-confianca-container'>
                             <div className='div-graficos-confianca'>
-                                {result.map((r, index) => (
-                                    r && r.confiancas && r.confiancas.length > 0 ? (
-                                        <div key={r.idPdf} style={{ width: '100%', height: `${100 / result.length}%` }}>
-                                            <p>pdf {index + 1}</p>
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <BarChart width={150} height={40} data={r.confiancas}>
-                                                    <CartesianGrid strokeDasharray="3 3" />
-                                                    <XAxis dataKey="valor" />
-                                                    <YAxis />
-                                                    <Tooltip />
-                                                    <Bar dataKey="quantidade" fill={colors[index]}>
-                                                        <LabelList dataKey="quantidade" position="center" fill="#000000" formatter={(value) => (value ? `${value} (${((value / total(r.confiancas)) * 100).toFixed(1)}%)` : null)} />
-                                                    </Bar>
-                                                </BarChart>
-                                            </ResponsiveContainer>
-                                        </div>)
-                                        : (
-                                            <div key={r.idPdf} style={{ width: '100%', height: `${100 / result.length}%` }}>
-                                                <p>pdf {index + 1} - Sem dados para exibir</p>
-                                            </div>
-                                        )))}
+                                <div className="div-title-graficos">
+                                    <RxChevronLeft className={questao === 0 ? "no-button" : "icon"} onClick={onPreviousClick} />
+                                    <p className="title-avaliacao">Questão {questao + 1}</p>
+                                    <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
+                                </div>
+
+                                {resultadoGrafico.length ? (
+                                    <div style={{ width: '100%', height: '90%' }}>
+                                        {/* <ResponsiveContainer width="100%" height="100%">
+                                            <BarChart width={150} height={40} data={resultadoGrafico}>
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="valor" />
+                                                <YAxis domain={[1, 10]} ticks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Bar dataKey="pdf1" fill="#82ca9d" />
+                                                <Bar dataKey="pdf2" fill="#8884d8" />
+                                            </BarChart>
+                                        </ResponsiveContainer> */}
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <LineChart width={500}
+                                                height={300}
+                                                data={resultadoGrafico}
+                                                margin={{
+                                                    top: 5,
+                                                    right: 30,
+                                                    left: 20,
+                                                    bottom: 5,
+                                                }}>
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="valor" />
+                                                <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Line dataKey="pdf1" stroke="#82ca9d" strokeWidth={3} />
+                                                <Line dataKey="pdf2" stroke="#8884d8" strokeWidth={3} />
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>)
+                                    : (
+                                        <div style={{ width: '100%', height: `${100 / result.length}%` }}>
+                                            <p>Sem dados para exibir</p>
+                                        </div>
+                                    )}
                             </div>
                             <div className="div-grafico-legenda">
                                 <h2>Legenda</h2>
+                                <h4>Perguntas</h4>
+                                {questionario.perguntas.map((q, index) => (
+                                    <p className="grafico-pergunta" onClick={() => onQuestaoClick(index)}>{index + 1}. {perguntas.find(p => p.id === q).questao.pergunta}</p>
+                                ))}
                                 <h4>Pdfs</h4>
                                 {questionario.listPdf.map((pdf, index) => (
                                     <div key={index}>

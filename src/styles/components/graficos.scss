@@ -75,7 +75,6 @@
 }
 
 .div-grafico-confianca-container {
-    margin-top: $xs-size;
     width: 100%;
     height: 100%;
     display: flex;
@@ -84,12 +83,21 @@
 
 .div-graficos-confianca {
     width: 100%;
-    height: 82%;
+    height: 85%;
 
     p{
         font-weight: bold;
         margin: $s-size $m-size $xs-size;
     }
+}
+
+.div-title-graficos{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $feito-off-grey;
+    margin: 0px;
+    padding: $xs-size;
 }
 
 .div-grafico-legenda{
@@ -99,4 +107,8 @@
     h4{
         margin-bottom: 0px;
     }
+}
+
+.grafico-pergunta:hover {
+    cursor: pointer;
 }

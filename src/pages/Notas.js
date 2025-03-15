@@ -156,7 +156,6 @@ export const Notas = () => {
                                     <Legend />
                                     <Bar dataKey="pdf1" fill="#82ca9d" />
                                     <Bar dataKey="pdf2" fill="#8884d8" />
-                                    {/* <Bar dataKey="pdf3" fill="#AA12B1" /> */}
                                 </BarChart>
                             </ResponsiveContainer>
                             <div className="div-grafico-legenda">
