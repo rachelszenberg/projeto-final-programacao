@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RightButtonsComponent } from '../components/RightButtonsComponent';
 import { useNavigate } from 'react-router-dom';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
+import { reset } from '../features/RespostaAtualSlice';
 
 export const PerfilUsuario = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,8 @@ export const PerfilUsuario = () => {
         if (!questionarios.questionariosAbertos.length) {
             navigate('/questionarios-fechados');
         }
-    }, [navigate, questionarios.questionariosAbertos.length]);
+        dispatch(reset());
+    }, [navigate, questionarios.questionariosAbertos.length, dispatch]);
 
 
     const handleSelectChange = (id, value) => {

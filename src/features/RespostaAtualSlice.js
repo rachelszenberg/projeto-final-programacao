@@ -46,7 +46,13 @@ export const respostaAtualSlice = createSlice({
         },
         setConfiancaPorQuestionario: (state, action) => {
             state.confiancaPorQuestionario[state.respostaIndex] = (action.payload);
-        }
+        },
+        reset: (state) => {
+            state.respostaIndex = 0;
+            state.tempoPorQuestionario = [];
+            state.listRespostas = [];
+            state.confiancaPorQuestionario = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -58,6 +64,6 @@ export const respostaAtualSlice = createSlice({
 
 export const selectRespostasAtuais = (state) => state.respostaAtual;
 
-export const { decrementIndex, incrementIndex, setAvaliacaoRespostas, setTempoPorQuestionario, setConfiancaPorQuestionario } = respostaAtualSlice.actions;
+export const { decrementIndex, incrementIndex, setAvaliacaoRespostas, setTempoPorQuestionario, setConfiancaPorQuestionario, reset } = respostaAtualSlice.actions;
 
 export default respostaAtualSlice.reducer;
