@@ -34,21 +34,23 @@ export const NotasTable = () => {
     };
 
     const getQuestionarioAvaliado = (idQuestionario, index) => {
-        if (avaliacoes[idQuestionario]) {
-            return "Avaliado"
-        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
+        if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
             return "Questionário aberto"
+        }
+         else if (avaliacoes[idQuestionario]) {
+            return "Avaliado"
         }
         return "Não avaliado"
     }
 
     const navigateToAvaliaQuestionario = (idQuestionario) => {
-        if (avaliacoes[idQuestionario]) {
-            navigate(`/notas/${idQuestionario}`)
-        } else if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
+        if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
             setShowQuestionarioAbertoModal(true);
             setIdQuestionarioClicado(idQuestionario);
         }
+        else if (avaliacoes[idQuestionario]) {
+            navigate(`/notas/${idQuestionario}`)
+        } 
         else {
             setShowNaoAvaliadoModal(true);
             setIdQuestionarioClicado(idQuestionario);

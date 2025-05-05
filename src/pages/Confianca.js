@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Bar, XAxis, YAxis, ResponsiveContainer, BarChart, Tooltip, CartesianGrid, LabelList, Legend, Line, LineChart } from 'recharts';
+import { XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, Legend, Line, LineChart } from 'recharts';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { Header } from '../components/Header';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,7 +21,6 @@ export const Confianca = () => {
     const allRrespostas = useSelector(selectAllRespostas);
     const respostasQuestionario = allRrespostas.find(r => r.id === questionario.id);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
-    const colors = ['#82ca9d', '#8884d8', '#AA12B1'];
     const [questao, setQuestao] = useState(0);
     const perguntas = useSelector(selectAllPerguntas);
 
@@ -120,9 +119,9 @@ export const Confianca = () => {
     });
 
 
-    const total = (data) => {
-        return data.reduce((sum, item) => sum + item.quantidade, 0);
-    };
+    // const total = (data) => {
+    //     return data.reduce((sum, item) => sum + item.quantidade, 0);
+    // };
 
     questionario.listPdf.forEach((pdf) => {
         if (!result.some((r) => r.idPdf === pdf.id)) {
@@ -228,7 +227,7 @@ export const Confianca = () => {
                                                 }}>
                                                 <CartesianGrid strokeDasharray="3 3" />
                                                 <XAxis dataKey="valor" />
-                                                <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
+                                                <YAxis domain={[1, 20]} ticks={[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]} />
                                                 <Tooltip />
                                                 <Legend />
                                                 <Line dataKey="pdf1" stroke="#82ca9d" strokeWidth={3} />

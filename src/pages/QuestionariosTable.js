@@ -42,7 +42,9 @@ export const QuestionariosTable = () => {
 
   const getQuestionarioRespondido = (idQuestionario) => {
     const indexAvaliacao = avaliacoes.findIndex(r => r.id === idQuestionario);
-    if (indexAvaliacao === -1) {
+    const questAberto = questionarios.find(q => q.id === idQuestionario).aberto;
+    
+    if (indexAvaliacao === -1 || questAberto) {
       const indexAvaliacaoSalva = avaliacoesSalvas.findIndex(r => r.idQuestionario === idQuestionario);
       if (indexAvaliacaoSalva === -1) {
         return "Não avaliado"
