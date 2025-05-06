@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectAllQuestionarios } from '../features/QuestionarioSlice';
 import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { useNavigate } from 'react-router-dom';
+import { ModalTexto } from './ModalTexto';
 
 export const ConfiancaTable = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export const ConfiancaTable = () => {
   const questionarios = useSelector(selectAllQuestionarios).todosQuestionarios;
   const respostas = useSelector(selectAllRespostas);
 
+  const [showNaoRespondidoModal, setShowNaoRespondidoModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos os status do questionário');
   const [sortDirection, setSortDirection] = useState('asc');
@@ -29,7 +31,11 @@ export const ConfiancaTable = () => {
   }
 
   const navigateToAvaliaQuestionario = (idQuestionario) => {
-    navigate(`/confianca/${idQuestionario}`)
+    if (typeof getTotalRespostasPorQuestionario(idQuestionario) === 'number') {
+      navigate(`/confianca/${idQuestionario}`);
+    } else {
+      setShowNaoRespondidoModal(true);
+    }
   }
 
   const filteredQuestionarios = questionarios
@@ -39,41 +45,46 @@ export const ConfiancaTable = () => {
     )
     .sort(sortByNumero);
 
+  const cancel = () => {
+    setShowNaoRespondidoModal(false);
+  }
+
   return (
-      <div className="tempos-container">
-        <div className="filtros">
-          <input
-            type="text"
-            placeholder="Pesquisa pelo nome"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option>Todos os status do questionário</option>
-            <option>Fechado</option>
-            <option>Em andamento</option>
-          </select>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Número <span onClick={() => handleSort()}>{(sortDirection === 'asc' ? '▼' : '▲')}</span></th>
-              <th>Nome</th>
-              <th>Status do Questionário</th>
-              <th>Respostas</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredQuestionarios.map((q, index) => (
-              <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
-                <td>{q.numero}</td>
-                <td>{q.nome}</td>
-                <td>{q.aberto ? 'Em andamento' : 'Fechado'}</td>
-                <td>{getTotalRespostasPorQuestionario(q.id)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="tempos-container">
+      <div className="filtros">
+        <input
+          type="text"
+          placeholder="Pesquisa pelo nome"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+          <option>Todos os status do questionário</option>
+          <option>Fechado</option>
+          <option>Em andamento</option>
+        </select>
       </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Número <span onClick={() => handleSort()}>{(sortDirection === 'asc' ? '▼' : '▲')}</span></th>
+            <th>Nome</th>
+            <th>Status do Questionário</th>
+            <th>Respostas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredQuestionarios.map((q, index) => (
+            <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
+              <td>{q.numero}</td>
+              <td>{q.nome}</td>
+              <td>{q.aberto ? 'Em andamento' : 'Fechado'}</td>
+              <td>{getTotalRespostasPorQuestionario(q.id)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ModalTexto showModal={showNaoRespondidoModal} title={"Esse questionário ainda não tem respostas"} text={"Esse questionário ainda não teve nenhuma resposta, por isso você não consegue ver o gráfico."} okButton={cancel} />
+    </div>
   );
 };

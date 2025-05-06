@@ -1,4 +1,5 @@
 import Modal from 'react-modal'
+import { Button } from './Button';
 
 export const ModalTexto = (props) => (
     <Modal
@@ -12,6 +13,7 @@ export const ModalTexto = (props) => (
                 <p className="modal-text">{props.title}</p>
                 <p className="modal-title">{props.text}</p>
             </div>
+            <Button classButton="confirm-button" onClick={props.okButton} label="Ok" />
         </div>
     </Modal>
 );
