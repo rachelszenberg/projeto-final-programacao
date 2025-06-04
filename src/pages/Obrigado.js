@@ -7,7 +7,7 @@ export const Obrigado = () => {
     const location = useLocation();
     const title = location.state?.title || "Obrigado!";
     const text = location.state?.text || "Salvamos suas respostas!";
-    const buttonText = location.state?.buttonText || "Voltar a tela inicial";
+    const buttonText = location.state?.buttonText || null;
     const buttonNavigate = location.state?.buttonNavigateTo || '/questionario';
     const underlineButtonNavigate = location.state?.underlineButtonNavigateTo || null;
     const idUsuario = location.state?.idUsuario || null;

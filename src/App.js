@@ -11,6 +11,7 @@ import { Notas } from './pages/Notas';
 import { Tempos } from './pages/Tempos';
 import { GraficosTable } from './pages/GraficosTable';
 import { Confianca } from './pages/Confianca';
+import { ConfiancaNota } from './pages/ConfiancaNota';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         { path: '/notas/:idQuestionario', element: <Notas /> },
         { path: '/tempos/:idQuestionario', element: <Tempos/> },
         { path: '/confianca/:idQuestionario', element: <Confianca/> },
+        { path: '/confiancaXnota/:idQuestionario', element: <ConfiancaNota/> },
       ]
     }
   ])

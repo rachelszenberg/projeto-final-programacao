@@ -127,7 +127,7 @@ export const Perguntas = (props) => {
 
     const confirmar = () => {
         dispatch(addResposta(props.idUsuario))
-        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
+        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação."} })
     }
 
     // const formatarTempo = (segundosTotais) => {
