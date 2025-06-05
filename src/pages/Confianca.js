@@ -192,7 +192,7 @@ export const Confianca = () => {
                 {confiancaPorPdf.length ?
                     <div className='div-geral-grafico'>
                         <RightTitleComponent className="div-top"
-                            titleText={"Gráfico da confiança dos usuários para responder cada questionário a partir de cada PDF"}
+                            titleText={"Gráfico da confiança dos usuários para responder cada questão a partir de cada PDF"}
                         />
                         <div className='div-grafico-confianca-container'>
                             <div className='div-graficos-confianca'>
