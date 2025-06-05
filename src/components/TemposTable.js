@@ -32,7 +32,7 @@ export const TemposTable = () => {
 
   const navigateToAvaliaQuestionario = (idQuestionario) => {
     if (typeof getTotalRespostasPorQuestionario(idQuestionario) === 'number') {
-      navigate(`/tempos/${idQuestionario}`);
+      navigate(`/analise/tempos/${idQuestionario}`);
     } else {
       setShowNaoRespondidoModal(true);
     }

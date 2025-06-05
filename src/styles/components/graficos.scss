@@ -15,11 +15,13 @@
     position: relative;
 
     .filtros-geral-title {
+        font-size: $m-size;
         font-weight: bold;
     }
 
     .filtro-title {
         margin-top: $s-size;
+        font-weight: bold;
     }
 
     .filtro-opcao {

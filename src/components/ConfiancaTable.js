@@ -32,7 +32,7 @@ export const ConfiancaTable = () => {
 
   const navigateToAvaliaQuestionario = (idQuestionario) => {
     if (typeof getTotalRespostasPorQuestionario(idQuestionario) === 'number') {
-      navigate(`/confianca/${idQuestionario}`);
+      navigate(`/analise/confianca/${idQuestionario}`);
     } else {
       setShowNaoRespondidoModal(true);
     }

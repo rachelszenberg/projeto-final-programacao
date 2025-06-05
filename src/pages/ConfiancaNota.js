@@ -11,6 +11,7 @@ import { selectAllPerguntas } from '../features/PerguntasSlice';
 import { RxChevronLeft, RxChevronRight } from 'react-icons/rx';
 import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { mean } from 'mathjs';
+import ReactSlider from 'react-slider';
 
 export const ConfiancaNota = () => {
     const params = useParams();
@@ -27,8 +28,15 @@ export const ConfiancaNota = () => {
     const [questao, setQuestao] = useState(0);
     const temp = respostas.find(r => r.id === params.idQuestionario);
     const respostasDoQuestionario = temp?.respostasPorQuestionario;
-    const colorsBackground = ['#C41E0035', '#C41E0020', '#C47E0025', '#03784720', '#03784735'];
-    const colorsText = ['#C41E00', '#C41E0090', '#C47E00', '#03784790', '#037847'];
+    const colorsPdf = ['#A7C7E790', '#FBC49C90'];
+    const colorsBackground = ['#C41E0035', '#C41E0020', '#C47E0025', '#03784720', '#03784735', '#03784735'];
+    const colorsText = ['#C41E00', '#C41E0090', '#C47E00', '#03784790', '#037847', '#037847'];
+    const [rangeNota, setRangeNota] = useState([1, 5]);
+    const [rangeConfianca, setRangeConfianca] = useState([0, 5]);
+    const [pdfFilter, setPdfFilter] = useState('Todos os pdfs');
+    const [ordem, setOrdem] = useState('Confiança apropriada decrescente');
+    const min = 1;
+    const max = 5;
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -73,7 +81,7 @@ export const ConfiancaNota = () => {
                 idResposta,
                 idPdf: lista[0].idPdf,
                 idUsuario: lista[0].idUsuario,
-                todasNotas: lista.map(({ nota }) => nota)
+                mediaNotas: mean(lista.map(({ nota }) => nota)).toFixed(2)
             };
         });
 
@@ -112,17 +120,77 @@ export const ConfiancaNota = () => {
         });
     }
 
-    const getResposta = (idResposta) => {
-        return respostasDoQuestionario.find(r => r.idResposta === idResposta).listRespostas[questao];
+    const totalRespostas = respostasDoQuestionario.length;
+    const mediasFiltradoNota = medias[questao]?.value.filter(item => parseFloat(item.mediaNotas) >= rangeNota[0] && parseFloat(item.mediaNotas) <= rangeNota[1])
+
+    const filtrarPorConfianca = () => {
+        return respostasDoQuestionario.filter(item => {
+            const valor = item.confiancaPorQuestionario[questao];
+            if (!valor) {
+                if (rangeConfianca[0] === 0) {
+                    return true;
+                }
+                return false;
+            };
+            const numero = parseInt(valor);
+            return numero >= rangeConfianca[0] && numero <= rangeConfianca[1];
+        });
     }
 
-    const getConfianca = (idResposta) => {
-        return respostasDoQuestionario.find(r => r.idResposta === idResposta).confiancaPorQuestionario[questao];
+    const filtradaPorConfianca = filtrarPorConfianca();
+    const uniaoFiltrada = filtradaPorConfianca
+        .map(media => {
+            const correspondente = mediasFiltradoNota?.find(conf => conf.idResposta === media.idResposta);
+            if (correspondente) {
+                return {
+                    ...media,
+                    ...correspondente
+                };
+            }
+            return null;
+        })
+        .filter(item => item !== null);
+
+    let filtroFinal = uniaoFiltrada;
+    if (pdfFilter !== 'Todos os pdfs') {
+        const id = questionario.listPdf[pdfFilter.slice(-1) - 1].id;
+        filtroFinal = uniaoFiltrada.filter(item => item.idPdf === id)
     }
 
-    const getMedia = (lista) => {
-        return mean(lista).toFixed(2);
-    }
+
+    const sortBy = (a, b) => {
+        const aInvalido = a.confiancaApropriada === -1;
+        const bInvalido = b.confiancaApropriada === -1;
+        if (ordem === 'Confiança apropriada decrescente') {
+            if (aInvalido && !bInvalido) return 1;
+            if (!aInvalido && bInvalido) return -1;
+            return b.confiancaApropriada - a.confiancaApropriada;
+        } else if (ordem === 'Confiança apropriada crescente') {
+            if (aInvalido && !bInvalido) return 1;
+            if (!aInvalido && bInvalido) return -1;
+            return a.confiancaApropriada - b.confiancaApropriada;
+        } else if (ordem === 'Nota decrescente') {
+            return b.mediaNotas - a.mediaNotas;
+        } else if (ordem === 'Nota crescente'){
+            return a.mediaNotas - b.mediaNotas;
+        } else if (ordem === 'Confiança decrescente') {
+            return b.confiancaQuestao - a.confiancaQuestao;
+        } else if (ordem === 'Confiança crescente'){
+            return a.confiancaQuestao - b.confiancaQuestao;
+        } 
+    };
+
+    const filtroFinalOrdenado = filtroFinal
+        .map((resp) => {
+            const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
+            return {
+                ...resp,
+                confiancaQuestao: confiancaQuestao || null,
+                confiancaApropriada: confiancaQuestao ?
+                    (4 - Math.abs(Math.trunc(resp.mediaNotas) - confiancaQuestao)) / 4 * 100 : -1
+            };
+        })
+        .sort(sortBy);
 
     const onPreviousClick = () => {
         setQuestao(questao - 1);
@@ -132,9 +200,9 @@ export const ConfiancaNota = () => {
         setQuestao(questao + 1);
     }
 
-    // const onQuestaoClick = (q) => {
-    //     setQuestao(q);
-    // }
+    const onQuestaoClick = (q) => {
+        setQuestao(q);
+    }
 
     return (
         <div>
@@ -142,7 +210,12 @@ export const ConfiancaNota = () => {
             <div className="div-notas">
                 <div className='div-filtros'>
                     <p className='filtros-geral-title'>Filtros</p>
-                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
+                    <button className="underline-button limpar-filtro" onClick={() => {
+                        setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] });
+                        setRangeNota([1, 5]);
+                        setRangeConfianca([0, 5]);
+                        setPdfFilter('Todos os pdfs');
+                    }}>limpar filtros</button>
                     <div>
                         {perguntasPerfil.map((p) => (
                             <div key={p.id}>
@@ -162,53 +235,121 @@ export const ConfiancaNota = () => {
                                 }
                             </div>
                         ))}
-                    </div>
-                </div>
-                {medias.length ?
-                    <div className='div-geral-grafico'>
-                        <RightTitleComponent className="div-top"
-                            titleText={"Relação da confiança pela nota"}
-                        />
-                        <div className='div-grafico-confianca-container'>
-                            <div className='div-graficos-confianca'>
-                                <div className="div-title-graficos">
-                                    <RxChevronLeft className={questao === 0 ? "no-button" : "icon"} onClick={onPreviousClick} />
-                                    <p className="title-avaliacao">Pergunta {questao + 1}</p>
-                                    <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
-                                </div>
-                                <div className='div-resposta-avaliada-container'>
-                                    {medias[questao].value.map((r, index) => {
-                                        return (
-                                            <div key={index} className='resposta-avaliada-field'>
-                                                <p>{getResposta(r.idResposta)}</p>
-                                                <div className='confiancaxnota-div'>
-                                                    <p className='confiancaxnota' style={{ color: colorsText[Number(getMedia(r.todasNotas)[0]) - 1], backgroundColor: colorsBackground[Number(getMedia(r.todasNotas)[0]) - 1] }}>nota média: {getMedia(r.todasNotas)}</p>
-                                                    {getConfianca(r.idResposta) && <p className='confiancaxnota' style={{ color: colorsText[Number(getConfianca(r.idResposta)[0]) - 1], backgroundColor: colorsBackground[Number(getConfianca(r.idResposta)[0]) - 1] }}>confiança: {getConfianca(r.idResposta)}</p>}
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
+                        <div className='filtros-pdf'>
+                            <p className='filtro-title'>Por pdf</p>
+                            <select value={pdfFilter} onChange={(e) => setPdfFilter(e.target.value)}>
+                                <option>Todos os pdfs</option>
+                                <option>Pdf 1</option>
+                                <option>Pdf 2</option>
+                            </select>
+                        </div>
+                        <div className='filtro-nota-div'>
+                            <p className='filtro-title'>Por nota média</p>
+                            <div className='filtro-slider'>
+                                <ReactSlider
+                                    className="horizontal-slider"
+                                    thumbClassName="thumb"
+                                    trackClassName="track"
+                                    value={rangeNota}
+                                    onChange={(value) => setRangeNota(value)}
+                                    min={min}
+                                    max={max}
+                                    pearling
+                                    minDistance={0}
+                                    renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                                />
+
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                    <span>{min}</span>
+                                    <span>{max}</span>
                                 </div>
                             </div>
-                            <div className="div-grafico-legenda">
-                                <h2>Legenda</h2>
-                                <h4>Perguntas</h4>
-                                {medias.map((m, index) => (
-                                    <p>{index + 1}. {perguntas.find(p => p.id === m.idPergunta).questao.pergunta}</p>
-                                ))}
-                                <h4>Pdfs</h4>
-                                {questionario.listPdf.map((pdf, index) => (
-                                    <div>
-                                        <span>{index + 1}. </span>
-                                        <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
-                                    </div>
-                                ))}
+                        </div>
+                        <div className='filtro-nota-div'>
+                            <p className='filtro-title'>Por confiança</p>
+                            <div className='filtro-slider'>
+                                <ReactSlider
+                                    className="horizontal-slider"
+                                    thumbClassName="thumb"
+                                    trackClassName="track"
+                                    value={rangeConfianca}
+                                    onChange={(value) => setRangeConfianca(value)}
+                                    min={min}
+                                    max={max}
+                                    pearling
+                                    minDistance={0}
+                                    renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                                />
+
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                    <span>{min}</span>
+                                    <span>{max}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    : <div className='div-notas-no-answer'>
-                        <p className="no-answers">Não temos respostas para esse caso</p>
-                    </div>}
+                </div>
+
+                <div className='div-geral-grafico'>
+                    <RightTitleComponent className="div-top"
+                        titleText={"Relação da confiança pela nota"}
+                    />
+                    <div className='div-grafico-confianca-container'>
+                        <div className='div-graficos-confianca'>
+                            <div className="div-title-graficos">
+                                <RxChevronLeft className={questao === 0 ? "no-button" : "icon"} onClick={onPreviousClick} />
+                                <p className="title-avaliacao">Pergunta {questao + 1}</p>
+                                <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
+                            </div>
+                            <div className='respostas-ordenar-div'>
+                                <p style={{ fontWeight: 'bold' }}>{filtroFinalOrdenado.length} / {totalRespostas} {(filtroFinalOrdenado.length) > 1 ? 'respostas' : 'resposta'}</p>
+                                <div className='ordenar-div'>
+                                    <p>Ordenar por:</p>
+                                    <select value={ordem} onChange={(e) => setOrdem(e.target.value)}>
+                                        <option>Nota decrescente</option>
+                                        <option>Nota crescente</option>
+                                        <option>Confiança decrescente</option>
+                                        <option>Confiança crescente</option>
+                                        <option>Confiança apropriada decrescente</option>
+                                        <option>Confiança apropriada crescente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='div-resposta-avaliada-container'>
+                                {filtroFinalOrdenado.map((r, index) => {
+                                    return (
+                                        <div key={index} className='resposta-avaliada-field'>
+                                            <p className='pdf-div' style={{ fontWeight: 'bold', backgroundColor: colorsPdf[questionario.listPdf.findIndex(item => item.id === r.idPdf)] }}>pdf {questionario.listPdf.findIndex(item => item.id === r.idPdf) + 1}</p>
+                                            <div className='resposta-div'>
+                                                <p>{r.listRespostas[questao]}</p>
+                                                <div className='confiancaxnota-div'>
+                                                    <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas}</p>
+                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao}</p>}
+                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackground[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        <div className="div-grafico-legenda">
+                            <h2>Legenda</h2>
+                            <h4>Perguntas</h4>
+                            {questionario.perguntas.map((m, index) => (
+                                <p className="grafico-pergunta" onClick={() => onQuestaoClick(index)}>{index + 1}. {perguntas.find(p => p.id === m).questao.pergunta}</p>
+                            ))}
+                            <h4>Pdfs</h4>
+                            {questionario.listPdf.map((pdf, index) => (
+                                <div>
+                                    <span>{index + 1}. </span>
+                                    <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

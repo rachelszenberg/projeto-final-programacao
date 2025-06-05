@@ -51,7 +51,7 @@ export const ConfiancaNotaTable = () => {
             setIdQuestionarioClicado(idQuestionario);
         }
         else if (avaliacoes[idQuestionario]) {
-            navigate(`/confiancaXnota/${idQuestionario}`)
+            navigate(`/analise/confiancaXnota/${idQuestionario}`)
         }
         else {
             setShowNaoAvaliadoModal(true);

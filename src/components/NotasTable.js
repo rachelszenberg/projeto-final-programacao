@@ -49,7 +49,7 @@ export const NotasTable = () => {
             setIdQuestionarioClicado(idQuestionario);
         }
         else if (avaliacoes[idQuestionario]) {
-            navigate(`/notas/${idQuestionario}`)
+            navigate(`/analise/notas/${idQuestionario}`)
         } 
         else {
             setShowNaoAvaliadoModal(true);

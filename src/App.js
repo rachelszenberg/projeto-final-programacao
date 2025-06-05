@@ -26,11 +26,11 @@ function App() {
         { path: '/questionarios-fechados', element: <QuestionariosFechados /> },
         { path: '/:idAvaliador/avaliacao/:idQuestionario', element: <Avaliacao /> },
         { path: '/:idAvaliador/avaliacao', element: <QuestionariosTable /> },
-        { path: '/graficos', element: <GraficosTable /> },
-        { path: '/notas/:idQuestionario', element: <Notas /> },
-        { path: '/tempos/:idQuestionario', element: <Tempos/> },
-        { path: '/confianca/:idQuestionario', element: <Confianca/> },
-        { path: '/confiancaXnota/:idQuestionario', element: <ConfiancaNota/> },
+        { path: '/analise', element: <GraficosTable /> },
+        { path: '/analise/notas/:idQuestionario', element: <Notas /> },
+        { path: '/analise/tempos/:idQuestionario', element: <Tempos/> },
+        { path: '/analise/confianca/:idQuestionario', element: <Confianca/> },
+        { path: '/analise/confiancaXnota/:idQuestionario', element: <ConfiancaNota/> },
       ]
     }
   ])

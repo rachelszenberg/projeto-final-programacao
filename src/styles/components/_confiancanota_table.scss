@@ -10,13 +10,6 @@
     justify-content: space-between;
     margin-bottom: 20px;
 
-    input {
-      padding: $xs-size;
-      border: 1px solid $dark-grey;
-      border-radius: $radius;
-      width: 60%;
-    }
-
     select {
       padding: $xs-size;
       border: 1px solid $dark-grey;
@@ -124,26 +117,122 @@
   background-color: $botao-secundario-hover;
   border-radius: $radius;
   height: auto;
-  padding: $xs-size;
   overflow: auto;
   resize: none;
   margin: $s-size $m-size;
+  display: flex;
+
+  .pdf-div {
+    margin: 0px;
+    width: 5%;
+    padding: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .resposta-div {
+    margin: $s-size $m-size;
+    width: 95%;
+
+    .confiancaxnota-div {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .confiancaxnota {
+      width: fit-content;
+      font-weight: bold;
+      padding: $xs-size;
+      border-radius: $radius;
+    }
+  }
 }
 
 .div-resposta-avaliada-container {
-  height: 99%;
+  height: 90%;
   overflow: auto !important;
   resize: none;
 }
 
-.confiancaxnota-div{
+.filtro-slider {
+  margin: $xs-size;
+}
+
+
+.horizontal-slider {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  position: relative;
+}
+
+.track {
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  border-radius: 5px;
+}
+
+.track-0 {
+  background: #ddd;
+}
+
+.track-1 {
+  background: $dark-grey;
+}
+
+.track-2 {
+  background: #ddd;
+}
+
+.thumb {
+  height: 20px;
+  width: 20px;
+  background-color: $dark-grey;
+  border-radius: 50%;
+  cursor: grab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  top: -5px; 
+}
+
+.filtros-pdf {
+
+  input {
+    padding: $xs-size;
+    border: 1px solid $dark-grey;
+    border-radius: $radius;
+    width: 60%;
+  }
+
+  select {
+    padding: $xs-size;
+    border: 1px solid $dark-grey;
+    border-radius: $radius;
+    width: 30%;
+  }
+}
+
+.respostas-ordenar-div {
   display: flex;
   justify-content: space-between;
 }
 
-.confiancaxnota {
-  width: fit-content;
-  font-weight: bold;
-  padding: $xs-size;
-  border-radius: $radius;
+.ordenar-div {
+  display: flex;
+  margin-left: auto;
+
+  select {
+    padding: $xs-size;
+    border: 1px solid $dark-grey;
+    border-radius: $radius;
+    width: auto;
+  }
 }

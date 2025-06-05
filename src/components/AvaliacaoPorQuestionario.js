@@ -49,7 +49,7 @@ export const AvaliacaoPorQuestionario = (props) => {
     const confirmar = () => {
         dispatch(addSalvarAvaliacao(props.idAvaliador));
         dispatch(addAvaliacao({idQuestionario: props.questionario.id, idAvaliador: props.idAvaliador}));
-        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao`, buttonText: "Voltar a tela de avaliação", underlineButtonText: "Ver todas as avaliações", underlineButtonNavigateTo: '/graficos' } });
+        navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao`, buttonText: "Voltar a tela de avaliação", underlineButtonText: "Ver todas as avaliações", underlineButtonNavigateTo: '/analise' } });
     }
 
     useEffect(() => {
