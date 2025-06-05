@@ -198,7 +198,7 @@ export const Confianca = () => {
                             <div className='div-graficos-confianca'>
                                 <div className="div-title-graficos">
                                     <RxChevronLeft className={questao === 0 ? "no-button" : "icon"} onClick={onPreviousClick} />
-                                    <p className="title-avaliacao">Questão {questao + 1}</p>
+                                    <p className="title-avaliacao">Pergunta {questao + 1}</p>
                                     <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
                                 </div>
 

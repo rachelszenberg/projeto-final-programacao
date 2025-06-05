@@ -8,6 +8,9 @@
 }
 
 .div-filtros {
+    height: auto;
+  overflow: auto;
+  resize: none;
     padding: $s-size;
     width: 30%;
     background-color: $off-white;
@@ -93,6 +96,7 @@
 }
 
 .div-title-graficos{
+    height: 8%;
     display: flex;
     align-items: center;
     justify-content: space-between;
