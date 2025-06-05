@@ -211,8 +211,8 @@ export const Confianca = () => {
                                                 <YAxis domain={[1, 10]} ticks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
                                                 <Tooltip />
                                                 <Legend />
-                                                <Bar dataKey="pdf1" fill="#82ca9d" />
-                                                <Bar dataKey="pdf2" fill="#8884d8" />
+                                                <Bar dataKey="pdf1" fill="#A7C7E7" />
+                                                <Bar dataKey="pdf2" fill="#FBC49C" />
                                             </BarChart>
                                         </ResponsiveContainer> */}
                                         <ResponsiveContainer width="100%" height="100%">
@@ -230,8 +230,8 @@ export const Confianca = () => {
                                                 <YAxis domain={[1, 20]} ticks={[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]} />
                                                 <Tooltip />
                                                 <Legend />
-                                                <Line dataKey="pdf1" stroke="#82ca9d" strokeWidth={3} />
-                                                <Line dataKey="pdf2" stroke="#8884d8" strokeWidth={3} />
+                                                <Line dataKey="pdf1" stroke="#A7C7E7" strokeWidth={3} />
+                                                <Line dataKey="pdf2" stroke="#FBC49C" strokeWidth={3} />
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </div>)

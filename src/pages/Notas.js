@@ -154,8 +154,8 @@ export const Notas = () => {
                                     <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="pdf1" fill="#82ca9d" />
-                                    <Bar dataKey="pdf2" fill="#8884d8" />
+                                    <Bar dataKey="pdf1" fill="#A7C7E7" />
+                                    <Bar dataKey="pdf2" fill="#FBC49C" />
                                 </BarChart>
                             </ResponsiveContainer>
                             <div className="div-grafico-legenda">

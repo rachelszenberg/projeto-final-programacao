@@ -159,8 +159,8 @@ export const ConfiancaNota = () => {
 
 
     const sortBy = (a, b) => {
-        const aInvalido = a.confiancaApropriada === -1;
-        const bInvalido = b.confiancaApropriada === -1;
+        const aInvalido = a.confiancaApropriada === -1 || a.confiancaQuestao === -1;
+        const bInvalido = b.confiancaApropriada === -1 || b.confiancaQuestao === -1;
         if (ordem === 'Confiança apropriada decrescente') {
             if (aInvalido && !bInvalido) return 1;
             if (!aInvalido && bInvalido) return -1;
@@ -174,8 +174,12 @@ export const ConfiancaNota = () => {
         } else if (ordem === 'Nota crescente'){
             return a.mediaNotas - b.mediaNotas;
         } else if (ordem === 'Confiança decrescente') {
+            if (aInvalido && !bInvalido) return 1;
+            if (!aInvalido && bInvalido) return -1;
             return b.confiancaQuestao - a.confiancaQuestao;
         } else if (ordem === 'Confiança crescente'){
+            if (aInvalido && !bInvalido) return 1;
+            if (!aInvalido && bInvalido) return -1;
             return a.confiancaQuestao - b.confiancaQuestao;
         } 
     };
@@ -302,7 +306,7 @@ export const ConfiancaNota = () => {
                                 <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
                             </div>
                             <div className='respostas-ordenar-div'>
-                                <p style={{ fontWeight: 'bold' }}>{filtroFinalOrdenado.length} / {totalRespostas} {(filtroFinalOrdenado.length) > 1 ? 'respostas' : 'resposta'}</p>
+                                <p style={{ fontWeight: 'bold' }}>{filtroFinalOrdenado.length} / {totalRespostas} resposta(s)</p>
                                 <div className='ordenar-div'>
                                     <p>Ordenar por:</p>
                                     <select value={ordem} onChange={(e) => setOrdem(e.target.value)}>

@@ -234,13 +234,13 @@ export const Tempos = () => {
                                     <Bar stackId={'a'} dataKey={'min'} fill={'none'} />
                                     <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
                                     <Bar stackId={'a'} dataKey={'bottomWhisker'} shape={<DotBar />} />
-                                    <Bar stackId={'a'} dataKey={'bottomBox'} fill={'#8884d8'} />
+                                    <Bar stackId={'a'} dataKey={'bottomBox'} fill={'#FBC49C'} />
                                     <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
-                                    <Bar stackId={'a'} dataKey={'topBox'} fill={'#8884d8'} />
+                                    <Bar stackId={'a'} dataKey={'topBox'} fill={'#FBC49C'} />
                                     <Bar stackId={'a'} dataKey={'topWhisker'} shape={<DotBar />} />
                                     <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
                                     <ZAxis type='number' dataKey='size' range={[0, 250]} />
-                                    <Scatter dataKey='average' fill={'#82ca9d'} stroke={'#FEFEFE'} />
+                                    <Scatter dataKey='average' fill={'#A7C7E7'} stroke={'#FEFEFE'} />
                                     <XAxis
                                         dataKey="pdf"
                                         tickFormatter={(value) => value}
