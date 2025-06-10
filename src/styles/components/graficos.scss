@@ -8,14 +8,15 @@
 }
 
 .div-filtros {
+    display: flex;
+    flex-direction: column;
     height: auto;
-  overflow: auto;
-  resize: none;
+    overflow-y: auto;
     padding: $s-size;
     width: 30%;
     background-color: $off-white;
     border-radius: $radius;
-    position: relative;
+    justify-content: space-between;
 
     .filtros-geral-title {
         font-size: $m-size;
@@ -37,9 +38,8 @@
 }
 
 .limpar-filtro {
-    position: absolute;
-    bottom: $s-size !important;
-    right: $s-size;
+    margin-top: $s-size;    // Dá espaço entre o conteúdo e o botão
+    align-self: flex-end;   // Faz ele ir pro canto direito se quiser
 }
 
 .div-answer {
@@ -90,12 +90,12 @@
     width: 100%;
     height: 85%;
 
-    p{
+    p {
         margin: $s-size $m-size $xs-size;
     }
 }
 
-.div-title-graficos{
+.div-title-graficos {
     height: 8%;
     display: flex;
     align-items: center;
@@ -105,11 +105,11 @@
     padding: $xs-size;
 }
 
-.div-grafico-legenda{
+.div-grafico-legenda {
     width: 30%;
     padding: $s-size;
-    
-    h4{
+
+    h4 {
         margin-bottom: 0px;
     }
 }

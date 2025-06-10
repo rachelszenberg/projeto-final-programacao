@@ -171,17 +171,17 @@ export const ConfiancaNota = () => {
             return a.confiancaApropriada - b.confiancaApropriada;
         } else if (ordem === 'Nota decrescente') {
             return b.mediaNotas - a.mediaNotas;
-        } else if (ordem === 'Nota crescente'){
+        } else if (ordem === 'Nota crescente') {
             return a.mediaNotas - b.mediaNotas;
         } else if (ordem === 'Confiança decrescente') {
             if (aInvalido && !bInvalido) return 1;
             if (!aInvalido && bInvalido) return -1;
             return b.confiancaQuestao - a.confiancaQuestao;
-        } else if (ordem === 'Confiança crescente'){
+        } else if (ordem === 'Confiança crescente') {
             if (aInvalido && !bInvalido) return 1;
             if (!aInvalido && bInvalido) return -1;
             return a.confiancaQuestao - b.confiancaQuestao;
-        } 
+        }
     };
 
     const filtroFinalOrdenado = filtroFinal
@@ -213,85 +213,87 @@ export const ConfiancaNota = () => {
             <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
             <div className="div-notas">
                 <div className='div-filtros'>
-                    <p className='filtros-geral-title'>Filtros</p>
+                    <div>
+                        <p className='filtros-geral-title'>Filtros</p>
+                        <div>
+                            {perguntasPerfil.map((p) => (
+                                <div key={p.id}>
+                                    <p className='filtro-title'>{p.titulo}</p>
+                                    {p.opcoes &&
+                                        p.opcoes.map((item, index) => (
+                                            <label key={index}>
+                                                <p className='filtro-opcao'>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={filtros[p.filtro].includes(item)}
+                                                        onChange={() => atualizarFiltros(p.filtro, item)}
+                                                    />
+                                                    {item}</p>
+                                            </label>
+                                        ))
+                                    }
+                                </div>
+                            ))}
+                            <div className='filtros-pdf'>
+                                <p className='filtro-title'>Por pdf</p>
+                                <select value={pdfFilter} onChange={(e) => setPdfFilter(e.target.value)}>
+                                    <option>Todos os pdfs</option>
+                                    <option>Pdf 1</option>
+                                    <option>Pdf 2</option>
+                                </select>
+                            </div>
+                            <div className='filtro-nota-div'>
+                                <p className='filtro-title'>Por nota média</p>
+                                <div className='filtro-slider'>
+                                    <ReactSlider
+                                        className="horizontal-slider"
+                                        thumbClassName="thumb"
+                                        trackClassName="track"
+                                        value={rangeNota}
+                                        onChange={(value) => setRangeNota(value)}
+                                        min={min}
+                                        max={max}
+                                        pearling
+                                        minDistance={0}
+                                        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                                    />
+
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                        <span>{min}</span>
+                                        <span>{max}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='filtro-nota-div'>
+                                <p className='filtro-title'>Por confiança</p>
+                                <div className='filtro-slider'>
+                                    <ReactSlider
+                                        className="horizontal-slider"
+                                        thumbClassName="thumb"
+                                        trackClassName="track"
+                                        value={rangeConfianca}
+                                        onChange={(value) => setRangeConfianca(value)}
+                                        min={min}
+                                        max={max}
+                                        pearling
+                                        minDistance={0}
+                                        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                                    />
+
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                        <span>{min}</span>
+                                        <span>{max}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button className="underline-button limpar-filtro" onClick={() => {
                         setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] });
                         setRangeNota([1, 5]);
                         setRangeConfianca([0, 5]);
                         setPdfFilter('Todos os pdfs');
                     }}>limpar filtros</button>
-                    <div>
-                        {perguntasPerfil.map((p) => (
-                            <div key={p.id}>
-                                <p className='filtro-title'>{p.titulo}</p>
-                                {p.opcoes &&
-                                    p.opcoes.map((item, index) => (
-                                        <label key={index}>
-                                            <p className='filtro-opcao'>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={filtros[p.filtro].includes(item)}
-                                                    onChange={() => atualizarFiltros(p.filtro, item)}
-                                                />
-                                                {item}</p>
-                                        </label>
-                                    ))
-                                }
-                            </div>
-                        ))}
-                        <div className='filtros-pdf'>
-                            <p className='filtro-title'>Por pdf</p>
-                            <select value={pdfFilter} onChange={(e) => setPdfFilter(e.target.value)}>
-                                <option>Todos os pdfs</option>
-                                <option>Pdf 1</option>
-                                <option>Pdf 2</option>
-                            </select>
-                        </div>
-                        <div className='filtro-nota-div'>
-                            <p className='filtro-title'>Por nota média</p>
-                            <div className='filtro-slider'>
-                                <ReactSlider
-                                    className="horizontal-slider"
-                                    thumbClassName="thumb"
-                                    trackClassName="track"
-                                    value={rangeNota}
-                                    onChange={(value) => setRangeNota(value)}
-                                    min={min}
-                                    max={max}
-                                    pearling
-                                    minDistance={0}
-                                    renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-                                />
-
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
-                                    <span>{min}</span>
-                                    <span>{max}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='filtro-nota-div'>
-                            <p className='filtro-title'>Por confiança</p>
-                            <div className='filtro-slider'>
-                                <ReactSlider
-                                    className="horizontal-slider"
-                                    thumbClassName="thumb"
-                                    trackClassName="track"
-                                    value={rangeConfianca}
-                                    onChange={(value) => setRangeConfianca(value)}
-                                    min={min}
-                                    max={max}
-                                    pearling
-                                    minDistance={0}
-                                    renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-                                />
-
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
-                                    <span>{min}</span>
-                                    <span>{max}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div className='div-geral-grafico'>

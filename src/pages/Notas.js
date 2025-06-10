@@ -106,28 +106,30 @@ export const Notas = () => {
             <div className="div-notas">
 
                 <div className='div-filtros'>
-                    <p className='filtros-geral-title'>Filtros</p>
-                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
                     <div>
-                        {perguntasPerfil.map((p) => (
-                            <div key={p.id}>
-                                <p className='filtro-title'>{p.titulo}</p>
-                                {p.opcoes &&
-                                    p.opcoes.map((item, index) => (
-                                        <label key={index}>
-                                            <p className='filtro-opcao'>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={filtros[p.filtro].includes(item)}
-                                                    onChange={() => atualizarFiltros(p.filtro, item)}
-                                                />
-                                                {item}</p>
-                                        </label>
-                                    ))
-                                }
-                            </div>
-                        ))}
+                        <p className='filtros-geral-title'>Filtros</p>
+                        <div>
+                            {perguntasPerfil.map((p) => (
+                                <div key={p.id}>
+                                    <p className='filtro-title'>{p.titulo}</p>
+                                    {p.opcoes &&
+                                        p.opcoes.map((item, index) => (
+                                            <label key={index}>
+                                                <p className='filtro-opcao'>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={filtros[p.filtro].includes(item)}
+                                                        onChange={() => atualizarFiltros(p.filtro, item)}
+                                                    />
+                                                    {item}</p>
+                                            </label>
+                                        ))
+                                    }
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
                 </div>
 
                 {medias.length ?
