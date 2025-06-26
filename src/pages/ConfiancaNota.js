@@ -29,14 +29,17 @@ export const ConfiancaNota = () => {
     const temp = respostas.find(r => r.id === params.idQuestionario);
     const respostasDoQuestionario = temp?.respostasPorQuestionario;
     const colorsPdf = ['#A7C7E790', '#FBC49C90'];
-    const colorsBackground = ['#C41E0035', '#C41E0020', '#C47E0025', '#03784720', '#03784735', '#03784735'];
-    const colorsText = ['#C41E00', '#C41E0090', '#C47E00', '#03784790', '#037847', '#037847'];
+    const colorsBackgroundNota = ['#C41E0035', '#C41E0020', '#C47E0025', '#03784720', '#03784735', '#03784735'];
+    const colorsBackgroundConfianca = ['#C41E0035', '#C41E0020', '#C44E0023', '#C47E0025', '#647B2423', '#03784720', '#03784735', '#03784735'];
+    const colorsTextNota = ['#C41E00', '#C41E0090', '#C47E00', '#03784790', '#037847', '#037847'];
+    const colorsTextConfianca = ['#C41E00', '#C41E0090', '#C44E0090', '#C47E00', '#647B2490', '#03784790', '#037847'];
     const [rangeNota, setRangeNota] = useState([1, 5]);
-    const [rangeConfianca, setRangeConfianca] = useState([0, 5]);
+    const [rangeConfianca, setRangeConfianca] = useState([0, 7]);
     const [pdfFilter, setPdfFilter] = useState('Todos os pdfs');
     const [ordem, setOrdem] = useState('Confiança apropriada decrescente');
     const min = 1;
-    const max = 5;
+    const max_nota = 5;
+    const max_confianca = 7;
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -81,7 +84,7 @@ export const ConfiancaNota = () => {
                 idResposta,
                 idPdf: lista[0].idPdf,
                 idUsuario: lista[0].idUsuario,
-                mediaNotas: mean(lista.map(({ nota }) => nota)).toFixed(2)
+                mediaNotas: mean(lista.map(({ nota }) => nota)).toFixed(1)
             };
         });
 
@@ -185,16 +188,25 @@ export const ConfiancaNota = () => {
     };
 
     const filtroFinalOrdenado = filtroFinal
-        .map((resp) => {
-            const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
-            return {
-                ...resp,
-                confiancaQuestao: confiancaQuestao || null,
-                confiancaApropriada: confiancaQuestao ?
-                    (4 - Math.abs(Math.trunc(resp.mediaNotas) - confiancaQuestao)) / 4 * 100 : -1
-            };
-        })
-        .sort(sortBy);
+    .map((resp) => {
+        const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
+        const confiancaEscalada = 1 + (confiancaQuestao - 1) * (4 / 6);
+
+        let confiancaApropriada = -1;
+
+        if (confiancaQuestao) {
+            const diferenca = Math.abs(Math.trunc(resp.mediaNotas) - confiancaEscalada);
+            confiancaApropriada = parseFloat(((4 - diferenca) / 4 * 100).toFixed(2));
+        }
+
+        return {
+            ...resp,
+            confiancaQuestao: confiancaQuestao || null,
+            confiancaApropriada
+        };
+    })
+    .sort(sortBy);
+
 
     const onPreviousClick = () => {
         setQuestao(questao - 1);
@@ -252,7 +264,7 @@ export const ConfiancaNota = () => {
                                         value={rangeNota}
                                         onChange={(value) => setRangeNota(value)}
                                         min={min}
-                                        max={max}
+                                        max={max_nota}
                                         pearling
                                         minDistance={0}
                                         renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
@@ -260,7 +272,7 @@ export const ConfiancaNota = () => {
 
                                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
                                         <span>{min}</span>
-                                        <span>{max}</span>
+                                        <span>{max_nota}</span>
                                     </div>
                                 </div>
                             </div>
@@ -274,7 +286,7 @@ export const ConfiancaNota = () => {
                                         value={rangeConfianca}
                                         onChange={(value) => setRangeConfianca(value)}
                                         min={min}
-                                        max={max}
+                                        max={max_confianca}
                                         pearling
                                         minDistance={0}
                                         renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
@@ -282,7 +294,7 @@ export const ConfiancaNota = () => {
 
                                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
                                         <span>{min}</span>
-                                        <span>{max}</span>
+                                        <span>{max_confianca}</span>
                                     </div>
                                 </div>
                             </div>
@@ -291,7 +303,7 @@ export const ConfiancaNota = () => {
                     <button className="underline-button limpar-filtro" onClick={() => {
                         setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] });
                         setRangeNota([1, 5]);
-                        setRangeConfianca([0, 5]);
+                        setRangeConfianca([0, 7]);
                         setPdfFilter('Todos os pdfs');
                     }}>limpar filtros</button>
                 </div>
@@ -329,9 +341,9 @@ export const ConfiancaNota = () => {
                                             <div className='resposta-div'>
                                                 <p>{r.listRespostas[questao]}</p>
                                                 <div className='confiancaxnota-div'>
-                                                    <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 5.00</p>
-                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 5</p>}
-                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackground[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
+                                                    <p className='confiancaxnota' style={{ color: colorsTextNota[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackgroundNota[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 5.00</p>
+                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsTextConfianca[r.confiancaQuestao - 1], backgroundColor: colorsBackgroundConfianca[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 7</p>}
+                                                    {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsTextNota[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackgroundNota[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
                                                 </div>
                                             </div>
                                         </div>

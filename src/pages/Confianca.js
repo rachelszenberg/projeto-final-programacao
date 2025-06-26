@@ -101,7 +101,7 @@ export const Confianca = () => {
         };
     });
 
-    const valoresEsperados = ["1 - Nada confiante", "2", "3", "4", "5 - Muito confiante"];
+    const valoresEsperados = ["1 - Nada confiante", "2", "3", "4", "5", "6", "7 - Muito confiante"];
 
     result.forEach((r) => {
         let confiancas = r.confiancas;

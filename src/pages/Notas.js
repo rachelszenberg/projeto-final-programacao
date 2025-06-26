@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ErrorBar } from 'recharts';
 import { selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { selectAllUsuarios } from '../features/UsariosSlice';
@@ -100,6 +100,69 @@ export const Notas = () => {
         });
     }
 
+    medias.forEach((t) => {
+        for (const id in t.value) {
+            const respostas = t.value[id];
+            const totalNotas = respostas.reduce((soma, resposta) => soma + resposta.nota, 0);
+
+            const media = respostas.length > 0 ? (totalNotas / respostas.length) : 0;
+
+            const variancia = respostas.length > 0
+                ? respostas.reduce((acc, resposta) => acc + Math.pow(resposta.nota - media, 2), 0) / respostas.length
+                : 0;
+
+            const desvioPadrao = Math.sqrt(variancia);
+
+            const index = questionario.listPdf.findIndex(item => item.id === id);
+            const key = "pdf" + (index + 1);
+
+            t[key] = parseFloat(media.toFixed(2));
+            t[key + "_dp"] = parseFloat(desvioPadrao.toFixed(2));
+        }
+    });
+
+    const CustomLegend = ({ pdf }) => {
+        if (pdf === 1) {
+            return (
+                <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+                    <div>
+                        <span style={{ display: 'inline-block', width: 20, height: 10, backgroundColor: '#A7C7E7' }}></span> pdf1
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ display: 'inline-block', width: 20, height: 3, backgroundColor: '#5A7AAB' }}></span> Média pdf1
+                    </div>
+                </div>)
+        }
+        else {
+            return (
+                <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+                    <div>
+                        <span style={{ display: 'inline-block', width: 20, height: 10, backgroundColor: '#FBC49C' }}></span> pdf2
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ display: 'inline-block', width: 20, height: 3, backgroundColor: '#C8874F' }}></span>Média pdf2
+                    </div>
+                </div >
+            )
+        }
+    };
+
+    const calcularMedias = () => {
+        let somaPdf1 = 0;
+        let somaPdf2 = 0;
+        let total = medias.length;
+
+        medias.forEach((item) => {
+            somaPdf1 += parseFloat(item.pdf1);
+            somaPdf2 += parseFloat(item.pdf2);
+        });
+
+        return {
+            mediaPdf1: (somaPdf1 / total).toFixed(2),
+            mediaPdf2: (somaPdf2 / total).toFixed(2)
+        };
+    }
+
     return (
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
@@ -153,11 +216,46 @@ export const Notas = () => {
                                 >
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="nome" />
-                                    <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} />
+                                    <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
                                     <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="pdf1" fill="#A7C7E7" />
-                                    <Bar dataKey="pdf2" fill="#FBC49C" />
+                                    <Legend content={() => <CustomLegend pdf={1} />} />
+                                    <Bar dataKey="pdf1" fill="#A7C7E7">
+                                        <ErrorBar
+                                            dataKey="pdf1_dp"
+                                            width={8}
+                                            strokeWidth={1}
+                                            direction="y"
+                                        />
+                                    </Bar>
+                                    <ReferenceLine y={calcularMedias().mediaPdf1} strokeWidth={3} stroke="#5A7AAB" label={{ value: "media: " + calcularMedias().mediaPdf1, position: 'left', fill: '#5A7AAB' }} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                            <ResponsiveContainer width="70%" height="100%">
+                                <BarChart
+                                    width={500}
+                                    height={300}
+                                    data={medias}
+                                    margin={{
+                                        top: 5,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 5,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="nome" />
+                                    <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
+                                    <Tooltip />
+                                    <Legend content={<CustomLegend />} />
+                                    <Bar dataKey="pdf2" fill="#FBC49C" >
+                                        <ErrorBar
+                                            dataKey="pdf2_dp"
+                                            width={8}
+                                            strokeWidth={1}
+                                            direction="y"
+                                        />
+                                    </Bar>
+                                    <ReferenceLine y={calcularMedias().mediaPdf2} strokeWidth={3} stroke="#C8874F" label={{ value: "media: " + calcularMedias().mediaPdf2, position: 'left', fill: '#C8874F' }} />
                                 </BarChart>
                             </ResponsiveContainer>
                             <div className="div-grafico-legenda">

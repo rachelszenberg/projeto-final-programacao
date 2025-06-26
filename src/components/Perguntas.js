@@ -22,7 +22,7 @@ export const Perguntas = (props) => {
     const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
-    const opcoes = ["1 - Nada confiante", "2", "3", "4", "5 - Muito confiante"];
+    const opcoes = ["1 - Nada confiante", "2", "3", "4", "5", "6", "7 - Muito confiante"];
 
     const regex = useMemo(() => /([a-zA-Z0-9].*){1,}/, []);
 
