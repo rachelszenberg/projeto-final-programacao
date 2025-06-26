@@ -1,0 +1,46 @@
+.div-graficos-histograma {
+    width: 100%;
+    height: 85%;
+
+    p {
+        margin: $s-size $m-size $xs-size;
+    }
+}
+
+.show-histograma {
+    display: block;
+    margin: 1rem auto;
+}
+
+.histograma-div {
+    padding: $m-size;
+
+    .title-avaliacao {
+        margin: $s-size 0px;
+    }
+}
+
+.title-perguntas-histograma {
+    margin: 0px;
+    font-size: $font-size-small;
+    font-weight: bold;
+}
+
+.container-perguntas-histograma {
+    display: flex;
+    width: 100%;
+    margin: $s-size 0px;
+}
+
+.title-perguntas-histograma {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    padding-bottom: $xs-size;
+}
+
+.ativo {
+  color: #00a69c;
+  border-bottom: 3px solid #00a69c;
+  transition: border-color 0.2s, color 0.2s;
+}

@@ -9,6 +9,9 @@ import { Header } from '../components/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RightTitleComponent } from '../components/RightTitleComponent';
 import { selectAllPerguntas } from '../features/PerguntasSlice';
+import { Histograma } from './Histograma';
+import { RxChevronDown, RxChevronUp } from 'react-icons/rx';
+import { mean } from 'mathjs';
 
 export const Notas = () => {
     const params = useParams();
@@ -20,6 +23,7 @@ export const Notas = () => {
     const questionario = questionarios.todosQuestionarios.find(q => q.id === params.idQuestionario);
     const questionarioNome = questionario.nome;
     const medias = [];
+    const [showHistograma, setShowHistograma] = useState(false);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
 
     const [filtros, setFiltros] = useState({
@@ -50,16 +54,29 @@ export const Notas = () => {
         return listaCopia;
     };
 
-    const agruparPorPdf = (id, index, agruparPorPergunta) => {
-        const agrupado = agruparPorPergunta[id].reduce((acc, item) => {
-            if (!acc[item.idPdf]) {
-                acc[item.idPdf] = [];
-            }
-            const { idPdf, ...itemSemIdPdf } = item;
-            acc[item.idPdf].push(itemSemIdPdf);
-            return acc;
-        }, {});
-        return { idPergunta: id, nome: "Pergunta " + index, value: agrupado }
+    const agruparPorResposta = (id, index, agruparPorPergunta) => {
+        const agrupadoLista = Object.entries(
+            agruparPorPergunta[id].reduce((acc, item) => {
+                const { idResposta, ...resto } = item;
+                if (!acc[idResposta]) {
+                    acc[idResposta] = [];
+                }
+                acc[idResposta].push(resto);
+                return acc;
+            }, {})
+        ).map(([idResposta, lista]) => {
+            return {
+                idResposta,
+                idPdf: lista[0].idPdf,
+                idUsuario: lista[0].idUsuario,
+                mediaNotas: mean(lista.map(({ nota }) => nota)).toFixed(1)
+            };
+        });
+
+        return {
+            idPergunta: id,
+            value: agrupadoLista
+        };
     };
 
     const atualizarFiltros = (tipo, valor) => {
@@ -73,6 +90,7 @@ export const Notas = () => {
 
     const listaFiltrada = filtrarLista(usuarios, filtros);
     const avaliacaoFiltrada = removerUsuarios(avaliacao, listaFiltrada);
+
     const av = avaliacaoFiltrada[questionario.id] || null;
 
     if (av) {
@@ -86,40 +104,52 @@ export const Notas = () => {
         }, {});
 
         questionario.perguntas.forEach((p, index) => {
-            medias.push(agruparPorPdf(p, index + 1, agruparPorPergunta));
-        });
-
-        medias.forEach((t) => {
-            for (const id in t.value) {
-                const respostas = t.value[id];
-                const totalNotas = respostas.reduce((soma, resposta) => soma + resposta.nota, 0);
-                const media = totalNotas / respostas.length;
-                const index = questionario.listPdf.findIndex(item => item.id === id);
-                t["pdf" + (index + 1)] = media.toFixed(2);
-            }
+            medias.push(agruparPorResposta(p, index, agruparPorPergunta));
         });
     }
 
-    medias.forEach((t) => {
-        for (const id in t.value) {
-            const respostas = t.value[id];
-            const totalNotas = respostas.reduce((soma, resposta) => soma + resposta.nota, 0);
+    const calcularMediasEDesvios = () => {
+        const resultado = [];
 
-            const media = respostas.length > 0 ? (totalNotas / respostas.length) : 0;
+        medias.forEach((perguntaObj, index) => {
+            const agrupadoPorPdf = {};
 
-            const variancia = respostas.length > 0
-                ? respostas.reduce((acc, resposta) => acc + Math.pow(resposta.nota - media, 2), 0) / respostas.length
-                : 0;
+            perguntaObj.value.forEach(resposta => {
+                const { idPdf, mediaNotas } = resposta;
+                const nota = parseFloat(mediaNotas);
 
-            const desvioPadrao = Math.sqrt(variancia);
+                if (!agrupadoPorPdf[idPdf]) {
+                    agrupadoPorPdf[idPdf] = [];
+                }
 
-            const index = questionario.listPdf.findIndex(item => item.id === id);
-            const key = "pdf" + (index + 1);
+                agrupadoPorPdf[idPdf].push(nota);
+            });
 
-            t[key] = parseFloat(media.toFixed(2));
-            t[key + "_dp"] = parseFloat(desvioPadrao.toFixed(2));
-        }
-    });
+            const item = {
+                idPergunta: perguntaObj.idPergunta,
+                nome: `Pergunta ${index + 1}`
+            };
+
+            questionario.listPdf.forEach((pdf, idx) => {
+                const notas = agrupadoPorPdf[pdf.id] || [];
+
+                if (notas.length > 0) {
+                    const media = notas.reduce((soma, n) => soma + n, 0) / notas.length;
+                    const variancia = notas.reduce((soma, n) => soma + Math.pow(n - media, 2), 0) / notas.length;
+                    const dp = Math.sqrt(variancia);
+
+                    item[`pdf${idx + 1}`] = parseFloat(media.toFixed(2));
+                    item[`pdf${idx + 1}_dp`] = parseFloat(dp.toFixed(2));
+                }
+            });
+
+            resultado.push(item);
+        });
+
+        return resultado;
+    };
+
+
 
     const CustomLegend = ({ pdf }) => {
         if (pdf === 1) {
@@ -150,9 +180,9 @@ export const Notas = () => {
     const calcularMedias = () => {
         let somaPdf1 = 0;
         let somaPdf2 = 0;
-        let total = medias.length;
+        let total = mediasFinal.length;
 
-        medias.forEach((item) => {
+        mediasFinal.forEach((item) => {
             somaPdf1 += parseFloat(item.pdf1);
             somaPdf2 += parseFloat(item.pdf2);
         });
@@ -163,9 +193,11 @@ export const Notas = () => {
         };
     }
 
+    const mediasFinal = calcularMediasEDesvios();
+
     return (
         <div>
-            <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
+            <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
 
                 <div className='div-filtros'>
@@ -196,68 +228,89 @@ export const Notas = () => {
                 </div>
 
                 {medias.length ?
-                    <div className='div-geral-grafico'>
+                    <div className='div-geral-grafico-nota'>
                         <RightTitleComponent className="div-top"
                             titleText={"Gráfico das médias das notas de cada pergunta para cada pdf"}
                             nomeQuestionario={"As notas foram dadas de a 1 a 5"}
                         />
-                        <div className='div-grafico'>
-                            <ResponsiveContainer width="70%" height="100%">
-                                <BarChart
-                                    width={500}
-                                    height={300}
-                                    data={medias}
-                                    margin={{
-                                        top: 5,
-                                        right: 30,
-                                        left: 20,
-                                        bottom: 5,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="nome" />
-                                    <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
-                                    <Tooltip />
-                                    <Legend content={() => <CustomLegend pdf={1} />} />
-                                    <Bar dataKey="pdf1" fill="#A7C7E7">
-                                        <ErrorBar
-                                            dataKey="pdf1_dp"
-                                            width={8}
-                                            strokeWidth={1}
-                                            direction="y"
-                                        />
-                                    </Bar>
-                                    <ReferenceLine y={calcularMedias().mediaPdf1} strokeWidth={3} stroke="#5A7AAB" label={{ value: "media: " + calcularMedias().mediaPdf1, position: 'left', fill: '#5A7AAB' }} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                            <ResponsiveContainer width="70%" height="100%">
-                                <BarChart
-                                    width={500}
-                                    height={300}
-                                    data={medias}
-                                    margin={{
-                                        top: 5,
-                                        right: 30,
-                                        left: 20,
-                                        bottom: 5,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="nome" />
-                                    <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
-                                    <Tooltip />
-                                    <Legend content={<CustomLegend />} />
-                                    <Bar dataKey="pdf2" fill="#FBC49C" >
-                                        <ErrorBar
-                                            dataKey="pdf2_dp"
-                                            width={8}
-                                            strokeWidth={1}
-                                            direction="y"
-                                        />
-                                    </Bar>
-                                    <ReferenceLine y={calcularMedias().mediaPdf2} strokeWidth={3} stroke="#C8874F" label={{ value: "media: " + calcularMedias().mediaPdf2, position: 'left', fill: '#C8874F' }} />
-                                </BarChart>
-                            </ResponsiveContainer>
+                        <div className='div-grafico-geral'>
+                            <div className='div-grafico-e-histograma'>
+                                <div className='div-grafico'>
+                                    <ResponsiveContainer width="70%" height="100%">
+                                        <BarChart
+                                            width={500}
+                                            height={300}
+                                            data={mediasFinal}
+                                            margin={{
+                                                top: 5,
+                                                right: 30,
+                                                left: 20,
+                                                bottom: 5,
+                                            }}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
+                                            <XAxis dataKey="nome" />
+                                            <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
+                                            <Tooltip />
+                                            <Legend content={() => <CustomLegend pdf={1} />} />
+                                            <Bar dataKey="pdf1" fill="#A7C7E7">
+                                                <ErrorBar
+                                                    dataKey="pdf1_dp"
+                                                    width={8}
+                                                    strokeWidth={1}
+                                                    direction="y"
+                                                />
+                                            </Bar>
+                                            <ReferenceLine y={calcularMedias().mediaPdf1} strokeWidth={3} stroke="#5A7AAB" label={{ value: "media: " + calcularMedias().mediaPdf1, position: 'left', fill: '#5A7AAB' }} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                    <ResponsiveContainer width="70%" height="100%">
+                                        <BarChart
+                                            width={500}
+                                            height={300}
+                                            data={mediasFinal}
+                                            margin={{
+                                                top: 5,
+                                                right: 30,
+                                                left: 20,
+                                                bottom: 5,
+                                            }}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
+                                            <XAxis dataKey="nome" />
+                                            <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
+                                            <Tooltip />
+                                            <Legend content={<CustomLegend />} />
+                                            <Bar dataKey="pdf2" fill="#FBC49C" >
+                                                <ErrorBar
+                                                    dataKey="pdf2_dp"
+                                                    width={8}
+                                                    strokeWidth={1}
+                                                    direction="y"
+                                                />
+                                            </Bar>
+                                            <ReferenceLine y={calcularMedias().mediaPdf2} strokeWidth={3} stroke="#C8874F" label={{ value: "media: " + calcularMedias().mediaPdf2, position: 'left', fill: '#C8874F' }} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <button className="underline-button show-histograma" onClick={() => setShowHistograma(!showHistograma)}>{showHistograma ? (
+                                    <>
+                                        Ver menos <RxChevronUp />
+                                    </>
+                                ) : (
+                                    <>
+                                        Ver mais detalhes <RxChevronDown />
+                                    </>
+                                )}</button>
+                                {showHistograma &&
+                                    <div className="histograma-div">
+                                        <hr />
+                                        <p className="title-avaliacao">Distribuição das notas</p>
+                                        <Histograma medias={medias} />
+                                    </div>}
+                            </div>
                             <div className="div-grafico-legenda">
                                 <h2>Legenda</h2>
                                 <h4>Perguntas</h4>
