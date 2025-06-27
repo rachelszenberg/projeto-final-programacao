@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, Legend, Line, LineChart } from 'recharts';
+import { XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, Legend, BarChart, Bar } from 'recharts';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { Header } from '../components/Header';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -39,19 +39,19 @@ export const Confianca = () => {
         }));
     };
 
-    const filtrarLista = (lista, filtros) => {
-        return lista
-            .filter(item => (
-                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(item["-O9RZpD7DTQTQ-dwKCJw"])) &&
-                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(item["-O9RZykzuzqNYlAg_xd1"])) &&
-                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(item["-O9R_5KiJFTMaGU7stem"]))
+    const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
+        return usuarios
+            .filter(usuario => (
+                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(usuario["-O9RZpD7DTQTQ-dwKCJw"])) &&
+                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(usuario["-O9RZykzuzqNYlAg_xd1"])) &&
+                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(usuario["-O9R_5KiJFTMaGU7stem"]))
             ))
-            .map(item => item.id);
+            .map(usuario => usuario.id);
     };
 
-    const removerUsuarios = (lista, idsUsuarios) => {
-        return lista.filter(resposta =>
-            idsUsuarios.includes(resposta.idUsuario)
+    const filtrarAvaliacoesPorUsuarios = (avaliacoes, idsUsuariosPermitidos) => {
+        return avaliacoes.filter(resposta =>
+            idsUsuariosPermitidos.includes(resposta.idUsuario)
         );
     };
 
@@ -74,8 +74,8 @@ export const Confianca = () => {
         return Object.values(agrupado);
     };
 
-    const listaFiltrada = filtrarLista(usuarios, filtros);
-    const confiancaFiltrada = removerUsuarios(respostasQuestionario.respostasPorQuestionario, listaFiltrada);
+    const idsUsuariosFiltrados = filtrarUsuariosPorPerfil(usuarios, filtros);
+    const confiancaFiltrada = filtrarAvaliacoesPorUsuarios(respostasQuestionario.respostasPorQuestionario, idsUsuariosFiltrados);
     const confiancaPorPdf = agruparPorPdf(confiancaFiltrada);
 
     const result = confiancaPorPdf.map(item => {
@@ -206,7 +206,7 @@ export const Confianca = () => {
 
                                 {resultadoGrafico.length ? (
                                     <div style={{ width: '100%', height: '90%' }}>
-                                        {/* <ResponsiveContainer width="100%" height="100%">
+                                        <ResponsiveContainer width="100%" height="100%">
                                             <BarChart width={150} height={40} data={resultadoGrafico}>
                                                 <CartesianGrid strokeDasharray="3 3" />
                                                 <XAxis dataKey="valor" />
@@ -216,8 +216,8 @@ export const Confianca = () => {
                                                 <Bar dataKey="pdf1" fill="#A7C7E7" />
                                                 <Bar dataKey="pdf2" fill="#FBC49C" />
                                             </BarChart>
-                                        </ResponsiveContainer> */}
-                                        <ResponsiveContainer width="100%" height="100%">
+                                        </ResponsiveContainer>
+                                        {/* <ResponsiveContainer width="100%" height="100%">
                                             <LineChart width={500}
                                                 height={300}
                                                 data={resultadoGrafico}
@@ -235,7 +235,7 @@ export const Confianca = () => {
                                                 <Line dataKey="pdf1" stroke="#A7C7E7" strokeWidth={3} />
                                                 <Line dataKey="pdf2" stroke="#FBC49C" strokeWidth={3} />
                                             </LineChart>
-                                        </ResponsiveContainer>
+                                        </ResponsiveContainer> */}
                                     </div>)
                                     : (
                                         <div style={{ width: '100%', height: `${100 / result.length}%` }}>
@@ -256,6 +256,7 @@ export const Confianca = () => {
                                         <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
                                     </div>
                                 ))}
+                        <button onClick={() => navigate('/analise/rasunho')}>detalhes</button>
                             </div>
                         </div>
                     </div>

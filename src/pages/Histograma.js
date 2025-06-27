@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { useParams } from 'react-router-dom';
 import { AgCharts } from 'ag-charts-react';
-import { RxChevronLeft, RxChevronRight } from 'react-icons/rx';
 
 export const Histograma = ({ medias }) => {
     const params = useParams();

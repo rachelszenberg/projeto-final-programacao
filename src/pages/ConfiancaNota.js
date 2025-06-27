@@ -47,31 +47,31 @@ export const ConfiancaNota = () => {
         familiaridade: []
     });
 
-    const filtrarLista = (lista, filtros) => {
-        return lista
-            .filter(item => (
-                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(item["-O9RZpD7DTQTQ-dwKCJw"])) &&
-                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(item["-O9RZykzuzqNYlAg_xd1"])) &&
-                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(item["-O9R_5KiJFTMaGU7stem"]))
+    const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
+        return usuarios
+            .filter(usuario => (
+                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(usuario["-O9RZpD7DTQTQ-dwKCJw"])) &&
+                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(usuario["-O9RZykzuzqNYlAg_xd1"])) &&
+                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(usuario["-O9R_5KiJFTMaGU7stem"]))
             ))
-            .map(item => item.id);
+            .map(usuario => usuario.id);
     };
 
-    const removerUsuarios = (lista, idsUsuarios) => {
-        const listaCopia = JSON.parse(JSON.stringify(lista));
+    const filtrarAvaliacoesPorUsuarios = (avaliacoes, idsUsuariosPermitidos) => {
+        const copia = JSON.parse(JSON.stringify(avaliacoes));
 
-        for (let chave in listaCopia) {
-            listaCopia[chave] = listaCopia[chave].filter(item => idsUsuarios.includes(item.idUsuario));
-            if (listaCopia[chave].length === 0) {
-                delete listaCopia[chave];
+        for (let chave in copia) {
+            copia[chave] = copia[chave].filter(item => idsUsuariosPermitidos.includes(item.idUsuario));
+            if (copia[chave].length === 0) {
+                delete copia[chave];
             }
         }
-        return listaCopia;
+        return copia;
     };
 
-    const agruparPorResposta = (id, index, agruparPorPergunta) => {
+    const agruparNotasPorResposta = (id, respostasPorPergunta) => {
         const agrupadoLista = Object.entries(
-            agruparPorPergunta[id].reduce((acc, item) => {
+            respostasPorPergunta[id].reduce((acc, item) => {
                 const { idResposta, ...resto } = item;
                 if (!acc[idResposta]) {
                     acc[idResposta] = [];
@@ -103,13 +103,12 @@ export const ConfiancaNota = () => {
         }));
     };
 
-    const listaFiltrada = filtrarLista(usuarios, filtros);
-    const avaliacaoFiltrada = removerUsuarios(avaliacao, listaFiltrada);
+    const idsUsuariosFiltrados = filtrarUsuariosPorPerfil(usuarios, filtros);
+    const avaliacoesFiltradas = filtrarAvaliacoesPorUsuarios(avaliacao, idsUsuariosFiltrados);
+    const avaliacoesDoQuestionario = avaliacoesFiltradas[questionario.id] || null;
 
-    const av = avaliacaoFiltrada[questionario.id] || null;
-
-    if (av) {
-        const agruparPorPergunta = av.reduce((acc, item) => {
+    if (avaliacoesDoQuestionario) {
+        const respostasAgrupadasPorPergunta = avaliacoesDoQuestionario.reduce((acc, item) => {
             if (!acc[item.idPergunta]) {
                 acc[item.idPergunta] = [];
             }
@@ -118,48 +117,41 @@ export const ConfiancaNota = () => {
             return acc;
         }, {});
 
-        questionario.perguntas.forEach((p, index) => {
-            medias.push(agruparPorResposta(p, index, agruparPorPergunta));
+        questionario.perguntas.forEach((pergunta, index) => {
+            medias.push(agruparNotasPorResposta(pergunta, respostasAgrupadasPorPergunta));
         });
     }
 
     const totalRespostas = respostasDoQuestionario.length;
-    const mediasFiltradoNota = medias[questao]?.value.filter(item => parseFloat(item.mediaNotas) >= rangeNota[0] && parseFloat(item.mediaNotas) <= rangeNota[1])
+    const filtrarNotasPorRange = () =>
+        medias[questao]?.value.filter(({ mediaNotas }) =>
+            parseFloat(mediaNotas) >= rangeNota[0] && parseFloat(mediaNotas) <= rangeNota[1]
+        ) || [];
 
     const filtrarPorConfianca = () => {
-        return respostasDoQuestionario.filter(item => {
-            const valor = item.confiancaPorQuestionario[questao];
-            if (!valor) {
-                if (rangeConfianca[0] === 0) {
-                    return true;
-                }
-                return false;
-            };
+        if (!Array.isArray(respostasDoQuestionario)) return [];
+
+        return respostasDoQuestionario.filter(({ confiancaPorQuestionario }) => {
+            const valor = confiancaPorQuestionario[questao];
+            if (!valor) return rangeConfianca[0] === 0;
             const numero = parseInt(valor);
             return numero >= rangeConfianca[0] && numero <= rangeConfianca[1];
         });
     }
 
-    const filtradaPorConfianca = filtrarPorConfianca();
-    const uniaoFiltrada = filtradaPorConfianca
-        .map(media => {
-            const correspondente = mediasFiltradoNota?.find(conf => conf.idResposta === media.idResposta);
-            if (correspondente) {
-                return {
-                    ...media,
-                    ...correspondente
-                };
-            }
-            return null;
+    const respostasFiltradas = filtrarPorConfianca();
+    const respostasComNota = respostasFiltradas
+        .map(resp => {
+            const correspondente = filtrarNotasPorRange().find(n => n.idResposta === resp.idResposta);
+            return correspondente ? { ...resp, ...correspondente } : null;
         })
-        .filter(item => item !== null);
+        .filter(Boolean);
 
-    let filtroFinal = uniaoFiltrada;
+    let respostasFinais = respostasComNota;
     if (pdfFilter !== 'Todos os pdfs') {
         const id = questionario.listPdf[pdfFilter.slice(-1) - 1].id;
-        filtroFinal = uniaoFiltrada.filter(item => item.idPdf === id)
+        respostasFinais = respostasComNota.filter(item => item.idPdf === id)
     }
-
 
     const sortBy = (a, b) => {
         const aInvalido = a.confiancaApropriada === -1 || a.confiancaQuestao === -1;
@@ -187,25 +179,25 @@ export const ConfiancaNota = () => {
         }
     };
 
-    const filtroFinalOrdenado = filtroFinal
-    .map((resp) => {
-        const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
-        const confiancaEscalada = 1 + (confiancaQuestao - 1) * (4 / 6);
+    const respostasOrdenadas = respostasFinais
+        .map((resp) => {
+            const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
+            const confiancaEscalada = 1 + (confiancaQuestao - 1) * (4 / 6);
 
-        let confiancaApropriada = -1;
+            let confiancaApropriada = -1;
 
-        if (confiancaQuestao) {
-            const diferenca = Math.abs(Math.trunc(resp.mediaNotas) - confiancaEscalada);
-            confiancaApropriada = parseFloat(((4 - diferenca) / 4 * 100).toFixed(2));
-        }
+            if (confiancaQuestao) {
+                const diferenca = Math.abs(Math.trunc(resp.mediaNotas) - confiancaEscalada);
+                confiancaApropriada = parseFloat(((4 - diferenca) / 4 * 100).toFixed(2));
+            }
 
-        return {
-            ...resp,
-            confiancaQuestao: confiancaQuestao || null,
-            confiancaApropriada
-        };
-    })
-    .sort(sortBy);
+            return {
+                ...resp,
+                confiancaQuestao: confiancaQuestao || null,
+                confiancaApropriada
+            };
+        })
+        .sort(sortBy);
 
 
     const onPreviousClick = () => {
@@ -320,7 +312,7 @@ export const ConfiancaNota = () => {
                                 <RxChevronRight className={questao === (questionario.perguntas.length - 1) ? "no-button" : "icon"} onClick={onNextClick} />
                             </div>
                             <div className='respostas-ordenar-div'>
-                                <p style={{ fontWeight: 'bold' }}>{filtroFinalOrdenado.length} / {totalRespostas} resposta(s)</p>
+                                <p style={{ fontWeight: 'bold' }}>{respostasOrdenadas.length} / {totalRespostas} resposta(s)</p>
                                 <div className='ordenar-div'>
                                     <p>Ordenar por:</p>
                                     <select value={ordem} onChange={(e) => setOrdem(e.target.value)}>
@@ -334,7 +326,7 @@ export const ConfiancaNota = () => {
                                 </div>
                             </div>
                             <div className='div-resposta-avaliada-container'>
-                                {filtroFinalOrdenado.map((r, index) => {
+                                {respostasOrdenadas.map((r, index) => {
                                     return (
                                         <div key={index} className='resposta-avaliada-field'>
                                             <p className='pdf-div' style={{ fontWeight: 'bold', backgroundColor: colorsPdf[questionario.listPdf.findIndex(item => item.id === r.idPdf)] }}>pdf {questionario.listPdf.findIndex(item => item.id === r.idPdf) + 1}</p>

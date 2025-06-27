@@ -32,31 +32,31 @@ export const Notas = () => {
         familiaridade: []
     });
 
-    const filtrarLista = (lista, filtros) => {
-        return lista
-            .filter(item => (
-                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(item["-O9RZpD7DTQTQ-dwKCJw"])) &&
-                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(item["-O9RZykzuzqNYlAg_xd1"])) &&
-                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(item["-O9R_5KiJFTMaGU7stem"]))
+    const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
+        return usuarios
+            .filter(usuario => (
+                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(usuario["-O9RZpD7DTQTQ-dwKCJw"])) &&
+                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(usuario["-O9RZykzuzqNYlAg_xd1"])) &&
+                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(usuario["-O9R_5KiJFTMaGU7stem"]))
             ))
-            .map(item => item.id);
+            .map(usuario => usuario.id);
     };
 
-    const removerUsuarios = (lista, idsUsuarios) => {
-        const listaCopia = JSON.parse(JSON.stringify(lista));
+    const filtrarAvaliacoesPorUsuarios = (avaliacoes, idsUsuariosPermitidos) => {
+        const copia = JSON.parse(JSON.stringify(avaliacoes));
 
-        for (let chave in listaCopia) {
-            listaCopia[chave] = listaCopia[chave].filter(item => idsUsuarios.includes(item.idUsuario));
-            if (listaCopia[chave].length === 0) {
-                delete listaCopia[chave];
+        for (let chave in copia) {
+            copia[chave] = copia[chave].filter(item => idsUsuariosPermitidos.includes(item.idUsuario));
+            if (copia[chave].length === 0) {
+                delete copia[chave];
             }
         }
-        return listaCopia;
+        return copia;
     };
 
-    const agruparPorResposta = (id, index, agruparPorPergunta) => {
+    const agruparNotasPorResposta = (idPergunta, respostasPorPergunta) => {
         const agrupadoLista = Object.entries(
-            agruparPorPergunta[id].reduce((acc, item) => {
+            respostasPorPergunta[idPergunta].reduce((acc, item) => {
                 const { idResposta, ...resto } = item;
                 if (!acc[idResposta]) {
                     acc[idResposta] = [];
@@ -74,7 +74,7 @@ export const Notas = () => {
         });
 
         return {
-            idPergunta: id,
+            idPergunta: idPergunta,
             value: agrupadoLista
         };
     };
@@ -88,13 +88,12 @@ export const Notas = () => {
         }));
     };
 
-    const listaFiltrada = filtrarLista(usuarios, filtros);
-    const avaliacaoFiltrada = removerUsuarios(avaliacao, listaFiltrada);
+    const idsUsuariosFiltrados = filtrarUsuariosPorPerfil(usuarios, filtros);
+    const avaliacoesFiltradas = filtrarAvaliacoesPorUsuarios(avaliacao, idsUsuariosFiltrados);
+    const avaliacoesDoQuestionario = avaliacoesFiltradas[questionario.id] || null;
 
-    const av = avaliacaoFiltrada[questionario.id] || null;
-
-    if (av) {
-        const agruparPorPergunta = av.reduce((acc, item) => {
+    if (avaliacoesDoQuestionario) {
+        const respostasAgrupadasPorPergunta = avaliacoesDoQuestionario.reduce((acc, item) => {
             if (!acc[item.idPergunta]) {
                 acc[item.idPergunta] = [];
             }
@@ -103,8 +102,8 @@ export const Notas = () => {
             return acc;
         }, {});
 
-        questionario.perguntas.forEach((p, index) => {
-            medias.push(agruparPorResposta(p, index, agruparPorPergunta));
+        questionario.perguntas.forEach((pergunta, index) => {
+            medias.push(agruparNotasPorResposta(pergunta, respostasAgrupadasPorPergunta));
         });
     }
 

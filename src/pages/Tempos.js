@@ -36,19 +36,19 @@ export const Tempos = () => {
         }));
     };
 
-    const filtrarLista = (lista, filtros) => {
-        return lista
-            .filter(item => (
-                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(item["-O9RZpD7DTQTQ-dwKCJw"])) &&
-                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(item["-O9RZykzuzqNYlAg_xd1"])) &&
-                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(item["-O9R_5KiJFTMaGU7stem"]))
+    const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
+        return usuarios
+            .filter(usuario => (
+                (filtros.faixaEtaria.length === 0 || filtros.faixaEtaria.includes(usuario["-O9RZpD7DTQTQ-dwKCJw"])) &&
+                (filtros.escolaridade.length === 0 || filtros.escolaridade.includes(usuario["-O9RZykzuzqNYlAg_xd1"])) &&
+                (filtros.familiaridade.length === 0 || filtros.familiaridade.includes(usuario["-O9R_5KiJFTMaGU7stem"]))
             ))
-            .map(item => item.id);
+            .map(usuario => usuario.id);
     };
 
-    const removerUsuarios = (lista, idsUsuarios) => {
-        return lista.filter(resposta =>
-            idsUsuarios.includes(resposta.idUsuario)
+    const filtrarAvaliacoesPorUsuarios = (avaliacoes, idsUsuariosPermitidos) => {
+        return avaliacoes.filter(resposta =>
+            idsUsuariosPermitidos.includes(resposta.idUsuario)
         );
     };
 
@@ -71,8 +71,8 @@ export const Tempos = () => {
         return Object.values(agrupado);
     }
 
-    const listaFiltrada = filtrarLista(usuarios, filtros);
-    const respostasFiltrada = removerUsuarios(respostasQuestionario.respostasPorQuestionario, listaFiltrada);
+    const idsUsuariosFiltrados = filtrarUsuariosPorPerfil(usuarios, filtros);
+    const respostasFiltrada = filtrarAvaliacoesPorUsuarios(respostasQuestionario.respostasPorQuestionario, idsUsuariosFiltrados);
     const tempoPorPdf = agruparPorPdf(respostasFiltrada);
 
     const calcularBoxplot = (dados, idPdf) => {
@@ -254,7 +254,7 @@ export const Tempos = () => {
                                 <h2>Legenda</h2>
                                 <h4>Pdfs</h4>
                                 {questionario.listPdf.map((pdf, index) => (
-                                    <div>
+                                    <div key={index}>
                                         <span>{index + 1}. </span>
                                         <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
                                     </div>
