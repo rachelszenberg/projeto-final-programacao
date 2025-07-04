@@ -15,11 +15,12 @@ export const Questionario = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const idUsuario = location.state?.idUsuario || null;
+    const viaNavegacao = location.state?.viaNavegacao || false;
 
     useEffect(() => {
         const isReload = sessionStorage.getItem('reload');
         
-        if (isReload) {
+        if (isReload && !viaNavegacao) {
             sessionStorage.removeItem('reload');
             navigate('/');
         }
@@ -33,7 +34,7 @@ export const Questionario = () => {
         } else {
             navigate('/questionarios-fechados');
         }
-    }, [questionarios.todosQuestionarios, navigate, dispatch, idUsuario, questionarios.questionariosAbertos.length, location.state]);
+    }, [questionarios.todosQuestionarios, navigate, dispatch, idUsuario, viaNavegacao, questionarios.questionariosAbertos.length, location.state]);
 
     useEffect(() => {
         window.addEventListener('beforeunload', () => {

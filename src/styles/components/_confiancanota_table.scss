@@ -10,6 +10,13 @@
     justify-content: space-between;
     margin-bottom: 20px;
 
+    input {
+      padding: $xs-size;
+      border: 1px solid $dark-grey;
+      border-radius: $radius;
+      width: 60%;
+    }
+
     select {
       padding: $xs-size;
       border: 1px solid $dark-grey;
@@ -150,9 +157,8 @@
 }
 
 .div-resposta-avaliada-container {
-  height: 83%;
-  overflow: auto !important;
-  resize: none;
+  flex: 1;
+  min-height: 0;
 }
 
 .filtro-slider {
@@ -200,7 +206,7 @@
   color: white;
   font-size: 10px;
   position: absolute;
-  top: -5px; 
+  top: -5px;
 }
 
 .filtros-pdf {
@@ -225,6 +231,10 @@
   height: 8%;
   display: flex;
   justify-content: space-between;
+  position: "sticky" !important;
+  top: 0;
+  background-color: "#fff";
+  z-index: 10;
 }
 
 .ordenar-div {
@@ -238,4 +248,13 @@
     height: 40px;
     width: auto;
   }
+}
+
+.div-notas-no-answer-confianca {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  text-align: center;
 }

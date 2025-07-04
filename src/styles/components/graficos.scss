@@ -38,14 +38,8 @@
 }
 
 .limpar-filtro {
-    margin-top: $s-size;    // Dá espaço entre o conteúdo e o botão
-    align-self: flex-end;   // Faz ele ir pro canto direito se quiser
-}
-
-.div-answer {
-    width: 70%;
-    background-color: $cor-fundo-avaliacao;
-    border-radius: $radius;
+    margin-top: $s-size; // Dá espaço entre o conteúdo e o botão
+    align-self: flex-end; // Faz ele ir pro canto direito se quiser
 }
 
 .div-notas-no-answer {
@@ -66,7 +60,6 @@
 }
 
 .div-geral-grafico-nota {
-    overflow-y: auto;
     width: 70%;
     background-color: $cor-fundo-avaliacao;
     border-radius: $radius;
@@ -88,7 +81,11 @@
 
 .div-grafico-e-histograma {
     margin-top: $xs-size;
-    width: 100%;
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
 }
 
 .div-grafico {
@@ -101,14 +98,17 @@
 
 .div-grafico-confianca-container {
     width: 100%;
-    height: 100%;
+    flex: 2;
     display: flex;
     justify-content: space-between;
 }
 
 .div-graficos-confianca {
-    width: 100%;
-    height: 85%;
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
 
     p {
         margin: $s-size $m-size $xs-size;
@@ -126,7 +126,7 @@
 }
 
 .div-grafico-legenda {
-    width: 30%;
+    flex: 1;
     padding: $s-size;
 
     h4 {

@@ -10,8 +10,7 @@ import { PerfilUsuario } from './pages/PerfilUsuario';
 import { Notas } from './pages/Notas';
 import { Tempos } from './pages/Tempos';
 import { GraficosTable } from './pages/GraficosTable';
-import { Confianca } from './pages/Confianca';
-import { ConfiancaNota } from './pages/ConfiancaNota';
+import { ConfiancaNotaGrafico } from './pages/ConfiancaNotaGrafico';
 
 function App() {
 
@@ -29,8 +28,7 @@ function App() {
         { path: '/analise', element: <GraficosTable /> },
         { path: '/analise/notas/:idQuestionario', element: <Notas /> },
         { path: '/analise/tempos/:idQuestionario', element: <Tempos/> },
-        { path: '/analise/confianca/:idQuestionario', element: <Confianca/> },
-        { path: '/analise/confiancaXnota/:idQuestionario', element: <ConfiancaNota/> },
+        { path: '/analise/confiancaXnota/:idQuestionario', element: <ConfiancaNotaGrafico/> },
       ]
     }
   ])

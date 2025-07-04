@@ -88,6 +88,12 @@ export const Notas = () => {
         }));
     };
 
+    const handleToggleHistograma = () => {
+        setTimeout(() => {
+            setShowHistograma(prev => !prev);
+        }, 0);
+    };
+
     const idsUsuariosFiltrados = filtrarUsuariosPorPerfil(usuarios, filtros);
     const avaliacoesFiltradas = filtrarAvaliacoesPorUsuarios(avaliacao, idsUsuariosFiltrados);
     const avaliacoesDoQuestionario = avaliacoesFiltradas[questionario.id] || null;
@@ -233,7 +239,7 @@ export const Notas = () => {
                             nomeQuestionario={"As notas foram dadas de a 1 a 5"}
                         />
                         <div className='div-grafico-geral'>
-                            <div className='div-grafico-e-histograma'>
+                            <div className='div-grafico-e-histograma' style={{ overflowY: "auto", minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
                                 <div className='div-grafico'>
                                     <ResponsiveContainer width="70%" height="100%">
                                         <BarChart
@@ -294,7 +300,7 @@ export const Notas = () => {
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
-                                <button className="underline-button show-histograma" onClick={() => setShowHistograma(!showHistograma)}>{showHistograma ? (
+                                <button className="underline-button show-histograma" onClick={handleToggleHistograma}>{showHistograma ? (
                                     <>
                                         Ver menos <RxChevronUp />
                                     </>
@@ -314,11 +320,11 @@ export const Notas = () => {
                                 <h2>Legenda</h2>
                                 <h4>Perguntas</h4>
                                 {medias.map((m, index) => (
-                                    <p>{index + 1}. {perguntas.find(p => p.id === m.idPergunta).questao.pergunta}</p>
+                                    <p key={m.idPergunta}>{index + 1}. {perguntas.find(p => p.id === m.idPergunta).questao.pergunta}</p>
                                 ))}
                                 <h4>Pdfs</h4>
                                 {questionario.listPdf.map((pdf, index) => (
-                                    <div>
+                                    <div key={pdf.url || index}>
                                         <span>{index + 1}. </span>
                                         <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
                                     </div>

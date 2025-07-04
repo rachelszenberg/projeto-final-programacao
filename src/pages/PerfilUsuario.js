@@ -37,9 +37,9 @@ export const PerfilUsuario = () => {
         });
     };
 
-    const onButtonClick = async () => {
-        const id = await dispatch(addPerfil(selecoes)).unwrap();
-        navigate('/questionario', { state: { idUsuario: id } });
+    const onButtonClick = async () => {        
+        const id = await dispatch(addPerfil(selecoes)).unwrap();        
+        navigate('/questionario', { state: { idUsuario: id, viaNavegacao: true } });
     }
 
     const verificarRespostas = useCallback(() => {
