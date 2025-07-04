@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { PdfViwer } from "../components/PdfViwer";
 import { useDispatch, useSelector } from "react-redux";
 import { Perguntas } from "../components/Perguntas";
-import { selectAllQuestionarios, selectRandomPdfs } from "../features/QuestionarioSlice"
+import { selectAllQuestionarios, selectRandomPdfs } from "../features/QuestionarioSlice";
 import { selectRespostasAtuais } from "../features/RespostaAtualSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
@@ -15,17 +15,38 @@ export const Questionario = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const idUsuario = location.state?.idUsuario || null;
+    const viaNavegacao = location.state?.viaNavegacao || false;
 
     useEffect(() => {
-        if (!idUsuario){
+        const isReload = sessionStorage.getItem('reload');
+        
+        if (isReload && !viaNavegacao) {
+            sessionStorage.removeItem('reload');
             navigate('/');
         }
+
+        if (!idUsuario) {
+            navigate('/');
+        }
+
         if (questionarios.questionariosAbertos.length) {
             dispatch(selectRandomPdfs());
         } else {
             navigate('/questionarios-fechados');
         }
-    }, [questionarios.todosQuestionarios, navigate, dispatch, idUsuario, questionarios.questionariosAbertos.length]);
+    }, [questionarios.todosQuestionarios, navigate, dispatch, idUsuario, viaNavegacao, questionarios.questionariosAbertos.length, location.state]);
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('reload', 'true');
+        });
+
+        return () => {
+            window.removeEventListener('beforeunload', () => {
+                sessionStorage.setItem('reload', 'true');
+            });
+        };
+    }, []);
 
     return (
         <div>
@@ -35,5 +56,5 @@ export const Questionario = () => {
                 <Perguntas questionariosAbertos={questionarios.questionariosAbertos} idUsuario={idUsuario}/>
             </div>}
         </div>
-    )
-}
+    );
+};

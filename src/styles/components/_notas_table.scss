@@ -1,0 +1,117 @@
+.notas-container {
+    margin: 0px $l-size;
+    padding: $l-size;
+    background-color: $cor-fundo-avaliacao;
+    border-bottom-right-radius: $radius;
+    border-bottom-left-radius: $radius;
+  
+    .filtros {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+  
+      input {
+        padding: $xs-size;
+        border: 1px solid $dark-grey;
+        border-radius: $radius;
+        width: 60%;
+      }
+  
+      select {
+        padding: $xs-size;
+        border: 1px solid $dark-grey;
+        border-radius: $radius;
+        width: 30%;
+      }
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: $off-white;
+      border-radius: $radius;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+      th {
+        padding: 15px;
+        text-align: left;
+  
+        &:nth-child(1) {
+          width: 25%;
+          border-top-left-radius: $radius;
+        }
+  
+        &:nth-child(2) {
+          width: 50%;
+        }
+  
+        &:nth-child(3) {
+          width: 25%;
+          border-top-right-radius: $radius;
+        }
+      }
+  
+      th {
+        background-color: $off-grey;
+        font-weight: bold;
+      }
+  
+      td {
+        padding: 15px;
+        border-top: 1px solid $off-grey;
+      }
+  
+      tbody {
+        tr {
+          &:hover {
+            background-color: $table-hover;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  
+    .status-circle {
+      display: inline-block;
+      width: $xs-size;
+      height: $xs-size;
+      border-radius: 50%;
+      margin-right: $xs-size; 
+    }
+  
+    .status-feito {
+      color: $feito-dark-green;
+      font-weight: bold;
+      background-color: $feito-off-green;
+      padding: $xs-size;
+      border-radius: $radius;
+  
+      .status-circle {
+        background-color: $feito-dark-green;
+      }
+    }
+  
+    .status-nao-feito {
+      color: $feito-dark-grey;
+      font-weight: bold;
+      background-color: $feito-off-grey;
+      padding: $xs-size;
+      border-radius: $radius;
+  
+      .status-circle {
+        background-color: $feito-dark-grey;
+      }
+    }
+  
+    .status-salvo {
+      color: $feito-dark-yellow;
+      font-weight: bold;
+      background-color: $feito-off-yellow;
+      padding: $xs-size;
+      border-radius: $radius;
+  
+      .status-circle {
+        background-color: $feito-dark-yellow;
+      }
+    }
+  }

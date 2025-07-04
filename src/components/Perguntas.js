@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
-import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoRespostas, addResposta } from "../features/RespostaAtualSlice";
+import { decrementIndex, incrementIndex, selectRespostasAtuais, setAvaliacaoRespostas, addResposta, setTempoPorQuestionario, setConfiancaPorQuestionario } from "../features/RespostaAtualSlice";
 import { selectAllPerguntas } from "../features/PerguntasSlice";
 import { RightComponent } from "./RightComponent";
 
@@ -12,30 +12,48 @@ export const Perguntas = (props) => {
     const allPerguntas = useSelector(selectAllPerguntas);
     const navigate = useNavigate();
     const questionario = props.questionariosAbertos[respostas.respostaIndex];
+    const [segundos, setSegundos] = useState(0);
 
     const [respostasTmp, setRespostasTmp] = useState([]);
+    const [confiancasTmp, setConfiancasTmp] = useState([]);
     const [listIndexErros, setListIndexErros] = useState([]);
     const [podeVoltar, setPodeVoltar] = useState();
     const [temProximo, setTemProximo] = useState();
     const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
-    const regex = useMemo(() => /([a-zA-Z0-9].*){2,}/, []);
+    const opcoes = ["1 - Nada confiante", "2", "3", "4", "5", "6", "7 - Muito confiante"];
+
+    const regex = useMemo(() => /([a-zA-Z0-9].*){1,}/, []);
 
     let perguntas = [];
     questionario.perguntas.forEach((p_id) => {
-        const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id).pergunta;
+        const perguntaTemp = allPerguntas.find(pergunta => pergunta.id === p_id)?.questao.pergunta;
+
         perguntas.push(perguntaTemp);
     });
 
     useEffect(() => {
+        const intervalo = setInterval(() => {
+            setSegundos((prevSegundos) => prevSegundos + 1);
+        }, 1000);
+
+        return () => clearInterval(intervalo);
+    }, []);
+
+    useEffect(() => {
         const perguntaTemResposta = respostas.listRespostas[respostas.respostaIndex];
         const respostasIniciais = perguntaTemResposta ? perguntaTemResposta.respostasPergunta : [];
+        const tempoInicial = respostas.tempoPorQuestionario[respostas.respostaIndex] || 0;
+        const confiancaInicial = respostas.confiancaPorQuestionario[respostas.respostaIndex] || "";
+
         setRespostasTmp(respostasIniciais.length ? respostasIniciais : Array(perguntas.length).fill(''));
         setPodeVoltar(respostas.respostaIndex !== 0);
         setTemProximo(respostas.respostaIndex !== props.questionariosAbertos.length - 1)
         setListIndexErros([]);
-    }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, props.questionariosAbertos.length, perguntas.length])
+        setSegundos(tempoInicial);
+        setConfiancasTmp(confiancaInicial.length ? confiancaInicial : Array(perguntas.length).fill(''));
+    }, [questionario.perguntas, respostas.listRespostas, respostas.respostaIndex, props.questionariosAbertos.length, perguntas.length, respostas.tempoPorQuestionario, respostas.confiancaPorQuestionario])
 
     useEffect(() => {
         let temp = 0;
@@ -47,6 +65,12 @@ export const Perguntas = (props) => {
         const novasRespostas = [...respostasTmp];
         novasRespostas[index] = value;
         setRespostasTmp(novasRespostas);
+    };
+
+    const handleConfiancaChange = (index, value) => {
+        const novasConfiancas = [...confiancasTmp];
+        novasConfiancas[index] = value;
+        setConfiancasTmp(novasConfiancas);
     };
 
     const handleBlur = (index) => {
@@ -66,6 +90,8 @@ export const Perguntas = (props) => {
     const onVoltar = (e) => {
         e.preventDefault();
         dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
+        dispatch(setTempoPorQuestionario(segundos));
+        dispatch(setConfiancaPorQuestionario(confiancasTmp));
         dispatch(decrementIndex());
     };
 
@@ -75,6 +101,8 @@ export const Perguntas = (props) => {
         respostasTmp.forEach((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
+            dispatch(setTempoPorQuestionario(segundos));
+            dispatch(setConfiancaPorQuestionario(confiancasTmp));
             dispatch(incrementIndex());
         }
         else {
@@ -88,6 +116,8 @@ export const Perguntas = (props) => {
         respostasTmp.forEach((r, index) => { if (!regex.test(r)) { erros.push(index); } });
         if (erros.length === 0) {
             dispatch(setAvaliacaoRespostas({ idQuestionario: questionario.id, idPdf: questionario.pdf.id, respostasPergunta: respostasTmp }));
+            dispatch(setTempoPorQuestionario(segundos));
+            dispatch(setConfiancaPorQuestionario(confiancasTmp));
             setShowModal(true);
         }
         else {
@@ -97,8 +127,20 @@ export const Perguntas = (props) => {
 
     const confirmar = () => {
         dispatch(addResposta(props.idUsuario))
-        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação.", buttonText: "Responder novamente" } })
+        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação."} })
     }
+
+    // const formatarTempo = (segundosTotais) => {
+    //     const horas = Math.floor(segundosTotais / 3600);
+    //     const minutos = Math.floor((segundosTotais % 3600) / 60);
+    //     const segundos = segundosTotais % 60;
+
+    //     const horasFormatadas = String(horas).padStart(2, "0");
+    //     const minutosFormatados = String(minutos).padStart(2, "0");
+    //     const segundosFormatados = String(segundos).padStart(2, "0");
+
+    //     return `${horasFormatadas}:${minutosFormatados}:${segundosFormatados}`;
+    // };
 
     return (
         <form className="div-form">
@@ -110,13 +152,14 @@ export const Perguntas = (props) => {
                 qtdRespondidas={qtdRespondidas}
                 titleText="Questionário"
                 nomeQuestionario={questionario.nome}
+                // tempoQuestionario={formatarTempo(segundos)}
 
                 podeVoltar={podeVoltar}
                 temProximo={temProximo}
                 onVoltar={onVoltar}
                 onProximo={onProximo}
                 onEnviar={onEnviar}
-                buttonNextOrSaveClass={(qtdRespondidas !== perguntas.length) ? "button-disabled no-hover" : undefined}
+                buttonNextOrSaveClass={(qtdRespondidas !== perguntas.length || confiancasTmp === "") ? "button-disabled no-hover" : undefined}
             >
                 <div className="form">
                     {perguntas.map((pergunta, index) => (
@@ -131,9 +174,26 @@ export const Perguntas = (props) => {
                                 onBlur={() => handleBlur(index)}
                                 placeholder={`Resposta ${index + 1}`} />
                             {listIndexErros.includes(index) && <p className="obrigatorio">Obrigatório</p>}
+                            <p className="text-question-confianca">Quão confiante você se sentiu para responder essa pergunta?</p>
+                            <div className="radio-group">
+                                {opcoes.map((opcao, index_radio) => (
+                                    <div key={index_radio} className="radio-container">
+                                        <label >
+                                            <input
+                                                type="radio"
+                                                value={opcao}
+                                                checked={confiancasTmp[index] === opcao}
+                                                onChange={(e) => handleConfiancaChange(index, e.target.value)}
+                                            />
+                                            {opcao}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
+
             </RightComponent>
             <ConfirmacaoModal showModal={showModal} title={"Você tem certeza que deseja enviar as respostas do questionário?"} text={"Após o envio, não será possível editar ou excluir."} cancelButton={() => setShowModal(false)} confirmButton={confirmar} />
         </form>

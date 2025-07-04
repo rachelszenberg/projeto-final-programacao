@@ -15,7 +15,7 @@
 }
 
 .div-top{
-  flex-grow: 1;
+  flex: 1;
 }
 
 .div-children {
@@ -83,6 +83,12 @@
   font-size: $font-size-small;
 }
 
+.text-question-confianca {
+  margin: $xs-size 0px $xs-size !important;
+  font-size: $font-size-small;
+  color: $dark-grey-darker;
+}
+
 .input-error {
   border-color: $error !important;
 }
@@ -140,4 +146,34 @@
     cursor: default;
     background-color: $cor-primaria;
   }
+}
+
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center; 
+  margin-bottom: $xs-size;
+}
+
+.radio-container label {
+  display: flex;
+  align-items: center;
+  gap: $xs-size;
+  color: $dark-grey-darker;
+}
+
+.radio-container input[type="radio"] {
+  width: $font-size-small;
+  height: $font-size-small;
+  cursor: pointer;
+}
+
+.radio-container input[type="radio"]:checked {
+  accent-color: $botao-primario; /* Cor personalizada ao ser marcado */
 }

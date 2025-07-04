@@ -11,7 +11,10 @@ export const RightTitleComponent = (props) => {
                 </p>
                 {props.progressBar && <ProgressBar total={props.questionariosLength} ind={(props.qtdRespondidas === props.perguntasLength) ? props.index + 1 : props.index} />}
             </div>
-        {props.nomeQuestionario && <p className="nome-questionario">{props.nomeQuestionario}</p>}
+            <div className="div-title-avaliacao">
+                {props.nomeQuestionario && <p className="nome-questionario">{props.nomeQuestionario}</p>}
+                {props.tempoQuestionario && <p className="nome-questionario">{props.tempoQuestionario}</p>}
+            </div>
         </div>
     )
 }

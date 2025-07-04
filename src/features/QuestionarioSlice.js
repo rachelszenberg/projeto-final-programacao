@@ -37,25 +37,30 @@ export const avaliacaoSlice = createSlice({
     reducers: {
         selectRandomPdfs: (state, action) => {
             const questionariosAbertos = state.questionariosAbertos.map(q => JSON.parse(JSON.stringify(q)));
-
-            let zeroAdded = false;
-            questionariosAbertos.forEach((q, i) => {
-                let pdfIdx;
-                const listPdf = q.listPdf;
-                if (!zeroAdded) {
-                    if (i === (questionariosAbertos.length - 1)) {
+            let pdfIdx;
+            if (questionariosAbertos.length > 1) {
+                let zeroAdded = false;
+                questionariosAbertos.forEach((q, i) => {
+                    
+                    const listPdf = q.listPdf;
+                    if (!zeroAdded && (i === (questionariosAbertos.length - 1))) {
                         pdfIdx = 0;
+                    } else if (zeroAdded) {
+                        pdfIdx = Math.floor(Math.random() * (listPdf.length - 1)) + 1;
                     } else {
-                        pdfIdx = Math.floor(Math.random() * listPdf.length);
+                        pdfIdx = Math.floor(Math.random() * (listPdf.length));
                         if (pdfIdx === 0) {
                             zeroAdded = true;
                         }
                     }
-                } else {
-                    pdfIdx = Math.floor(Math.random() * (listPdf.length - 1)) + 1;
-                }
-                questionariosAbertos[i].pdf = listPdf[pdfIdx];
-            });
+                    questionariosAbertos[i].pdf = listPdf[pdfIdx];
+                })
+            } else {
+                const listPdf = questionariosAbertos[0].listPdf;
+                pdfIdx = Math.floor(Math.random() * (listPdf.length));
+                questionariosAbertos[0].pdf = listPdf[pdfIdx];
+            }
+
             state.questionariosAbertos = questionariosAbertos;
             state.pdfLoaded = true;
         },

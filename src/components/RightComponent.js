@@ -10,6 +10,7 @@ export const RightComponent = ({
     qtdRespondidas = 0,
     titleText,
     nomeQuestionario,
+    tempoQuestionario=false,
     podeVoltar = false,
     podeSalvar = false,
     temProximo,
@@ -37,6 +38,7 @@ export const RightComponent = ({
                 qtdRespondidas={qtdRespondidas} 
                 titleText={titleText}
                 nomeQuestionario={nomeQuestionario}
+                tempoQuestionario={tempoQuestionario}
             />
             <div className={noAnswer ? 'div-no-answer' : 'div-children'} ref={childrenRef}>
             {children}
