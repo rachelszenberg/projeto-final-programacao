@@ -430,7 +430,7 @@ export const ConfiancaNotaGrafico = () => {
                                         })}
                                     </div>
                                 </div>
-                                <div
+                                {questao === -1 ? <div
                                     style={{
                                         textAlign: "center",
                                         padding: "20px",
@@ -445,9 +445,9 @@ export const ConfiancaNotaGrafico = () => {
                                             justifyContent: "center",
                                         }}
                                     >
-                                        {Array.isArray(finalPorPergunta) && finalPorPergunta.length > 0 && (questao !== -1 ? [todasPerguntas[questao]] : todasPerguntas).map(
+                                        {Array.isArray(finalPorPergunta) && finalPorPergunta.length > 0 && todasPerguntas.map(
                                             ([perguntaKey], idxPergunta) => {
-                                                const cor = cores[(questao !== -1 ? questao : idxPergunta) % cores.length];
+                                                const cor = cores[(idxPergunta) % cores.length];
                                                 return (
                                                     <div
                                                         key={perguntaKey}
@@ -470,7 +470,7 @@ export const ConfiancaNotaGrafico = () => {
                                         )}
                                     </div>
                                 </div>
-                                {questao >= 0 &&
+                                : questao >= 0 &&
                                     <div>
                                         <button className="underline-button show-histograma" onClick={() => setShowListaCompleta(!showListaCompleta)}>{showListaCompleta ? (
                                             <>
