@@ -18,10 +18,8 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
     const temp = respostas.find(r => r.id === params.idQuestionario);
     const respostasDoQuestionario = temp?.respostasPorQuestionario;
     const colorsPdf = ['#A7C7E790', '#FBC49C90'];
-    const colorsBackgroundNota = ['#C41E0035', '#C41E0020', '#C47E0025', '#03784720', '#03784735', '#03784735'];
-    const colorsBackgroundConfianca = ['#C41E0035', '#C41E0020', '#C44E0023', '#C47E0025', '#647B2423', '#03784720', '#03784735', '#03784735'];
-    const colorsTextNota = ['#C41E00', '#C41E0090', '#C47E00', '#03784790', '#037847', '#037847'];
-    const colorsTextConfianca = ['#C41E00', '#C41E0090', '#C44E0090', '#C47E00', '#647B2490', '#03784790', '#037847'];
+    const colorsBackground = ['#C41E0035', '#C41E0020', '#C44E0023', '#C47E0025', '#647B2423', '#03784720', '#03784735', '#03784735'];
+    const colorsText = ['#C41E00', '#C41E0090', '#C44E0090', '#C47E00', '#647B2490', '#03784790', '#037847'];
     const [ordem, setOrdem] = useState('Confiança apropriada decrescente');
 
     const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
@@ -150,13 +148,12 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
     const respostasOrdenadas = respostasFinais
         .map((resp) => {
             const confiancaQuestao = Number(resp.confiancaPorQuestionario[questao]?.[0]);
-            const confiancaEscalada = 1 + (confiancaQuestao - 1) * (4 / 6);
 
             let confiancaApropriada = -1;
 
             if (confiancaQuestao) {
-                const diferenca = Math.abs(Math.trunc(resp.mediaNotas) - confiancaEscalada);
-                confiancaApropriada = parseFloat(((4 - diferenca) / 4 * 100).toFixed(2));
+                const diferenca = Math.abs(Math.trunc(resp.mediaNotas) - confiancaQuestao);
+                confiancaApropriada = parseFloat(((6 - diferenca) / 6 * 100).toFixed(2));
             }
 
             return {
@@ -200,9 +197,9 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
                                     <div className='resposta-div'>
                                         <p>{r.listRespostas[questao]}</p>
                                         <div className='confiancaxnota-div'>
-                                            <p className='confiancaxnota' style={{ color: colorsTextNota[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackgroundNota[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 5.00</p>
-                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsTextConfianca[r.confiancaQuestao - 1], backgroundColor: colorsBackgroundConfianca[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 7</p>}
-                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsTextNota[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackgroundNota[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
+                                            <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 5.00</p>
+                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 7</p>}
+                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackground[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
                                         </div>
                                     </div>
                                 </div>

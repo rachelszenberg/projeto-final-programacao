@@ -2423,6 +2423,33 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
+"@svgdotjs/svg.draggable.js@^3.0.4":
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/@svgdotjs/svg.draggable.js/-/svg.draggable.js-3.0.6.tgz"
+  integrity sha512-7iJFm9lL3C40HQcqzEfezK2l+dW2CpoVY3b77KQGqc8GXWa6LhhmX5Ckv7alQfUXBuZbjpICZ+Dvq1czlGx7gA==
+
+"@svgdotjs/svg.filter.js@^3.0.8":
+  version "3.0.9"
+  resolved "https://registry.npmjs.org/@svgdotjs/svg.filter.js/-/svg.filter.js-3.0.9.tgz"
+  integrity sha512-/69XMRCDoam2HgC4ldHIaDgeQf1ViHIsa0Ld4uWgiXtZ+E24DWHe/9Ib6kbNiZ7WRIdlVokUDR1Fg0kjIpkfbw==
+  dependencies:
+    "@svgdotjs/svg.js" "^3.2.4"
+
+"@svgdotjs/svg.js@^3.2.4":
+  version "3.2.4"
+  resolved "https://registry.npmjs.org/@svgdotjs/svg.js/-/svg.js-3.2.4.tgz"
+  integrity sha512-BjJ/7vWNowlX3Z8O4ywT58DqbNRyYlkk6Yz/D13aB7hGmfQTvGX4Tkgtm/ApYlu9M7lCQi15xUEidqMUmdMYwg==
+
+"@svgdotjs/svg.resize.js@^2.0.2":
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/@svgdotjs/svg.resize.js/-/svg.resize.js-2.0.5.tgz"
+  integrity sha512-4heRW4B1QrJeENfi7326lUPYBCevj78FJs8kfeDxn5st0IYPIRXoTtOSYvTzFWgaWWXd3YCDE6ao4fmv91RthA==
+
+"@svgdotjs/svg.select.js@^4.0.1":
+  version "4.0.3"
+  resolved "https://registry.npmjs.org/@svgdotjs/svg.select.js/-/svg.select.js-4.0.3.tgz"
+  integrity sha512-qkMgso1sd2hXKd1FZ1weO7ANq12sNmQJeGDjs46QwDVsxSRcHmvWKL2NDF7Yimpwf3sl5esOLkPqtV2bQ3v/Jg==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.npmjs.org/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz"
@@ -3222,6 +3249,11 @@
   resolved "https://registry.npmjs.org/@xtuc/long/-/long-4.2.2.tgz"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@yr/monotone-cubic-spline@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/@yr/monotone-cubic-spline/-/monotone-cubic-spline-1.0.3.tgz"
+  integrity sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==
+
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"
   resolved "https://registry.npmjs.org/abab/-/abab-2.0.6.tgz"
@@ -3300,6 +3332,15 @@ ag-charts-community@12.0.0:
     ag-charts-locale "12.0.0"
     ag-charts-types "12.0.0"
 
+ag-charts-community@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npmjs.org/ag-charts-community/-/ag-charts-community-12.0.1.tgz"
+  integrity sha512-+OQeLriVWX4x8U/HtVmzZYswyqi64htYjGq82sPnlr1pL9HCf4zb7qGHYZs+NUCKXdhlQFOVVKInvl0FRC+cgw==
+  dependencies:
+    ag-charts-core "12.0.1"
+    ag-charts-locale "12.0.1"
+    ag-charts-types "12.0.1"
+
 ag-charts-core@12.0.0:
   version "12.0.0"
   resolved "https://registry.npmjs.org/ag-charts-core/-/ag-charts-core-12.0.0.tgz"
@@ -3307,10 +3348,30 @@ ag-charts-core@12.0.0:
   dependencies:
     ag-charts-types "12.0.0"
 
+ag-charts-core@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npmjs.org/ag-charts-core/-/ag-charts-core-12.0.1.tgz"
+  integrity sha512-oM58uzthJnDmfSsbT+2hNhKbWFcvMHX7KKksuS5Rb4Gv7cE61/AuQVQSzUILIa9dDezBpagHvWYz/im3R9i5WQ==
+  dependencies:
+    ag-charts-types "12.0.1"
+
+ag-charts-enterprise@^12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npmjs.org/ag-charts-enterprise/-/ag-charts-enterprise-12.0.1.tgz"
+  integrity sha512-MU3dIaHiaifoWyJbXsISxJZPx0Zt0q5logPWHBmpgdJpqjHRBLWj74KsdzTVZZHLUVfjadxT0iuk0NEuKdzBbg==
+  dependencies:
+    ag-charts-community "12.0.1"
+    ag-charts-core "12.0.1"
+
 ag-charts-locale@12.0.0:
   version "12.0.0"
   resolved "https://registry.npmjs.org/ag-charts-locale/-/ag-charts-locale-12.0.0.tgz"
   integrity sha512-mJimzTOkiMgxbNAlzgzSnrdcnCi+6+iz0NT0gg5KnsbVuCQcQ4XJwZozTe9sDVH5amYjbhbZg7/GKiHfJviiAg==
+
+ag-charts-locale@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npmjs.org/ag-charts-locale/-/ag-charts-locale-12.0.1.tgz"
+  integrity sha512-dwQfyNGSNXhWq/pAK0cIsN/EhX01WhjTYcP1UEkx0lrR24CrzWqh2d2FeVWHnd/seZuBDuXKnEElrfV0Kr2BOg==
 
 ag-charts-react@^12.0.0:
   version "12.0.0"
@@ -3323,6 +3384,11 @@ ag-charts-types@12.0.0:
   version "12.0.0"
   resolved "https://registry.npmjs.org/ag-charts-types/-/ag-charts-types-12.0.0.tgz"
   integrity sha512-/SFzPVLnCzRDsEV6Lh/dqdbdgSowK23jBogYAWLZnQuHjM3o7wbV78yv4WXlQSb5TcubNk3GEdhRLgIMR17WIg==
+
+ag-charts-types@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npmjs.org/ag-charts-types/-/ag-charts-types-12.0.1.tgz"
+  integrity sha512-AvAmoyuKG63UxrwGTU+T6f+EEE8tc4ksm7Ai9lJcaUHn9s4PU9hspAGl69GnZpAiIxzA5uCLDvG/Did5N2DB2A==
 
 agent-base@^6.0.2, agent-base@6:
   version "6.0.2"
@@ -3475,6 +3541,18 @@ anymatch@^3.0.3, anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+apexcharts@^5.2.0, apexcharts@>=4.0.0:
+  version "5.2.0"
+  resolved "https://registry.npmjs.org/apexcharts/-/apexcharts-5.2.0.tgz"
+  integrity sha512-BZ+v4Wqf4BKVRKBatVghDVu9vu2SXhl/F7ujT2awnf7Zv6RT39FQWtAAV3bpH+G5c8IADw0PyOKG00+rN1UoNg==
+  dependencies:
+    "@svgdotjs/svg.draggable.js" "^3.0.4"
+    "@svgdotjs/svg.filter.js" "^3.0.8"
+    "@svgdotjs/svg.js" "^3.2.4"
+    "@svgdotjs/svg.resize.js" "^2.0.2"
+    "@svgdotjs/svg.select.js" "^4.0.1"
+    "@yr/monotone-cubic-spline" "^1.0.3"
 
 "aproba@^1.0.3 || ^2.0.0":
   version "2.0.0"
@@ -9182,12 +9260,15 @@ performance-now@^2.1.0:
     "@testing-library/jest-dom" "^5.17.0"
     "@testing-library/react" "^13.4.0"
     "@testing-library/user-event" "^13.5.0"
+    ag-charts-enterprise "^12.0.1"
     ag-charts-react "^12.0.0"
+    apexcharts "^5.2.0"
     firebase "^10.13.1"
     mathjs "^14.5.2"
     node-sass "^9.0.0"
     pfp "file:"
     react "^18.3.1"
+    react-apexcharts "^1.7.0"
     react-dom "^18.3.1"
     react-icons "^5.3.0"
     react-modal "^3.16.1"
@@ -9995,6 +10076,13 @@ raw-body@2.5.2:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-apexcharts@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.npmjs.org/react-apexcharts/-/react-apexcharts-1.7.0.tgz"
+  integrity sha512-03oScKJyNLRf0Oe+ihJxFZliBQM9vW3UWwomVn4YVRTN1jsIR58dLWt0v1sb8RwJVHDMbeHiKQueM0KGpn7nOA==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-app-polyfill@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz"
@@ -10218,7 +10306,7 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@*, "react@^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18", "react@^16 || ^17 || ^18", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18", react@^18.0, react@^18.0.0, "react@^18.0.0 || ^19.0.0", react@^18.3.1, "react@>= 16", react@>=16.6.0, react@>=16.8, react@>=16.8.0:
+react@*, "react@^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18", "react@^16 || ^17 || ^18", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18", react@^18.0, react@^18.0.0, "react@^18.0.0 || ^19.0.0", react@^18.3.1, "react@>= 16", react@>=0.13, react@>=16.6.0, react@>=16.8, react@>=16.8.0:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
