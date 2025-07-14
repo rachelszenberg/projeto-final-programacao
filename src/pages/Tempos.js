@@ -216,9 +216,7 @@ export const Tempos = () => {
             }
         }
     }, [data]);
-    console.log("data:");
-    console.log(data);
-
+    
     return (
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
