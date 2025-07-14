@@ -125,6 +125,11 @@
     padding: $xs-size;
 }
 
+.grafico-box {
+    flex: 3;
+    height: 100%;
+}
+
 .div-grafico-legenda {
     flex: 1;
     padding: $s-size;

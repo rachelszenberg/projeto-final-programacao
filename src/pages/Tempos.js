@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ComposedChart, ZAxis, Scatter } from 'recharts';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { Header } from '../components/Header';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { RightTitleComponent } from '../components/RightTitleComponent';
 import { selectAllPerguntasPerfil } from '../features/PerfilSlice';
 import { selectAllUsuarios } from '../features/UsariosSlice';
+import ReactApexChart from 'react-apexcharts';
 
 export const Tempos = () => {
     const params = useParams();
@@ -80,19 +80,20 @@ export const Tempos = () => {
             throw new Error("A lista fornecida deve ser um array não vazio.");
         }
 
-        if (dados.length === 1) {
+        const dadosOrdenados = [...dados].sort((a, b) => a - b);
+
+        if (dadosOrdenados.length === 1) {
+            const unico = dadosOrdenados[0];
             return {
                 pdf: idPdf,
-                min: dados[0],
-                lowerQuartile: dados[0],
-                median: dados[0],
-                upperQuartile: dados[0],
-                max: dados[0],
-                average: dados[0],
+                min: unico,
+                lowerQuartile: unico,
+                median: unico,
+                upperQuartile: unico,
+                max: unico,
+                outliers: []
             };
         }
-
-        const dadosOrdenados = [...dados].sort((a, b) => a - b);
 
         const calcularMediana = (lista) => {
             const n = lista.length;
@@ -102,96 +103,121 @@ export const Tempos = () => {
                 : lista[meio];
         };
 
-        const lowerHalf = dadosOrdenados.slice(0, Math.floor(dadosOrdenados.length / 2));
-        const upperHalf = dadosOrdenados.slice(Math.ceil(dadosOrdenados.length / 2));
+        const n = dadosOrdenados.length;
+        const metade = Math.floor(n / 2);
 
-        const min = dadosOrdenados[0];
-        const max = dadosOrdenados[dadosOrdenados.length - 1];
-        const lowerQuartile = calcularMediana(lowerHalf);
-        const median = calcularMediana(dadosOrdenados);
-        const upperQuartile = calcularMediana(upperHalf);
-        const average = dadosOrdenados.reduce((soma, valor) => soma + valor, 0) / dadosOrdenados.length;
+        const lowerHalf = dadosOrdenados.slice(0, metade);
+        const upperHalf = n % 2 === 0
+            ? dadosOrdenados.slice(metade)
+            : dadosOrdenados.slice(metade + 1);
 
+        const Q1 = calcularMediana(lowerHalf);
+        const Q3 = calcularMediana(upperHalf);
+        const IQR = Q3 - Q1;
+        const lowerFence = Q1 - 1.5 * IQR;
+        const upperFence = Q3 + 1.5 * IQR;
+
+        const outliers = dadosOrdenados.filter(v => v < lowerFence || v > upperFence);
         return {
             pdf: idPdf,
-            min,
-            lowerQuartile,
-            median,
-            upperQuartile,
-            max,
-            average,
+            min: Math.min(...dadosOrdenados.filter(v => v >= lowerFence && v <= upperFence)),
+            lowerQuartile: Q1,
+            median: calcularMediana(dadosOrdenados),
+            upperQuartile: Q3,
+            max: Math.max(...dadosOrdenados.filter(v => v >= lowerFence && v <= upperFence)),
+            outliers
         };
-    }
+    };
 
-    const DotBar = (props) => {
-        const { x, y, width, height } = props;
+    const data = questionario.listPdf.map((pdf, index) => {
+        const temposDoPdf = tempoPorPdf.find(t => t.idPdf === pdf.id);
 
-        if (x == null || y == null || width == null || height == null) {
-            return null;
+        if (temposDoPdf) {
+            return calcularBoxplot(temposDoPdf.tempos, "PDF " + (index + 1));
+        } else {
+            return {
+                pdf: "PDF " + (index + 1),
+                min: null,
+                lowerQuartile: null,
+                median: null,
+                upperQuartile: null,
+                max: null,
+                outliers: []
+            };
         }
-
-        return (
-            <line
-                x1={x + width / 2}
-                y1={y + height}
-                x2={x + width / 2}
-                y2={y}
-                stroke={'#252525'}
-                strokeWidth={3}
-                strokeDasharray={'8'}
-            />
-        );
-    };
-
-    const HorizonBar = (props) => {
-        const { x, y, width, height } = props;
-
-        if (x == null || y == null || width == null || height == null) {
-            return null;
-        }
-
-        return <line x1={x} y1={y} x2={x + width} y2={y} stroke={'#252525'} strokeWidth={3} />;
-    };
-
-    const useBoxPlot = (boxPlots) => {
-        const data = useMemo(
-            () =>
-                boxPlots.map((v, index) => {
-                    if (v === null || v === undefined) {
-                        return {
-                            pdf: "PDF " + (index + 1),
-                            min: null,
-                            bottomWhisker: null,
-                            bottomBox: null,
-                            topBox: null,
-                            topWhisker: null,
-                            average: null,
-                            size: 500,
-                        };
-                    }
-
-                    return {
-                        pdf: v.pdf,
-                        min: v.min,
-                        bottomWhisker: v.lowerQuartile - v.min,
-                        bottomBox: v.median - v.lowerQuartile,
-                        topBox: v.upperQuartile - v.median,
-                        topWhisker: v.max - v.upperQuartile,
-                        average: v.average,
-                        size: 500
-                    };
-                }),
-            [boxPlots]
-        );
-
-        return data;
-    };
-
-    tempoPorPdf.forEach((t) => {
-        const index = questionario.listPdf.findIndex(item => item.id === t.idPdf);
-        boxPlots[index] = calcularBoxplot(t.tempos, "PDF " + (index + 1));
     });
-    const data = useBoxPlot(boxPlots);
+
+
+    const { series, options } = useMemo(() => {
+        return {
+            series: [
+                {
+                    name: 'box',
+                    type: 'boxPlot',
+                    data: data
+                        .filter(item => item !== undefined)
+                        .map(item => ({
+                            x: item.pdf,
+                            y: [
+                                item.min,
+                                item.lowerQuartile,
+                                item.median,
+                                item.upperQuartile,
+                                item.max
+                            ],
+                            goals: item.outliers.map(outlier => ({
+                                value: outlier,
+                                strokeWidth: 0,
+                                strokeHeight: 10,
+                                strokeLineCap: 'round',
+                                strokeColor: 'black'
+                            }))
+                        }))
+                }
+            ],
+            options: {
+                chart: {
+                    type: 'boxPlot',
+                    height: "100%",
+                    width: "90%",
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    boxPlot: {
+                        colors: {
+                            upper: '#FBC49C',
+                            lower: '#FBC49C',
+                        },
+                    },
+                },
+                xaxis: {
+                    type: 'category',
+                },
+                tooltip: {
+                    custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+                        const dataPoint = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                        if (!dataPoint.y || dataPoint.y.some(v => v === null || v === undefined)) {
+                            return '<div style="font-style: italic; padding: 16px">Sem dados</div>';
+                        }
+
+                        return `
+                <div style="padding: 16px; gap: 4px;">
+                    <b>Máximo:</b> ${dataPoint.y[4]}<br/>
+                    <b>Q3:</b> ${dataPoint.y[3]}<br/>
+                    <b>Mediana:</b> ${dataPoint.y[2]}<br/>
+                    <b>Q1:</b> ${dataPoint.y[1]}<br/>
+                    <b>Mínimo:</b> ${dataPoint.y[0]}
+                </div>
+            `;
+                    }
+                }
+            }
+        }
+    }, [data]);
+    console.log("data:");
+    console.log(data);
 
     return (
         <div>
@@ -229,27 +255,10 @@ export const Tempos = () => {
                             titleText={"Tempo para completar o questionário (em segundos)"}
                         />
 
-                        <div className='div-grafico'>
-                            <ResponsiveContainer width="70%" height="100%">
-                                <ComposedChart data={data}>
-                                    <CartesianGrid strokeDasharray='3 3' />
-                                    <Bar stackId={'a'} dataKey={'min'} fill={'none'} />
-                                    <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
-                                    <Bar stackId={'a'} dataKey={'bottomWhisker'} shape={<DotBar />} />
-                                    <Bar stackId={'a'} dataKey={'bottomBox'} fill={'#FBC49C'} />
-                                    <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
-                                    <Bar stackId={'a'} dataKey={'topBox'} fill={'#FBC49C'} />
-                                    <Bar stackId={'a'} dataKey={'topWhisker'} shape={<DotBar />} />
-                                    <Bar stackId={'a'} dataKey={'bar'} shape={<HorizonBar />} />
-                                    <ZAxis type='number' dataKey='size' range={[0, 250]} />
-                                    <Scatter dataKey='average' fill={'#A7C7E7'} stroke={'#FEFEFE'} />
-                                    <XAxis
-                                        dataKey="pdf"
-                                        tickFormatter={(value) => value}
-                                    />
-                                    <YAxis />
-                                </ComposedChart>
-                            </ResponsiveContainer>
+                        <div className='div-grafico' >
+                            <div className='grafico-box' >
+                                <ReactApexChart options={options} series={series} type="boxPlot" width="100%" height="100%" />
+                            </div>
                             <div className="div-grafico-legenda">
                                 <h2>Legenda</h2>
                                 <h4>Pdfs</h4>
