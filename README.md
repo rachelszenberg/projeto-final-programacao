@@ -4,6 +4,13 @@ Avalia Simples é um sistema feito em React para auxiliar autores de documentos 
 ## Motivação
 A linguagem simples é um tema de crescente estudo.... mas ainda está faltando ferramentas de testes, para ajudar os autores, o Avalia Simples vem com esse objetivo.
 
+## Requisitos
+
+Antes de instalar as dependências, certifique-se de que está utilizando o Node.js na versão **18.18.2**.  
+Você pode verificar a versão instalada com o comando:
+
+Se precisar instalar ou mudar a versão, recomendamos usar o [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm) para facilitar a troca entre versões do Node.js.
+
 ## Instalação
 1. Clone esse repositório com o comando
 ```
