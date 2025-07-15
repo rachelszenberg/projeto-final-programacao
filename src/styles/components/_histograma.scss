@@ -40,7 +40,15 @@
 }
 
 .ativo {
-  color: #00a69c;
-  border-bottom: 3px solid #00a69c;
-  transition: border-color 0.2s, color 0.2s;
+    color: #00a69c;
+    border-bottom: 3px solid #00a69c;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.div-pergunta {
+    margin-bottom: $l-size;
+    background-color: $off-white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    border-radius: $radius;
+    padding: $s-size $m-size;
 }

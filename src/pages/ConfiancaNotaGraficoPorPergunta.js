@@ -12,7 +12,6 @@ import { selectAllRespostas } from '../features/CarregaRespostasSlice';
 import { mean } from 'mathjs';
 import ReactSlider from 'react-slider';
 import { CartesianGrid, ReferenceLine, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { RxChevronDown, RxChevronUp } from 'react-icons/rx';
 import { ConfiancaNotaLista } from './ConfiancaNotaLista';
 
 const aplicarJitter = (valor) => valor + (Math.random() - 0.5) * 0.3;
@@ -22,6 +21,11 @@ const cores = [
     { fill: "rgba(102, 204, 153, 0.3)", stroke: "#66cc99" },
     { fill: "rgba(255, 153, 102, 0.3)", stroke: "#ff9966" },
     { fill: "rgba(233, 102, 186, 0.3)", stroke: "#e966ba" },
+    { fill: "rgba(255, 204, 102, 0.3)", stroke: "#ffcc66" },
+    { fill: "rgba(102, 204, 255, 0.3)", stroke: "#66ccff" },
+    { fill: "rgba(255, 102, 102, 0.3)", stroke: "#ff6666" },
+    { fill: "rgba(102, 153, 255, 0.3)", stroke: "#6699ff" },
+    { fill: "rgba(153, 255, 102, 0.3)", stroke: "#99ff66" },
 ];
 const colorsPdf = ['#A7C7E790', '#FBC49C90'];
 
@@ -45,7 +49,7 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
-export const ConfiancaNotaGrafico = () => {
+export const ConfiancaNotaGraficoPorPergunta = () => {
     const params = useParams();
     const navigate = useNavigate();
     const avaliacao = useSelector(selectAllAvaliacoes);
@@ -61,12 +65,12 @@ export const ConfiancaNotaGrafico = () => {
     const respostasDoQuestionario = temp?.respostasPorQuestionario || [];
     const [rangeNota, setRangeNota] = useState([1, 7]);
     const [rangeConfianca, setRangeConfianca] = useState([0, 7]);
-    const [questao, setQuestao] = useState(0);
     const [pdfFilter, setPdfFilter] = useState('Todos os pdfs');
     const min = 1;
     const max_nota = 7;
     const max_confianca = 7;
-    const [showListaCompleta, setShowListaCompleta] = useState(false);
+
+    const questao = parseInt(params.pergunta.split("-")[1], 10) - 1;
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -216,9 +220,6 @@ export const ConfiancaNotaGrafico = () => {
     };
 
     const finalTodasPerguntas = transformarListaPorPdf();
-    const todasPerguntas = finalTodasPerguntas.length > 0
-        ? Object.entries(finalTodasPerguntas[0]).filter(([key]) => key.startsWith("pergunta"))
-        : [];
 
     const filtrarQuestao = () => {
         if (!finalTodasPerguntas.length) return finalTodasPerguntas;
@@ -334,18 +335,12 @@ export const ConfiancaNotaGrafico = () => {
 
                 <div className='div-geral-grafico'>
                     <RightTitleComponent className="div-top"
-                        titleText={"Relação da confiança pela nota"}
+                        titleText={"Relação da confiança pela nota detalhada da questão " + (questao + 1)}
                     />
                     <div className='div-grafico-confianca-container'>
                         <div className='div-graficos-confianca'>
-                            <div className="container-perguntas-histograma">
-                                {questionario.perguntas.map((q, index) => (
-                                    <p key={index} className={`title-perguntas-histograma ${questao === index ? "ativo" : ""}`} onClick={() => setQuestao(index)}>
-                                        Pergunta {index + 1}
-                                    </p>
-                                ))}
-                            </div>
-                            {Array.isArray(finalPorPergunta) && finalPorPergunta.length > 0 ? <div style={{ overflowY: "auto", flex: 1, minHeight: 0, maxHeight: "calc(85vh - 220px)" }}>
+
+                            {Array.isArray(finalPorPergunta) && finalPorPergunta.length > 0 ? <div style={{ overflowY: "auto", flex: 1, minHeight: 0, maxHeight: "calc(95vh - 220px)" }}>
                                 <div className='div-resposta-avaliada-container'>
                                     <div
                                         style={{
@@ -369,7 +364,7 @@ export const ConfiancaNotaGrafico = () => {
                                                     borderColor: colorsPdf[pdf.indexPdf],
                                                     margin: "12px"
                                                 }}>
-                                                    <ResponsiveContainer width="100%" height={400}>
+                                                    <ResponsiveContainer width="100%" height={200}>
                                                         <ScatterChart margin={{ top: 12, right: 12, bottom: 12, left: 12 }}>
                                                             <CartesianGrid />
                                                             <ReferenceLine
@@ -425,65 +420,11 @@ export const ConfiancaNotaGrafico = () => {
                                         })}
                                     </div>
                                 </div>
-                                {questao === -1 ? <div
-                                    style={{
-                                        textAlign: "center",
-                                        padding: "20px",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            display: "inline-flex",
-                                            gap: "64px",
-                                            flexWrap: "wrap",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        {Array.isArray(finalPorPergunta) && finalPorPergunta.length > 0 && todasPerguntas.map(
-                                            ([perguntaKey], idxPergunta) => {
-                                                const cor = cores[(idxPergunta) % cores.length];
-                                                return (
-                                                    <div
-                                                        key={perguntaKey}
-                                                        style={{ display: "flex", alignItems: "center", gap: "2px" }}
-                                                    >
-                                                        <svg width="20" height="20">
-                                                            <circle
-                                                                cx="10"
-                                                                cy="10"
-                                                                r="7"
-                                                                fill={cor.fill}
-                                                                stroke={cor.stroke}
-                                                                strokeWidth="2"
-                                                            />
-                                                        </svg>
-                                                        <span>{perguntaKey}</span>
-                                                    </div>
-                                                );
-                                            }
-                                        )}
-                                    </div>
+                                <div className="histograma-div">
+                                    <hr />
+                                    <p className="title-avaliacao">Visão geral das respostas</p>
+                                    <ConfiancaNotaLista filtros={filtros} rangeNota={rangeNota} rangeConfianca={rangeConfianca} questao={questao} pdfFilter={pdfFilter} />
                                 </div>
-                                : questao >= 0 &&
-                                    <div>
-                                        <button className="underline-button show-histograma" onClick={() => setShowListaCompleta(!showListaCompleta)}>{showListaCompleta ? (
-                                            <>
-                                                Ver menos <RxChevronUp />
-                                            </>
-                                        ) : (
-                                            <>
-                                                Ver mais detalhes <RxChevronDown />
-                                            </>
-                                        )}</button>
-                                        {showListaCompleta &&
-                                            <div className="histograma-div">
-                                                <hr />
-                                                <p className="title-avaliacao">Visão geral das respostas</p>
-                                                <ConfiancaNotaLista filtros={filtros} rangeNota={rangeNota} rangeConfianca={rangeConfianca} questao={questao} pdfFilter={pdfFilter} />
-                                            </div>}
-                                    </div>
-                                }
                             </div> : <div className='div-notas-no-answer-confianca'>
                                 <p className="no-answers">Não temos respostas para esse caso</p>
                             </div>}

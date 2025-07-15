@@ -10,7 +10,8 @@ import { PerfilUsuario } from './pages/PerfilUsuario';
 import { Notas } from './pages/Notas';
 import { Tempos } from './pages/Tempos';
 import { GraficosTable } from './pages/GraficosTable';
-import { ConfiancaNotaGrafico } from './pages/ConfiancaNotaGrafico';
+import { ConfiancaNotaGraficoGeral } from './pages/ConfiancaNotaGraficoGeral';
+import { ConfiancaNotaGraficoPorPergunta } from './pages/ConfiancaNotaGraficoPorPergunta';
 
 function App() {
 
@@ -28,7 +29,8 @@ function App() {
         { path: '/analise', element: <GraficosTable /> },
         { path: '/analise/notas/:idQuestionario', element: <Notas /> },
         { path: '/analise/tempos/:idQuestionario', element: <Tempos/> },
-        { path: '/analise/confiancaXnota/:idQuestionario', element: <ConfiancaNotaGrafico/> },
+        { path: '/analise/confiancaXnota/:idQuestionario', element: <ConfiancaNotaGraficoGeral/> },
+        { path: '/analise/confiancaXnota/:idQuestionario/:pergunta', element: <ConfiancaNotaGraficoPorPergunta/> },
       ]
     }
   ])

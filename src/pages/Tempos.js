@@ -18,7 +18,6 @@ export const Tempos = () => {
     const usuarios = useSelector(selectAllUsuarios);
     const allRrespostas = useSelector(selectAllRespostas);
     const respostasQuestionario = allRrespostas.find(r => r.id === questionario.id);
-    const boxPlots = new Array(questionario.listPdf.length).fill(undefined);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
 
     const [filtros, setFiltros] = useState({
@@ -216,7 +215,7 @@ export const Tempos = () => {
             }
         }
     }, [data]);
-    
+
     return (
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
