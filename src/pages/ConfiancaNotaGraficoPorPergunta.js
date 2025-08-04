@@ -335,7 +335,7 @@ export const ConfiancaNotaGraficoPorPergunta = () => {
 
                 <div className='div-geral-grafico'>
                     <RightTitleComponent className="div-top"
-                        titleText={"Relação da confiança pela nota detalhada da questão " + (questao + 1)}
+                        titleText={"Relação da confiança pela nota detalhada - Pergunta " + (questao + 1)}
                     />
                     <div className='div-grafico-confianca-container'>
                         <div className='div-graficos-confianca'>

@@ -64,7 +64,7 @@ export const ConfiancaNotaGraficoGeral = () => {
     const temp = respostas.find(r => r.id === params.idQuestionario);
     const respostasDoQuestionario = temp?.respostasPorQuestionario || [];
     const [rangeNota, setRangeNota] = useState([1, 7]);
-    const [rangeConfianca, setRangeConfianca] = useState([0, 7]);
+    const [rangeConfianca, setRangeConfianca] = useState([1, 7]);
     const [pdfFilter, setPdfFilter] = useState('Todos os pdfs');
     const min = 1;
     const max_nota = 7;
@@ -229,7 +229,6 @@ export const ConfiancaNotaGraficoGeral = () => {
     };
 
     const finalTodasPerguntas = transformarListaPorPdf();
-
     return (
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
@@ -328,6 +327,7 @@ export const ConfiancaNotaGraficoGeral = () => {
                 <div className='div-geral-grafico'>
                     <RightTitleComponent className="div-top"
                         titleText={"Relação da confiança pela nota"}
+                        info={"https://blog.proffernandamaciel.com.br/interpretar-grafico-de-dispersao/"}
                     />
                     <div className='div-grafico-confianca-container'>
                         <div className='div-graficos-confianca'>
@@ -352,7 +352,7 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                     cursor: 'pointer',
                                                     userSelect: 'none'
                                                 }}>
-                                                    <h3 style={{ margin: 0 }}>
+                                                    <p style={{ margin: 0, maxWidth: "90%" }}>
                                                         <span style={{
                                                             display: 'inline-block',
                                                             transform: abertas[indexPergunta] ? 'rotate(90deg)' : 'rotate(0deg)',
@@ -361,8 +361,9 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                         }}>
                                                             ►
                                                         </span>
-                                                        {`Pergunta ${indexPergunta + 1}`}
-                                                    </h3>
+                                                        <strong>{`Pergunta ${indexPergunta + 1}.`}</strong>{' '}
+                                                        {perguntas.find(p => p.id === questionario.perguntas[indexPergunta]).questao.pergunta}
+                                                    </p>
 
                                                     {abertas[indexPergunta] && (
                                                         <RxMagnifyingGlass
@@ -370,7 +371,7 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                             style={{ fontSize: '20px', cursor: 'pointer' }}
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                window.open(`/#/analise/confiancaXnota/${params.idQuestionario}/pergunta-${indexPergunta + 1}`, '_blank');
+                                                                window.open(`~rszenberg/#/analise/confiancaXnota/${params.idQuestionario}/pergunta-${indexPergunta + 1}`, '_blank');
                                                             }}
                                                         />
                                                     )}

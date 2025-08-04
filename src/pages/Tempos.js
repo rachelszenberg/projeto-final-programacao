@@ -250,6 +250,7 @@ export const Tempos = () => {
                     <div className='div-geral-grafico'>
                         <RightTitleComponent className="div-top"
                             titleText={"Tempo para completar o questionário (em segundos)"}
+                            info={"https://datatab.net/tutorial/box-plot"}
                         />
 
                         <div className='div-grafico' >

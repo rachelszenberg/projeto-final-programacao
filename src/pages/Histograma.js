@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
 import { useParams } from 'react-router-dom';
 import { AgCharts } from 'ag-charts-react';
+import { selectAllPerguntas } from '../features/PerguntasSlice';
 
 export const Histograma = ({ medias }) => {
     const params = useParams();
     const questionarios = useSelector(selectAllQuestionarios);
     const questionario = questionarios.todosQuestionarios.find(q => q.id === params.idQuestionario);
+    const perguntas = useSelector(selectAllPerguntas);
 
     const [abertas, setAbertas] = useState(
         questionario.perguntas.map(() => true)
@@ -45,7 +47,8 @@ export const Histograma = ({ medias }) => {
                                 }}>
                                     ►
                                 </span>
-                                <h3 style={{ margin: '0' }}>Pergunta {questaoIndex + 1}</h3>
+                                <strong>{`Pergunta ${questaoIndex + 1}`}</strong>{'. '}
+                                {perguntas.find(p => p.id === questionario.perguntas[questaoIndex]).questao.pergunta}
                             </div>
 
                             {abertas[questaoIndex] && (
@@ -102,6 +105,10 @@ export const Histograma = ({ medias }) => {
                                                         [3.5, 4],
                                                         [4, 4.5],
                                                         [4.5, 5],
+                                                        [5, 5.5],
+                                                        [5.5, 6],
+                                                        [6, 6.5],
+                                                        [6.5, 7],
                                                     ]
                                                 },
                                             ],
@@ -111,7 +118,7 @@ export const Histograma = ({ medias }) => {
                                                     position: "bottom",
                                                     title: { text: "pdf" + (index + 1) },
                                                     min: 1,
-                                                    max: 5,
+                                                    max: 7,
                                                     interval: { step: 0.5 },
                                                 },
                                                 {

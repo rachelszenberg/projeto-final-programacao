@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { RightTitleComponent } from '../components/RightTitleComponent';
 import { selectAllPerguntas } from '../features/PerguntasSlice';
 import { Histograma } from './Histograma';
-import { RxChevronDown, RxChevronUp } from 'react-icons/rx';
+import { RxChevronDown, RxChevronUp, RxInfoCircled } from 'react-icons/rx';
 import { mean } from 'mathjs';
 
 export const Notas = () => {
@@ -237,6 +237,7 @@ export const Notas = () => {
                         <RightTitleComponent className="div-top"
                             titleText={"Gráfico das médias das notas de cada pergunta para cada pdf"}
                             nomeQuestionario={"As notas foram dadas de a 1 a 5"}
+                            info={"https://pt.khanacademy.org/math/pt-3-ano/probabilidade-e-estratistica-3ano/x6bdf3ae2a7b609b9:graficos-de-barras/a/read-bar-graphs"}
                         />
                         <div className='div-grafico-geral'>
                             <div className='div-grafico-e-histograma' style={{ overflowY: "auto", minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
@@ -256,7 +257,7 @@ export const Notas = () => {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
-                                            <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
+                                            <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
                                             <Tooltip />
                                             <Legend content={() => <CustomLegend pdf={1} />} />
                                             <Bar dataKey="pdf1" fill="#A7C7E7">
@@ -285,7 +286,7 @@ export const Notas = () => {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
-                                            <YAxis domain={[1, 6]} ticks={[1, 2, 3, 4, 5, 6]} />
+                                            <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
                                             <Tooltip />
                                             <Legend content={<CustomLegend />} />
                                             <Bar dataKey="pdf2" fill="#FBC49C" >
@@ -312,7 +313,10 @@ export const Notas = () => {
                                 {showHistograma &&
                                     <div className="histograma-div">
                                         <hr />
-                                        <p className="title-avaliacao">Distribuição das notas</p>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <p className="title-avaliacao">Distribuição das notas</p>
+                                            <a href={"https://www.alura.com.br/artigos/o-que-e-um-histograma?srsltid=AfmBOorwgRYmizpe3y37wIKwMueflzQiICRpm3bvDbbjxMoOqI1ebQ21"} target="_blank" rel="noreferrer noopener"><RxInfoCircled style={{ fontSize: '18px' }}/></a>
+                                        </div>
                                         <Histograma medias={medias} />
                                     </div>}
                             </div>
@@ -326,7 +330,7 @@ export const Notas = () => {
                                 {questionario.listPdf.map((pdf, index) => (
                                     <div key={pdf.url || index}>
                                         <span>{index + 1}. </span>
-                                        <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
+                                        <a href={pdf.url} target="_blank" rel="noreferrer noopener">Clique aqui para abrir o pdf {index + 1}</a>
                                     </div>
                                 ))}
                             </div>
