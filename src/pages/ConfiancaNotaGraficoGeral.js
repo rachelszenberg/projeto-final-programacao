@@ -371,7 +371,7 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                             style={{ fontSize: '20px', cursor: 'pointer' }}
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                window.open(`~rszenberg/#/analise/confiancaXnota/${params.idQuestionario}/pergunta-${indexPergunta + 1}`, '_blank');
+                                                                window.open(`#/analise/confiancaXnota/${params.idQuestionario}/pergunta-${indexPergunta + 1}`, '_blank');
                                                             }}
                                                         />
                                                     )}

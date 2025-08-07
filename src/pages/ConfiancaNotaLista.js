@@ -172,7 +172,6 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
                         position: "sticky",
                         top: 0,
                         backgroundColor: "#d0d0d0",
-                        zIndex: 10,
                         margin: "0px -24px",
                         padding: "4px"
                     }}>
