@@ -37,7 +37,7 @@ npm start
   4. Navegue pelos questionários e, ao final, envie as suas respostas.
 
 ### Fluxo Avaliando as Respostas
-  Esse fluxo permite que o avaliador examine as respostas enviadas para cada questionário. Todas as respostas são agrupadas por pergunta, independentemente do PDF visualizado, e o avaliador deve atribuir uma nota de 1 a 5 para cada resposta. Além das respostas, todos os PDFs do questionário são exibidos para consulta. O avaliador pode salvar o progresso e continuar posteriormente ou enviar a avaliação final, caso o questionário esteja concluído.
+  Esse fluxo permite que o avaliador examine as respostas enviadas para cada questionário. Todas as respostas são agrupadas por pergunta, independentemente do PDF visualizado, e o avaliador deve atribuir uma nota de 1 a 7 para cada resposta. Além das respostas, todos os PDFs do questionário são exibidos para consulta. O avaliador pode salvar o progresso e continuar posteriormente ou enviar a avaliação final, caso o questionário esteja concluído.
   ##### Passo a passo
   1. Acesse a rota [http://localhost:3000/usuario-identificacao/avaliacao](http://localhost:3000/usuario-identificacao/avaliacao) (substitua "usuario-identificacao" pela identificação do usuário).
   2. Visualize a tabela com todos os questionários disponíveis para avaliação e suas informações.

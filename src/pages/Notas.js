@@ -236,7 +236,7 @@ export const Notas = () => {
                     <div className='div-geral-grafico-nota'>
                         <RightTitleComponent className="div-top"
                             titleText={"Gráfico das médias das notas de cada pergunta para cada pdf"}
-                            nomeQuestionario={"As notas foram dadas de a 1 a 5"}
+                            nomeQuestionario={"As notas foram dadas de a 1 a 7"}
                             info={"https://pt.khanacademy.org/math/pt-3-ano/probabilidade-e-estratistica-3ano/x6bdf3ae2a7b609b9:graficos-de-barras/a/read-bar-graphs"}
                         />
                         <div className='div-grafico-geral'>
