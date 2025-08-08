@@ -255,7 +255,7 @@ export const Notas = () => {
                                             }}
                                         >
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
+                                            <ReferenceLine y={7} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
                                             <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
                                             <Tooltip />
@@ -284,7 +284,7 @@ export const Notas = () => {
                                             }}
                                         >
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <ReferenceLine y={5} strokeWidth={5} label={{ value: "max", position: "right" }} />
+                                            <ReferenceLine y={7} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
                                             <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
                                             <Tooltip />
