@@ -196,7 +196,7 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
                                     <div className='resposta-div'>
                                         <p>{r.listRespostas[questao]}</p>
                                         <div className='confiancaxnota-div'>
-                                            <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 5.00</p>
+                                            <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 7.00</p>
                                             {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 7</p>}
                                             {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackground[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
                                         </div>
