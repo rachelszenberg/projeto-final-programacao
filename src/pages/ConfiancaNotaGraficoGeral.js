@@ -231,7 +231,7 @@ export const ConfiancaNotaGraficoGeral = () => {
     const finalTodasPerguntas = transformarListaPorPdf();
     return (
         <div>
-            <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
+            <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
                 <div className='div-filtros'>
                     <div>
@@ -392,8 +392,8 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                                     <ScatterChart margin={{ top: 12, right: 12, bottom: 12, left: 12 }}>
                                                                         <CartesianGrid />
                                                                         <ReferenceLine segment={[{ x: 1, y: 1 }, { x: 7, y: 7 }]} stroke="black" strokeDasharray="5 5" />
-                                                                        <XAxis type="number" dataKey="confiancaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Confiança" />
-                                                                        <YAxis type="number" dataKey="notaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Nota" />
+                                                                        <XAxis type="number" dataKey="confiancaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Confiança" label={{ value: 'Confiança', position: 'insideBottom', offset: -10 }}/>
+                                                                        <YAxis type="number" dataKey="notaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Nota" label={{ value: 'Nota', angle: -90, position: 'insideLeft', offset: 0 }}/>
                                                                         <Tooltip content={<CustomTooltip />} />
                                                                         <Scatter
                                                                             data={pdf.respostas.map(r => ({

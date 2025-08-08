@@ -240,7 +240,7 @@ export const ConfiancaNotaGraficoPorPergunta = () => {
 
     return (
         <div>
-            <Header headerText={questionarioNome} onVoltar={() => navigate(-1)} headerButtons grafico />
+            <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
                 <div className='div-filtros'>
                     <div>
