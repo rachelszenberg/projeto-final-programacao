@@ -217,25 +217,6 @@ export const Confianca = () => {
                                                 <Bar dataKey="pdf2" fill="#FBC49C" />
                                             </BarChart>
                                         </ResponsiveContainer>
-                                        {/* <ResponsiveContainer width="100%" height="100%">
-                                            <LineChart width={500}
-                                                height={300}
-                                                data={resultadoGrafico}
-                                                margin={{
-                                                    top: 5,
-                                                    right: 30,
-                                                    left: 20,
-                                                    bottom: 5,
-                                                }}>
-                                                <CartesianGrid strokeDasharray="3 3" />
-                                                <XAxis dataKey="valor" />
-                                                <YAxis domain={[1, 20]} ticks={[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]} />
-                                                <Tooltip />
-                                                <Legend />
-                                                <Line dataKey="pdf1" stroke="#A7C7E7" strokeWidth={3} />
-                                                <Line dataKey="pdf2" stroke="#FBC49C" strokeWidth={3} />
-                                            </LineChart>
-                                        </ResponsiveContainer> */}
                                     </div>)
                                     : (
                                         <div style={{ width: '100%', height: `${100 / result.length}%` }}>
@@ -256,7 +237,7 @@ export const Confianca = () => {
                                         <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
                                     </div>
                                 ))}
-                        <button onClick={() => navigate('/analise/rasunho')}>detalhes</button>
+                                <button onClick={() => navigate('/analise/rasunho')}>detalhes</button>
                             </div>
                         </div>
                     </div>

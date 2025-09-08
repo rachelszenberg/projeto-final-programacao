@@ -13,7 +13,7 @@
     height: auto;
     overflow-y: auto;
     padding: $s-size;
-    width: 30%;
+    width: 20%;
     background-color: $off-white;
     border-radius: $radius;
     justify-content: space-between;
@@ -54,13 +54,13 @@
 }
 
 .div-geral-grafico {
-    width: 70%;
+    width: 80%;
     background-color: $cor-fundo-avaliacao;
     border-radius: $radius;
 }
 
 .div-geral-grafico-nota {
-    width: 70%;
+    width: 80%;
     background-color: $cor-fundo-avaliacao;
     border-radius: $radius;
 }
@@ -109,6 +109,7 @@
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    width: 90%;
 
     p {
         margin: $s-size $m-size $xs-size;
@@ -133,6 +134,9 @@
 .div-grafico-legenda {
     flex: 1;
     padding: $s-size;
+    height: auto;
+    overflow-y: auto;
+    width: 5%;
 
     h4 {
         margin-bottom: 0px;

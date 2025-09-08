@@ -132,7 +132,7 @@ export const Notas = () => {
 
             const item = {
                 idPergunta: perguntaObj.idPergunta,
-                nome: `Pergunta ${index + 1}`
+                nome: `P${index + 1}`
             };
 
             questionario.listPdf.forEach((pdf, idx) => {
@@ -242,7 +242,7 @@ export const Notas = () => {
                         <div className='div-grafico-geral'>
                             <div className='div-grafico-e-histograma' style={{ overflowY: "auto", minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
                                 <div className='div-grafico'>
-                                    <ResponsiveContainer width="70%" height="100%">
+                                    <ResponsiveContainer width="60%" height="100%">
                                         <BarChart
                                             width={500}
                                             height={300}
@@ -271,7 +271,7 @@ export const Notas = () => {
                                             <ReferenceLine y={calcularMedias().mediaPdf1} strokeWidth={3} stroke="#5A7AAB" label={{ value: "media: " + calcularMedias().mediaPdf1, position: 'left', fill: '#5A7AAB' }} />
                                         </BarChart>
                                     </ResponsiveContainer>
-                                    <ResponsiveContainer width="70%" height="100%">
+                                    <ResponsiveContainer width="60%" height="100%">
                                         <BarChart
                                             width={500}
                                             height={300}
