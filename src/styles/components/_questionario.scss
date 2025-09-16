@@ -19,7 +19,7 @@
   justify-content: space-between;
 }
 
-.div-top{
+.div-top {
   flex: 1;
 }
 
@@ -33,7 +33,7 @@
   }
 }
 
-.div-no-answer{
+.div-no-answer {
   background-color: $cor-fundo-avaliacao;
   flex-grow: 1;
   overflow: auto;
@@ -72,7 +72,7 @@
 }
 
 .form {
-  padding: 0px 2*$l-size $l-size $l-size;
+  padding: 0px $l-size;
 
   textarea {
     border-width: 0px 0px 1.5px 0px;
@@ -83,6 +83,7 @@
     width: 100%;
     overflow: auto;
     resize: none;
+    box-sizing: border-box;
   }
 }
 
@@ -118,8 +119,9 @@
   margin-left: auto;
 
   @media (max-width: $media-size) {
-        width: 100%;
-    }
+    width: 100%;
+    position: relative;
+  }
 }
 
 .div-form-button {
@@ -157,6 +159,11 @@
   &:hover {
     cursor: default;
     background-color: $cor-primaria;
+  }
+
+  @media (max-width: $media-size) {
+    position: absolute;
+    right: 0;
   }
 }
 
