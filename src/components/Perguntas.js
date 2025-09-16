@@ -21,7 +21,7 @@ export const Perguntas = (props) => {
     const [temProximo, setTemProximo] = useState();
     const [qtdRespondidas, setQtdRespondidas] = useState(0);
     const [showModal, setShowModal] = useState(false);
-
+    
     const opcoes = ["1 - Nada confiante", "2", "3", "4", "5", "6", "7 - Muito confiante"];
 
     const regex = useMemo(() => /([a-zA-Z0-9].*){1,}/, []);
@@ -127,20 +127,8 @@ export const Perguntas = (props) => {
 
     const confirmar = () => {
         dispatch(addResposta(props.idUsuario))
-        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação."} })
+        navigate('/obrigado', { state: { idUsuario: props.idUsuario, title: "Obrigado pelas suas respostas!", text: "Salvamos todas para a avaliação." } })
     }
-
-    // const formatarTempo = (segundosTotais) => {
-    //     const horas = Math.floor(segundosTotais / 3600);
-    //     const minutos = Math.floor((segundosTotais % 3600) / 60);
-    //     const segundos = segundosTotais % 60;
-
-    //     const horasFormatadas = String(horas).padStart(2, "0");
-    //     const minutosFormatados = String(minutos).padStart(2, "0");
-    //     const segundosFormatados = String(segundos).padStart(2, "0");
-
-    //     return `${horasFormatadas}:${minutosFormatados}:${segundosFormatados}`;
-    // };
 
     return (
         <form className="div-form">
@@ -152,7 +140,6 @@ export const Perguntas = (props) => {
                 qtdRespondidas={qtdRespondidas}
                 titleText="Questionário"
                 nomeQuestionario={questionario.nome}
-                // tempoQuestionario={formatarTempo(segundos)}
 
                 podeVoltar={podeVoltar}
                 temProximo={temProximo}
@@ -189,6 +176,16 @@ export const Perguntas = (props) => {
                                         </label>
                                     </div>
                                 ))}
+                            </div>
+                            <div className="dropdown-group">
+                                <select
+                                    value={confiancasTmp[index] || ''}
+                                    onChange={(e) => handleConfiancaChange(index, e.target.value)}>
+                                    {!confiancasTmp[index] && <option value="" disabled>Selecione um nível de confiança</option>}
+                                    {opcoes.map((opcao, index) => (
+                                        <option key={index} value={opcao}>{opcao}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     ))}

@@ -9,7 +9,7 @@ body {
 .button {
     min-width: 120px;
     min-height: 40px;
-    padding: 12px 24px;
+    padding: $s-size $m-size;
     border-radius: $radius;
     text-align: center;
     justify-content: center;
@@ -50,6 +50,14 @@ p {
     padding: 0px $l-size;
     justify-content: space-between;
     height: 80vh;
+
+    @media (max-width: $media-size) {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0px $l-size;
+        box-sizing: border-box;
+    }
 }
 
 ::-webkit-scrollbar-thumb {

@@ -1,5 +1,4 @@
 .pdf {
-  background-color: antiquewhite;
   width: 100%;
   height: 100%;
 }
@@ -7,8 +6,21 @@
 .div-pdf-questionario {
   width: 50%;
   height: 100%;
-  .pdf{
+
+  .pdf {
     border-radius: $radius;
+  }
+
+  @media (max-width: $media-size) {
+    width: 100%;
+    height: fit-content !important;
+    background-color: $cor-secundaria;
+    border-radius: $radius;
+
+    .pdf {
+      display: block !important;
+      height: 60vh !important;
+    }
   }
 }
 
@@ -16,7 +28,8 @@
   border-radius: 0px;
   width: 100%;
   height: 100%;
-  .pdf{
+
+  .pdf {
     border-radius: 0px 0px $radius $radius;
   }
 }
@@ -26,11 +39,23 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   .div-title-avaliacao {
     border-radius: $radius $radius 0px 0px;
     background-color: $off-white;
     margin: 0px;
     padding: $m-size;
+  }
+
+  @media (max-width: $media-size) {
+    width: 100%;
+    height: fit-content !important;
+    background-color: $cor-secundaria;
+    border-radius: $radius;
+
+    .pdf {
+      display: block !important;
+      height: 60vh !important;
+    }
   }
 }

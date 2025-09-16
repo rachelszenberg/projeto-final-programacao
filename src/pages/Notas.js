@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ErrorBar } from 'recharts';
 import { selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
@@ -25,12 +25,24 @@ export const Notas = () => {
     const medias = [];
     const [showHistograma, setShowHistograma] = useState(false);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
+    const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+    const [isMobile, setIsMobile] = useState(
+        window.matchMedia('(max-width: 768px)').matches
+    );
+
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
         escolaridade: [],
         familiaridade: []
     });
+
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 768px)');
+        const onChange = e => setIsMobile(e.matches);
+        mq.addEventListener('change', onChange);
+        return () => mq.removeEventListener('change', onChange);
+    }, []);
 
     const filtrarUsuariosPorPerfil = (usuarios, filtros) => {
         return usuarios
@@ -205,31 +217,48 @@ export const Notas = () => {
             <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
 
-                <div className='div-filtros'>
-                    <div>
+                <div className="div-filtros" data-mobile-open={filtrosAbertos}>
+                    <div className="filtros-header">
                         <p className='filtros-geral-title'>Filtros</p>
-                        <div>
-                            {perguntasPerfil.map((p) => (
-                                <div key={p.id}>
-                                    <p className='filtro-title'>{p.titulo}</p>
-                                    {p.opcoes &&
-                                        p.opcoes.map((item, index) => (
-                                            <label key={index}>
-                                                <p className='filtro-opcao'>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={filtros[p.filtro].includes(item)}
-                                                        onChange={() => atualizarFiltros(p.filtro, item)}
-                                                    />
-                                                    {item}</p>
-                                            </label>
-                                        ))
-                                    }
-                                </div>
-                            ))}
-                        </div>
+                        <button
+                            type="button"
+                            className="chevron"
+                            aria-expanded={filtrosAbertos}
+                            onClick={() => setFiltrosAbertos(v => !v)}
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
                     </div>
-                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
+
+                    <div id="filtros-corpo" className="filtros-corpo">
+                        {perguntasPerfil.map((p) => (
+                            <div key={p.id} className="bloco-filtro">
+                                <p className='filtro-title'>{p.titulo}</p>
+
+                                <div className="filtro-opcao opcoes-row">
+                                    {p.opcoes?.map((item, idx) => (
+                                        <label key={idx} className="opcao-inline">
+                                            <input
+                                                type="checkbox"
+                                                checked={filtros[p.filtro].includes(item)}
+                                                onChange={() => atualizarFiltros(p.filtro, item)}
+                                            />
+                                            <span>{item}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button
+                        className="underline-button limpar-filtro"
+                        onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}
+                    >
+                        limpar filtros
+                    </button>
                 </div>
 
                 {medias.length ?
@@ -240,9 +269,13 @@ export const Notas = () => {
                             info={"https://pt.khanacademy.org/math/pt-3-ano/probabilidade-e-estratistica-3ano/x6bdf3ae2a7b609b9:graficos-de-barras/a/read-bar-graphs"}
                         />
                         <div className='div-grafico-geral'>
-                            <div className='div-grafico-e-histograma' style={{ overflowY: "auto", minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
+                            <div className='div-grafico-e-histograma' style={
+                                isMobile
+                                    ? { overflowY: 'visible', height: 'auto', maxHeight: 'none' }
+                                    : { overflowY: 'auto', minHeight: 0, maxHeight: 'calc(90vh - 220px)' }
+                            }>
                                 <div className='div-grafico'>
-                                    <ResponsiveContainer width="60%" height="100%">
+                                    <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
                                             width={500}
                                             height={300}
@@ -271,7 +304,7 @@ export const Notas = () => {
                                             <ReferenceLine y={calcularMedias().mediaPdf1} strokeWidth={3} stroke="#5A7AAB" label={{ value: "media: " + calcularMedias().mediaPdf1, position: 'left', fill: '#5A7AAB' }} />
                                         </BarChart>
                                     </ResponsiveContainer>
-                                    <ResponsiveContainer width="60%" height="100%">
+                                    <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
                                             width={500}
                                             height={300}
@@ -315,7 +348,7 @@ export const Notas = () => {
                                         <hr />
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             <p className="title-avaliacao">Distribuição das notas</p>
-                                            <a href={"https://www.alura.com.br/artigos/o-que-e-um-histograma?srsltid=AfmBOorwgRYmizpe3y37wIKwMueflzQiICRpm3bvDbbjxMoOqI1ebQ21"} target="_blank" rel="noreferrer noopener"><RxInfoCircled style={{ fontSize: '18px' }}/></a>
+                                            <a href={"https://www.alura.com.br/artigos/o-que-e-um-histograma?srsltid=AfmBOorwgRYmizpe3y37wIKwMueflzQiICRpm3bvDbbjxMoOqI1ebQ21"} target="_blank" rel="noreferrer noopener"><RxInfoCircled style={{ fontSize: '18px' }} /></a>
                                         </div>
                                         <Histograma medias={medias} />
                                     </div>}

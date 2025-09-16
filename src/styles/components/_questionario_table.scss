@@ -122,3 +122,101 @@
     }
   }
 }
+
+@media (max-width: $media-size) {
+  .questionarios-container {
+    .filtros {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $s-size;
+
+      input,
+      select {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+      width: 100%;
+    }
+
+    table {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background-color: $off-white;
+      padding: $m-size;
+      border: 1px solid $off-grey;
+      border-radius: $radius;
+      box-shadow: 0 2px $xs-size rgba(0, 0, 0, .06);
+      margin: $s-size 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    td {
+      border: none !important;
+      padding: 0 !important;
+      position: relative;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+
+      &::before {
+        content: attr(data-label) ": ";
+        font-weight: normal;
+        color: $dark-grey;
+        margin-right: 6px;
+      }
+    }
+
+    td[data-label="Nome"] {
+      order: 0;
+      font-weight: bold;
+    }
+
+    td[data-label="Número"] {
+      display: none;
+    }
+
+    td[data-label="Status"] {
+      order: 1;
+      font-weight: normal;
+    }
+
+    td[data-label="Respostas"] {
+      order: 2;
+      font-weight: normal;
+    }
+
+    td[data-label="Avaliado"] {
+      order: 3;
+      font-weight: normal;
+    }
+
+    .status-feito,
+    .status-salvo,
+    .status-nao-feito {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px $xs-size;
+      border-radius: $radius;
+    }
+  }
+}

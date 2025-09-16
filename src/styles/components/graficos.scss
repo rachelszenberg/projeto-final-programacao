@@ -38,8 +38,8 @@
 }
 
 .limpar-filtro {
-    margin-top: $s-size; // Dá espaço entre o conteúdo e o botão
-    align-self: flex-end; // Faz ele ir pro canto direito se quiser
+    margin-top: $s-size;
+    align-self: flex-end;
 }
 
 .div-notas-no-answer {
@@ -53,12 +53,7 @@
     justify-content: center;
 }
 
-.div-geral-grafico {
-    width: 80%;
-    background-color: $cor-fundo-avaliacao;
-    border-radius: $radius;
-}
-
+.div-geral-grafico,
 .div-geral-grafico-nota {
     width: 80%;
     background-color: $cor-fundo-avaliacao;
@@ -145,4 +140,168 @@
 
 .grafico-pergunta:hover {
     cursor: pointer;
+}
+
+@media (min-width: 769px) {
+    .div-filtros .chevron {
+        display: none;
+    }
+
+    .div-filtros .filtros-corpo {
+        display: block;
+    }
+
+    .div-filtros .opcoes-row {
+        display: block;
+    }
+
+    .div-filtros .opcao-inline {
+        display: block;
+    }
+}
+
+@media (max-width: $media-size) {
+    .div-notas {
+        flex-direction: column;
+        gap: $s-size;
+        padding: 0 $m-size;
+        height: auto;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
+    .div-filtros {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        order: 1;
+
+        .filtros-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .div-resposta-avaliada-container {
+        min-width: 0;
+        flex-direction: row;
+        display: block;
+    }
+
+    .div-pergunta .card-pdf {
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .div-filtros .chevron {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: $dark-grey;
+        cursor: pointer;
+    }
+
+    .div-filtros .chevron svg {
+        width: $m-size;
+        height: $m-size;
+        display: block;
+        transition: transform .2s;
+    }
+
+    .div-filtros[data-mobile-open="true"] .chevron svg {
+        transform: rotate(180deg);
+    }
+
+    .div-filtros .filtros-corpo,
+    .div-filtros .limpar-filtro {
+        display: none;
+    }
+
+    .div-filtros[data-mobile-open="true"] .filtros-corpo,
+    .div-filtros[data-mobile-open="true"] .limpar-filtro {
+        display: block;
+    }
+
+    .div-filtros .opcoes-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        white-space: normal;
+    }
+
+    .div-filtros .opcao-inline {
+        display: inline-flex;
+        align-items: flex-start;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    .div-filtros .opcao-inline span {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .div-geral-grafico {
+        width: 100%;
+        order: 2;
+    }
+
+    .div-geral-grafico-nota {
+        width: 100%;
+        order: 2;
+    }
+
+    .div-grafico {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .div-grafico-confianca-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .div-graficos-confianca {
+        width: 100%;
+
+        p {
+            margin: $xs-size;
+        }
+    }
+
+    .div-grafico-geral {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .grafico-box {
+        order: 1;
+        width: 100%;
+        height: auto;
+        min-height: 360px;
+    }
+
+    .div-geral-grafico-nota {
+        order: 1;
+        width: 100%;
+        height: auto;
+        min-height: 360px;
+    }
+
+    .div-grafico-legenda {
+        order: 2;
+        width: 100%;
+        margin-top: $s-size;
+    }
 }

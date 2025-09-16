@@ -44,3 +44,33 @@
         color: $cor-primaria;
     }
 }
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: $media-size) {
+    .titulo-tabelas-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        justify-content: flex-start;
+        gap: 4px;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .aba-ativa,
+        .aba-inativa {
+            width: auto;
+            flex: 0 0 auto;
+            white-space: nowrap;
+            padding: $m-size $l-size;
+            font-size: $font-size-large;
+        }
+    }
+}

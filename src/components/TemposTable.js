@@ -76,10 +76,10 @@ export const TemposTable = () => {
         <tbody>
           {filteredQuestionarios.map((q, index) => (
             <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
-              <td>{q.numero}</td>
-              <td>{q.nome}</td>
-              <td>{q.aberto ? 'Em andamento' : 'Fechado'}</td>
-              <td>{getTotalRespostasPorQuestionario(q.id)}</td>
+              <td data-label="Número">{q.numero}</td>
+              <td data-label="Nome">{q.nome}</td>
+              <td data-label="Status">{q.aberto ? 'Em andamento' : 'Fechado'}</td>
+              <td data-label="Respostas">{getTotalRespostasPorQuestionario(q.id)}</td>
             </tr>
           ))}
         </tbody>

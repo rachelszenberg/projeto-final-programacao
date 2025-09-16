@@ -17,7 +17,8 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
     const medias = [];
     const temp = respostas.find(r => r.id === params.idQuestionario);
     const respostasDoQuestionario = temp?.respostasPorQuestionario;
-    const colorsPdf = ['#A7C7E790', '#FBC49C90'];
+    const colorsPdfBackground = ['#A7C7E790', '#FBC49C90'];
+    const colorsPdfText = ['#A7C7E7', '#FBC49C'];
     const colorsBackground = ['#C41E0035', '#C41E0020', '#C44E0023', '#C47E0025', '#647B2423', '#03784720', '#03784735', '#03784735'];
     const colorsText = ['#C41E00', '#C41E0090', '#C44E0090', '#C47E00', '#647B2490', '#03784790', '#037847'];
     const [ordem, setOrdem] = useState('Confiança apropriada decrescente');
@@ -168,13 +169,7 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
         <div>
             <div className='div-grafico-confianca-container'>
                 <div className='div-graficos-confianca'>
-                    <div className='respostas-ordenar-div' style={{
-                        position: "sticky",
-                        top: 0,
-                        backgroundColor: "#d0d0d0",
-                        margin: "0px -24px",
-                        padding: "4px"
-                    }}>
+                    <div className='respostas-ordenar-div'>
                         <p style={{ fontWeight: 'bold' }}>{respostasOrdenadas.length} / {totalRespostas} resposta(s)</p>
                         <div className='ordenar-div'>
                             <p>Ordenar por:</p>
@@ -192,12 +187,12 @@ export const ConfiancaNotaLista = ({ filtros, rangeNota, rangeConfianca, questao
                         {respostasOrdenadas.map((r, index) => {
                             return (
                                 <div key={index} className='resposta-avaliada-field'>
-                                    <p className='pdf-div' style={{ fontWeight: 'bold', backgroundColor: colorsPdf[questionario.listPdf.findIndex(item => item.id === r.idPdf)] }}>pdf {questionario.listPdf.findIndex(item => item.id === r.idPdf) + 1}</p>
+                                    <p className='pdf-div' style={{ '--pdf-color': colorsPdfText[questionario.listPdf.findIndex(item => item.id === r.idPdf)], fontWeight: 'bold', backgroundColor: colorsPdfBackground[questionario.listPdf.findIndex(item => item.id === r.idPdf)] }}>pdf {questionario.listPdf.findIndex(item => item.id === r.idPdf) + 1}</p>
                                     <div className='resposta-div'>
                                         <p>{r.listRespostas[questao]}</p>
                                         <div className='confiancaxnota-div'>
-                                            <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>nota média: {r.mediaNotas} / 7.00</p>
-                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>confiança: {r.confiancaQuestao} / 7</p>}
+                                            <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.mediaNotas) - 1], backgroundColor: colorsBackground[Math.trunc(r.mediaNotas) - 1] }}>Nota média: {r.mediaNotas} / 7.00</p>
+                                            {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[r.confiancaQuestao - 1], backgroundColor: colorsBackground[r.confiancaQuestao - 1] }}>Confiança: {r.confiancaQuestao} / 7</p>}
                                             {r.confiancaQuestao && <p className='confiancaxnota' style={{ color: colorsText[Math.trunc(r.confiancaApropriada / 20)], backgroundColor: colorsBackground[Math.trunc(r.confiancaApropriada / 20)] }}>Confiança apropriada: {r.confiancaApropriada}%</p>}
                                         </div>
                                     </div>

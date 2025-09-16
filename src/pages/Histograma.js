@@ -39,16 +39,18 @@ export const Histograma = ({ medias }) => {
                                     userSelect: 'none'
                                 }}
                             >
-                                <span style={{
-                                    display: 'inline-block',
-                                    transform: abertas[questaoIndex] ? 'rotate(90deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.2s',
-                                    marginRight: '8px'
-                                }}>
-                                    ►
-                                </span>
-                                <strong>{`Pergunta ${questaoIndex + 1}`}</strong>{'. '}
-                                {perguntas.find(p => p.id === questionario.perguntas[questaoIndex]).questao.pergunta}
+                                <p style={{ margin: 0, maxWidth: "90%" }}>
+                                    <span style={{
+                                        display: 'inline-block',
+                                        transform: abertas[questaoIndex] ? 'rotate(90deg)' : 'rotate(0deg)',
+                                        transition: 'transform 0.2s',
+                                        marginRight: '8px'
+                                    }}>
+                                        ►
+                                    </span>
+                                    <strong>{`Pergunta ${questaoIndex + 1}.`}</strong>{' '}
+                                    {perguntas.find(p => p.id === questionario.perguntas[questaoIndex]).questao.pergunta}
+                                </p>
                             </div>
 
                             {abertas[questaoIndex] && (

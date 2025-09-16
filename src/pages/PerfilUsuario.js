@@ -101,8 +101,7 @@ export const PerfilUsuario = () => {
                     onProximo={podeEnviar ? onButtonClick : undefined}
                     textProximo={"Responder questionário"}
                     noMarginTop
-                    buttonNextOrSaveClass={!podeEnviar ? "button-disabled-perfil" : undefined}
-
+                    buttonNextOrSaveClass={!podeEnviar ? "button-disabled-perfil" : "button-abled-perfil-mobile"}
                 />
             </div>
         </div>

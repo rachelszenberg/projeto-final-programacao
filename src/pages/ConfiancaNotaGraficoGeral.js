@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllAvaliacoes } from '../features/CarregaAvaliacoesSlice';
 import { selectAllQuestionarios } from "../features/QuestionarioSlice";
@@ -72,6 +72,17 @@ export const ConfiancaNotaGraficoGeral = () => {
     const [abertas, setAbertas] = useState(
         questionario.perguntas.map(() => true)
     );
+    const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+    const [isMobile, setIsMobile] = useState(
+        window.matchMedia('(max-width: 768px)').matches
+    );
+
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 768px)');
+        const onChange = e => setIsMobile(e.matches);
+        mq.addEventListener('change', onChange);
+        return () => mq.removeEventListener('change', onChange);
+    }, []);
 
     const togglePergunta = (index) => {
         setAbertas(prev => {
@@ -233,85 +244,96 @@ export const ConfiancaNotaGraficoGeral = () => {
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
-                <div className='div-filtros'>
-                    <div>
+                <div className='div-filtros' data-mobile-open={filtrosAbertos}>
+                    <div className="filtros-header">
                         <p className='filtros-geral-title'>Filtros</p>
-                        <div>
-                            {perguntasPerfil.map((p) => (
-                                <div key={p.id}>
-                                    <p className='filtro-title'>{p.titulo}</p>
-                                    {p.opcoes &&
-                                        p.opcoes.map((item, index) => (
-                                            <label key={index}>
-                                                <p className='filtro-opcao'>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={filtros[p.filtro].includes(item)}
-                                                        onChange={() => atualizarFiltros(p.filtro, item)}
-                                                    />
-                                                    {item}</p>
-                                            </label>
-                                        ))
-                                    }
-                                </div>
-                            ))}
-                            <div className='filtros-pdf'>
-                                <p className='filtro-title'>Por pdf</p>
-                                <select value={pdfFilter} onChange={(e) => setPdfFilter(e.target.value)}>
-                                    <option>Todos os pdfs</option>
-                                    <option>Pdf 1</option>
-                                    <option>Pdf 2</option>
-                                </select>
-                            </div>
-                            <div className='filtro-nota-div'>
-                                <p className='filtro-title'>Por nota média</p>
-                                <div className='filtro-slider'>
-                                    <ReactSlider
-                                        className="horizontal-slider"
-                                        thumbClassName="thumb"
-                                        trackClassName="track"
-                                        value={rangeNota}
-                                        onChange={(value) => setRangeNota(value)}
-                                        min={min}
-                                        max={max_nota}
-                                        pearling
-                                        minDistance={0}
-                                        renderThumb={(props, state) => {
-                                            const { key, ...rest } = props;
-                                            return <div key={key} {...rest}>{state.valueNow}</div>;
-                                        }}
-                                    />
+                        <button
+                            type="button"
+                            className="chevron"
+                            aria-expanded={filtrosAbertos}
+                            onClick={() => setFiltrosAbertos(v => !v)}
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
 
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
-                                        <span>{min}</span>
-                                        <span>{max_nota}</span>
-                                    </div>
+                    <div id="filtros-corpo" className="filtros-corpo">
+                        {perguntasPerfil.map((p) => (
+                            <div key={p.id} className="bloco-filtro">
+                                <p className='filtro-title'>{p.titulo}</p>
+                                <div className="filtro-opcao opcoes-row">
+
+                                    {p.opcoes?.map((item, idx) => (
+                                        <label key={idx} className="opcao-inline">
+                                            <input
+                                                type="checkbox"
+                                                checked={filtros[p.filtro].includes(item)}
+                                                onChange={() => atualizarFiltros(p.filtro, item)}
+                                            />
+                                            <span>{item}</span>
+                                        </label>
+                                    ))}
                                 </div>
                             </div>
-                            <div className='filtro-nota-div'>
-                                <p className='filtro-title'>Por confiança</p>
-                                <div className='filtro-slider'>
-                                    <ReactSlider
-                                        className="horizontal-slider"
-                                        thumbClassName="thumb"
-                                        trackClassName="track"
-                                        value={rangeConfianca}
-                                        onChange={(value) => setRangeConfianca(value)}
-                                        min={min}
-                                        max={max_confianca}
-                                        pearling
-                                        minDistance={0}
-                                        renderThumb={(props, state) => {
-                                            const { key, ...rest } = props;
-                                            return <div key={key} {...rest}>{state.valueNow}</div>;
-                                        }}
+                        ))}
+                        <div className='filtros-pdf'>
+                            <p className='filtro-title'>Por pdf</p>
+                            <select value={pdfFilter} onChange={(e) => setPdfFilter(e.target.value)}>
+                                <option>Todos os pdfs</option>
+                                <option>Pdf 1</option>
+                                <option>Pdf 2</option>
+                            </select>
+                        </div>
+                        <div className='filtro-nota-div'>
+                            <p className='filtro-title'>Por nota média</p>
+                            <div className='filtro-slider'>
+                                <ReactSlider
+                                    className="horizontal-slider"
+                                    thumbClassName="thumb"
+                                    trackClassName="track"
+                                    value={rangeNota}
+                                    onChange={(value) => setRangeNota(value)}
+                                    min={min}
+                                    max={max_nota}
+                                    pearling
+                                    minDistance={0}
+                                    renderThumb={(props, state) => {
+                                        const { key, ...rest } = props;
+                                        return <div key={key} {...rest}>{state.valueNow}</div>;
+                                    }}
+                                />
 
-                                    />
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                    <span>{min}</span>
+                                    <span>{max_nota}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='filtro-nota-div'>
+                            <p className='filtro-title'>Por confiança</p>
+                            <div className='filtro-slider'>
+                                <ReactSlider
+                                    className="horizontal-slider"
+                                    thumbClassName="thumb"
+                                    trackClassName="track"
+                                    value={rangeConfianca}
+                                    onChange={(value) => setRangeConfianca(value)}
+                                    min={min}
+                                    max={max_confianca}
+                                    pearling
+                                    minDistance={0}
+                                    renderThumb={(props, state) => {
+                                        const { key, ...rest } = props;
+                                        return <div key={key} {...rest}>{state.valueNow}</div>;
+                                    }}
 
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
-                                        <span>{min}</span>
-                                        <span>{max_confianca}</span>
-                                    </div>
+                                />
+
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px' }}>
+                                    <span>{min}</span>
+                                    <span>{max_confianca}</span>
                                 </div>
                             </div>
                         </div>
@@ -331,7 +353,10 @@ export const ConfiancaNotaGraficoGeral = () => {
                     />
                     <div className='div-grafico-confianca-container'>
                         <div className='div-graficos-confianca'>
-                            {finalTodasPerguntas.length ? <div className='histograma-div' style={{ overflowY: "auto", flex: 1, minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
+                            {finalTodasPerguntas.length ? <div className='histograma-div' style={
+                                isMobile
+                                    ? { overflowY: 'visible', height: 'auto', maxHeight: 'none' }
+                                    : { overflowY: "auto", flex: 1, minHeight: 0, maxHeight: "calc(90vh - 220px)" }}>
                                 <div className='div-resposta-avaliada-container'>
                                     {questionario.perguntas.map((pergunta, indexPergunta) => {
                                         const cor = cores[indexPergunta % cores.length];
@@ -381,19 +406,21 @@ export const ConfiancaNotaGraficoGeral = () => {
                                                 {abertas[indexPergunta] && (
                                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', marginTop: '12px' }}>
                                                         {dados.map(pdf => (
-                                                            <div key={pdf.idPdf} style={{
-                                                                border: `2px solid ${colorsPdf[pdf.indexPdf]}`,
-                                                                borderRadius: '8px',
-                                                                padding: '8px',
-                                                                flex: '1 1 45%',
-                                                                minWidth: '300px'
-                                                            }}>
+                                                            <div key={pdf.idPdf}
+                                                                className="card-pdf"
+                                                                style={{
+                                                                    border: `2px solid ${colorsPdf[pdf.indexPdf]}`,
+                                                                    borderRadius: '8px',
+                                                                    padding: '8px',
+                                                                    flex: '1 1 45%',
+                                                                    minWidth: isMobile ? 0 : 300
+                                                                }}>
                                                                 <ResponsiveContainer width="100%" height={300}>
                                                                     <ScatterChart margin={{ top: 12, right: 12, bottom: 12, left: 12 }}>
                                                                         <CartesianGrid />
                                                                         <ReferenceLine segment={[{ x: 1, y: 1 }, { x: 7, y: 7 }]} stroke="black" strokeDasharray="5 5" />
-                                                                        <XAxis type="number" dataKey="confiancaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Confiança" label={{ value: 'Confiança', position: 'insideBottom', offset: -10 }}/>
-                                                                        <YAxis type="number" dataKey="notaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Nota" label={{ value: 'Nota', angle: -90, position: 'insideLeft', offset: 0 }}/>
+                                                                        <XAxis type="number" dataKey="confiancaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Confiança" label={{ value: 'Confiança', position: 'insideBottom', offset: -10 }} />
+                                                                        <YAxis type="number" dataKey="notaJitter" domain={[1, 7]} ticks={[1, 2, 3, 4, 5, 6, 7]} name="Nota" label={{ value: 'Nota', angle: -90, position: 'insideLeft', offset: 0 }} />
                                                                         <Tooltip content={<CustomTooltip />} />
                                                                         <Scatter
                                                                             data={pdf.respostas.map(r => ({
@@ -444,6 +471,6 @@ export const ConfiancaNotaGraficoGeral = () => {
                 </div>
 
             </div>
-        </div>
+        </div >
     );
 }

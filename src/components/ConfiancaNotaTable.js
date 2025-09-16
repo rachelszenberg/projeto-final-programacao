@@ -113,14 +113,22 @@ export const ConfiancaNotaTable = () => {
                     <tbody>
                         {filteredQuestionarios.map((q, index) => (
                             <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
-                                <td>{q.numero}</td>
-                                <td>{q.nome}</td>
-                                <td>
-                                    <span className={getQuestionarioAvaliado(q.id, index) === 'Avaliado' ? 'status-feito' : getQuestionarioAvaliado(q.id, index) === 'Não avaliado' ? 'status-salvo' : 'status-nao-feito'}>
+                                <td data-label="Número">{q.numero}</td>
+                                <td data-label="Nome">{q.nome}</td>
+                                <td data-label="Status">
+                                    <span
+                                        className={
+                                            getQuestionarioAvaliado(q.id, index) === 'Avaliado'
+                                                ? 'status-feito'
+                                                : getQuestionarioAvaliado(q.id, index) === 'Não avaliado'
+                                                    ? 'status-salvo'
+                                                    : 'status-nao-feito'
+                                        }
+                                    >
                                         <span className="status-circle"></span> {getQuestionarioAvaliado(q.id, index)}
                                     </span>
                                 </td>
-                                <td>{getTotalRespostasPorQuestionario(q.id)}</td>
+                                <td data-label="Respostas">{getTotalRespostasPorQuestionario(q.id)}</td>
                             </tr>
                         ))}
                     </tbody>

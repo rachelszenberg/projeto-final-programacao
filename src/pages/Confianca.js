@@ -118,11 +118,6 @@ export const Confianca = () => {
         r.confiancas = confiancas;
     });
 
-
-    // const total = (data) => {
-    //     return data.reduce((sum, item) => sum + item.quantidade, 0);
-    // };
-
     questionario.listPdf.forEach((pdf) => {
         if (!result.some((r) => r.idPdf === pdf.id)) {
             result.push({

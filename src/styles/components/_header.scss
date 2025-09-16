@@ -1,29 +1,73 @@
 .header {
-    background-color: $cor-secundaria;
-    color: $cor-primaria;
-    padding: $m-size 2.5rem;
-    margin-bottom: $l-size;
-    height: auto;
+  background-color: $cor-secundaria;
+  color: $cor-primaria;
+  padding: $m-size 2.5rem;
+  margin-bottom: $l-size;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: $s-size;
+  display: flex;
+  max-width: 100%;
+  justify-content: space-between;
+
+  .header-title {
+    display: inline;
+  }
+
+  .button-voltar {
+    margin-right: $m-size;
+    cursor: pointer;
+  }
+
+  .button-avaliar {
+    cursor: pointer;
+    width: $l-size;
+    height: $l-size;
+    margin-left: $m-size;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 12px;
+    flex-wrap: nowrap;
+  }
+
+  .header>div:first-child {
     display: flex;
     align-items: center;
-    gap: $s-size;
-    display: flex;
-    max-width: 100%;
-    justify-content: space-between;
-
-    .header-title {
-      display: inline;
-    }
-    
-    .button-voltar{
-      margin-right: $m-size;
-      cursor: pointer;
-    }
-
-    .button-avaliar{
-      cursor: pointer;
-      width: $l-size;
-      height: $l-size;
-      margin-left: $m-size;
-    }
+    flex: 1 1 auto;
+    min-width: 0;
   }
+
+  .header-title {
+    margin: 0;
+    font-size: $font-size-medium;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header>div:last-child {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .header>div:last-child>div {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .button-voltar {
+    width: $s-size;
+    height: $s-size;
+  }
+
+  .button-avaliar {
+    width: $m-size;
+    height: $m-size;
+  }
+}

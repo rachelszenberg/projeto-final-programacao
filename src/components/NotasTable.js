@@ -37,7 +37,7 @@ export const NotasTable = () => {
         if (questionarios.questionariosAbertos.some(item => item.id === idQuestionario)) {
             return "Questionário aberto"
         }
-         else if (avaliacoes[idQuestionario]) {
+        else if (avaliacoes[idQuestionario]) {
             return "Avaliado"
         }
         return "Não avaliado"
@@ -50,7 +50,7 @@ export const NotasTable = () => {
         }
         else if (avaliacoes[idQuestionario]) {
             navigate(`/analise/notas/${idQuestionario}`)
-        } 
+        }
         else {
             setShowNaoAvaliadoModal(true);
             setIdQuestionarioClicado(idQuestionario);
@@ -105,10 +105,18 @@ export const NotasTable = () => {
                     <tbody>
                         {filteredQuestionarios.map((q, index) => (
                             <tr key={index} onClick={() => navigateToAvaliaQuestionario(q.id)}>
-                                <td>{q.numero}</td>
-                                <td>{q.nome}</td>
-                                <td>
-                                    <span className={getQuestionarioAvaliado(q.id, index) === 'Avaliado' ? 'status-feito' : getQuestionarioAvaliado(q.id, index) === 'Não avaliado' ? 'status-salvo' : 'status-nao-feito'}>
+                                <td data-label="Número">{q.numero}</td>
+                                <td data-label="Nome">{q.nome}</td>
+                                <td data-label="Status de Avaliação">
+                                    <span
+                                        className={
+                                            getQuestionarioAvaliado(q.id, index) === 'Avaliado'
+                                                ? 'status-feito'
+                                                : getQuestionarioAvaliado(q.id, index) === 'Não avaliado'
+                                                    ? 'status-salvo'
+                                                    : 'status-nao-feito'
+                                        }
+                                    >
                                         <span className="status-circle"></span> {getQuestionarioAvaliado(q.id, index)}
                                     </span>
                                 </td>

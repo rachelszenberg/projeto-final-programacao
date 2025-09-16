@@ -4,118 +4,201 @@
   background-color: $cor-fundo-avaliacao;
   border-bottom-right-radius: $radius;
   border-bottom-left-radius: $radius;
-  
-    .filtros {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-  
-      input {
-        padding: $xs-size;
-        border: 1px solid $dark-grey;
-        border-radius: $radius;
-        width: 60%;
-      }
-  
-      select {
-        padding: $xs-size;
-        border: 1px solid $dark-grey;
-        border-radius: $radius;
-        width: 30%;
-      }
-    }
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: $off-white;
-      border-radius: $radius;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-      th {
-        padding: 15px;
-        text-align: left;
-  
-        &:nth-child(1) {
-          width: 25%;
-          border-top-left-radius: $radius;
-        }
-  
-        &:nth-child(2) {
-          width: 25%;
-        }
-  
-        &:nth-child(3) {
-          width: 25%;
-        }
-  
-        &:nth-child(4) {
-          width: 25%;
-          border-top-right-radius: $radius;
-        }
-      }
-  
-      th {
-        background-color: $off-grey;
-        font-weight: bold;
-      }
-  
-      td {
-        padding: 15px;
-        border-top: 1px solid $off-grey;
-      }
-  
-      tbody {
-        tr {
-          &:hover {
-            background-color: $table-hover;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  
-    .status-circle {
-      display: inline-block;
-      width: $xs-size;
-      height: $xs-size;
-      border-radius: 50%;
-      margin-right: $xs-size; 
-    }
-  
-    .status-feito {
-      color: $feito-dark-green;
-      font-weight: bold;
-      background-color: $feito-off-green;
+
+  .filtros {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    input {
       padding: $xs-size;
+      border: 1px solid $dark-grey;
       border-radius: $radius;
-  
-      .status-circle {
-        background-color: $feito-dark-green;
+      width: 60%;
+    }
+
+    select {
+      padding: $xs-size;
+      border: 1px solid $dark-grey;
+      border-radius: $radius;
+      width: 30%;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $off-white;
+    border-radius: $radius;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    th {
+      padding: 15px;
+      text-align: left;
+
+      &:nth-child(1) {
+        width: 25%;
+        border-top-left-radius: $radius;
+      }
+
+      &:nth-child(2) {
+        width: 25%;
+      }
+
+      &:nth-child(3) {
+        width: 25%;
+      }
+
+      &:nth-child(4) {
+        width: 25%;
+        border-top-right-radius: $radius;
       }
     }
-  
-    .status-nao-feito {
-      color: $feito-dark-grey;
+
+    th {
+      background-color: $off-grey;
       font-weight: bold;
-      background-color: $feito-off-grey;
-      padding: $xs-size;
-      border-radius: $radius;
-  
-      .status-circle {
-        background-color: $feito-dark-grey;
-      }
     }
-  
-    .status-salvo {
-      color: $feito-dark-yellow;
-      font-weight: bold;
-      background-color: $feito-off-yellow;
-      padding: $xs-size;
-      border-radius: $radius;
-  
-      .status-circle {
-        background-color: $feito-dark-yellow;
+
+    td {
+      padding: 15px;
+      border-top: 1px solid $off-grey;
+    }
+
+    tbody {
+      tr {
+        &:hover {
+          background-color: $table-hover;
+          cursor: pointer;
+        }
       }
     }
   }
+
+  .status-circle {
+    display: inline-block;
+    width: $xs-size;
+    height: $xs-size;
+    border-radius: 50%;
+    margin-right: $xs-size;
+  }
+
+  .status-feito {
+    color: $feito-dark-green;
+    font-weight: bold;
+    background-color: $feito-off-green;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-green;
+    }
+  }
+
+  .status-nao-feito {
+    color: $feito-dark-grey;
+    font-weight: bold;
+    background-color: $feito-off-grey;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-grey;
+    }
+  }
+
+  .status-salvo {
+    color: $feito-dark-yellow;
+    font-weight: bold;
+    background-color: $feito-off-yellow;
+    padding: $xs-size;
+    border-radius: $radius;
+
+    .status-circle {
+      background-color: $feito-dark-yellow;
+    }
+  }
+}
+
+@media (max-width: $media-size) {
+  .tempos-container {
+    .filtros {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $s-size;
+
+      input,
+      select {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+      width: 100%;
+    }
+
+    table {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background-color: $off-white;
+      padding: $m-size;
+      border: 1px solid $off-grey;
+      border-radius: $radius;
+      box-shadow: 0 2px $xs-size rgba(0, 0, 0, .06);
+      margin: $s-size 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    td {
+      border: none !important;
+      padding: 0 !important;
+      position: relative;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+
+      &::before {
+        content: attr(data-label) ": ";
+        font-weight: normal;
+        color: $dark-grey;
+        margin-right: 6px;
+      }
+    }
+
+    td[data-label="Nome"] {
+      order: 0;
+      font-weight: bold;
+    }
+
+    td[data-label="Número"] {
+      display: none;
+    }
+
+    td[data-label="Status"] {
+      order: 1;
+      font-weight: normal;
+    }
+
+    td[data-label="Respostas"] {
+      order: 2;
+      font-weight: normal;
+    }
+  }
+}

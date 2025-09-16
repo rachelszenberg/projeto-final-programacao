@@ -1,6 +1,6 @@
 .container {
     width: 20vw;
-    height: 8px;
+    height: $xs-size;
     background-color: $off-grey;
     border-radius: $radius;
     position: relative;
@@ -15,11 +15,11 @@
   
   .progress-container {
     display: flex;
-    align-items: center; /* Alinha o texto com a barra */
+    align-items: center; 
   }
   
   .text {
-    margin-left: 10px; /* Adiciona espaço entre a barra e o número */
+    margin-left: 10px;
     font-size: 14px;
   }
   

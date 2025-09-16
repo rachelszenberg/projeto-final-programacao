@@ -50,4 +50,19 @@
       cursor: default;
       background-color: $cor-fundo-avaliacao;
     }
+
+    @media (max-width: $media-size) {
+        width: 100%;
+    }
+}
+
+.button-abled-perfil-mobile {  
+    &:hover {
+      cursor: default;
+      background-color: $cor-fundo-avaliacao;
+    }
+
+    @media (max-width: $media-size) {
+        width: 100%;
+    }
 }

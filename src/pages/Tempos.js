@@ -19,6 +19,7 @@ export const Tempos = () => {
     const allRrespostas = useSelector(selectAllRespostas);
     const respostasQuestionario = allRrespostas.find(r => r.id === questionario.id);
     const perguntasPerfil = useSelector(selectAllPerguntasPerfil);
+    const [filtrosAbertos, setFiltrosAbertos] = useState(false);
 
     const [filtros, setFiltros] = useState({
         faixaEtaria: [],
@@ -117,6 +118,7 @@ export const Tempos = () => {
         const upperFence = Q3 + 1.5 * IQR;
 
         const outliers = dadosOrdenados.filter(v => v < lowerFence || v > upperFence);
+
         return {
             pdf: idPdf,
             min: Math.min(...dadosOrdenados.filter(v => v >= lowerFence && v <= upperFence)),
@@ -127,6 +129,7 @@ export const Tempos = () => {
             outliers
         };
     };
+
 
     const data = questionario.listPdf.map((pdf, index) => {
         const temposDoPdf = tempoPorPdf.find(t => t.idPdf === pdf.id);
@@ -220,41 +223,59 @@ export const Tempos = () => {
         <div>
             <Header headerText={questionarioNome} onVoltar={() => navigate('/analise')} headerButtons grafico />
             <div className="div-notas">
-                <div className='div-filtros'>
-                    <div>
+                <div className="div-filtros" data-mobile-open={filtrosAbertos}>
+                    <div className="filtros-header">
                         <p className='filtros-geral-title'>Filtros</p>
-                        <div>
-                            {perguntasPerfil.map((p) => (
-                                <div key={p.id}>
-                                    <p className='filtro-title'>{p.titulo}</p>
-                                    {p.opcoes &&
-                                        p.opcoes.map((item, index) => (
-                                            <label key={index}>
-                                                <p className='filtro-opcao'>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={filtros[p.filtro].includes(item)}
-                                                        onChange={() => atualizarFiltros(p.filtro, item)}
-                                                    />
-                                                    {item}</p>
-                                            </label>
-                                        ))
-                                    }
-                                </div>
-                            ))}
-                        </div>
+                        <button
+                            type="button"
+                            className="chevron"
+                            aria-expanded={filtrosAbertos}
+                            onClick={() => setFiltrosAbertos(v => !v)}
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
                     </div>
-                    <button className="underline-button limpar-filtro" onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}>limpar filtros</button>
+
+                    <div id="filtros-corpo" className="filtros-corpo">
+                        {perguntasPerfil.map((p) => (
+                            <div key={p.id} className="bloco-filtro">
+                                <p className='filtro-title'>{p.titulo}</p>
+
+                                <div className="filtro-opcao opcoes-row">
+                                    {p.opcoes?.map((item, idx) => (
+                                        <label key={idx} className="opcao-inline">
+                                            <input
+                                                type="checkbox"
+                                                checked={filtros[p.filtro].includes(item)}
+                                                onChange={() => atualizarFiltros(p.filtro, item)}
+                                            />
+                                            <span>{item}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button
+                        className="underline-button limpar-filtro"
+                        onClick={() => setFiltros({ faixaEtaria: [], escolaridade: [], familiaridade: [] })}
+                    >
+                        limpar filtros
+                    </button>
                 </div>
-                {tempoPorPdf.length ?
+
+                {tempoPorPdf.length ? (
                     <div className='div-geral-grafico'>
                         <RightTitleComponent className="div-top"
                             titleText={"Tempo para completar o questionário (em segundos)"}
                             info={"https://datatab.net/tutorial/box-plot"}
                         />
 
-                        <div className='div-grafico' >
-                            <div className='grafico-box' >
+                        <div className='div-grafico'>
+                            <div className='grafico-box'>
                                 <ReactApexChart options={options} series={series} type="boxPlot" width="100%" height="100%" />
                             </div>
                             <div className="div-grafico-legenda">
@@ -263,17 +284,19 @@ export const Tempos = () => {
                                 {questionario.listPdf.map((pdf, index) => (
                                     <div key={index}>
                                         <span>{index + 1}. </span>
-                                        <a href={pdf.url} target="_blank" rel="noreferrer noopener">Cliquei aqui para abrir o pdf {index + 1}</a>
+                                        <a href={pdf.url} target="_blank" rel="noreferrer noopener">
+                                            Cliquei aqui para abrir o pdf {index + 1}
+                                        </a>
                                     </div>
                                 ))}
                             </div>
                         </div>
-
                     </div>
-                    :
+                ) : (
                     <div className='div-notas-no-answer'>
                         <p className="no-answers">Não temos respostas para esse caso</p>
-                    </div>}
+                    </div>
+                )}
             </div>
         </div>
     );

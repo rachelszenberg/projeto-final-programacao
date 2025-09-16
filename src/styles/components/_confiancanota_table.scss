@@ -152,6 +152,10 @@
       font-weight: bold;
       padding: $xs-size;
       border-radius: $radius;
+
+      @media (max-width: $media-size) {
+        padding: 4px;
+      }
     }
   }
 }
@@ -168,7 +172,7 @@
 
 .horizontal-slider {
   width: 100%;
-  height: 8px;
+  height: $xs-size;
   background: #ddd;
   border-radius: 5px;
   position: relative;
@@ -227,23 +231,84 @@
 }
 
 .respostas-ordenar-div {
-  align-items: center;
-  height: 8%;
+  position: sticky !important;
+  top: 0;
+  z-index: 5;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  background: rgba(245, 245, 245, 0.9) !important;
+  backdrop-filter: saturate(1.2) blur(6px);
+  border-bottom: 1px solid #e8e8e8;
+
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: $xs-size;
+  flex-wrap: wrap;
+
+  @media (min-width: $media-size) {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -24px !important;
+    padding: $xs-size $m-size !important;
+  }
 }
 
 .ordenar-div {
   display: flex;
   margin-left: auto;
+  align-items: center;
+  gap: $xs-size;
 
   select {
     padding: $xs-size;
     border: 1px solid $dark-grey;
     border-radius: $radius;
-    height: 40px;
     width: auto;
+
+    appearance: none;
+
+    font-size: $s-size;
+    font-weight: 600;
+    color: #222;
+    outline: none;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right $s-size center;
+    background-size: $s-size;
+
+    @media (max-width: $media-size) {
+      height: $l-size;
+    }
   }
+}
+
+.respostas-ordenar-div p {
+  margin: 0;
+}
+
+.respostas-ordenar-div>p:first-child {
+  font-weight: 700;
+  font-size: $s-size;
+  color: #111;
+  background: #f3f3f3;
+  border: 1px solid #e2e2e2;
+  border-radius: 999px;
+}
+
+.ordenar-div p {
+  font-size: $s-size;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.ordenar-div select:focus {
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(53, 120, 255, .2);
 }
 
 .div-notas-no-answer-confianca {
@@ -253,4 +318,174 @@
   flex: 1;
   width: 100%;
   text-align: center;
+}
+
+@media (max-width: $media-size) {
+  .confiancanotas-container {
+    .filtros {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $s-size;
+
+      input,
+      select {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: $off-white;
+      padding: $m-size;
+      border: 1px solid $off-grey;
+      border-radius: $radius;
+      box-shadow: 0 2px $xs-size rgba(0, 0, 0, .06);
+      margin: $s-size 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    table {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    td {
+      border: none !important;
+      padding: 0 !important;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      position: relative;
+
+      &::before {
+        content: attr(data-label) ": ";
+        font-weight: normal;
+        color: $dark-grey;
+        margin-right: 6px;
+      }
+    }
+
+    td[data-label="Nome"] {
+      order: 0;
+      font-weight: bold;
+    }
+
+    td[data-label="Status"] {
+      order: 1;
+      font-weight: normal;
+    }
+
+    td[data-label="Respostas"] {
+      order: 2;
+      font-weight: normal;
+    }
+
+    td[data-label="Número"] {
+      display: none;
+    }
+
+    .status-feito,
+    .status-salvo,
+    .status-nao-feito {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px $xs-size;
+      border-radius: $radius;
+    }
+  }
+
+  .resposta-avaliada-field {
+    display: block;
+    margin: $s-size 0;
+    padding: $s-size $s-size;
+    background: #e9eaec;
+    border: 1px solid rgba(0, 0, 0, .06);
+    border-radius: $radius;
+    overflow: visible;
+  }
+
+  .resposta-avaliada-field .pdf-div {
+    width: auto;
+    padding: 0;
+    display: block;
+    text-align: left;
+    background: transparent !important;
+    color: color-mix(in oklab, var(--pdf-color) 80%, black 20%) !important;
+    opacity: .85;
+    font-weight: 600;
+  }
+
+  .resposta-avaliada-field .resposta-div {
+    width: auto;
+    margin: 0;
+  }
+
+  .resposta-avaliada-field .resposta-div>p {
+    margin: $xs-size 0;
+  }
+
+  .resposta-avaliada-field .confiancaxnota-div {
+    margin-top: $xs-size;
+    gap: $xs-size;
+  }
+
+  .resposta-avaliada-field .confiancaxnota-div p {
+    margin: 0;
+  }
+
+  .resposta-div .confiancaxnota-div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .resposta-div .confiancaxnota-div p {
+    width: fit-content;
+    font-weight: 700;
+    border-radius: $radius;
+    padding: 0px;
+  }
+
+  .resposta-avaliada-field :is(a, button, [role="button"]) {
+    cursor: default;
+    text-decoration: none;
+    box-shadow: none;
+  }
+
+  .resposta-avaliada-field :is(a, button, [role="button"]):hover {
+    background: inherit !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .respostas-ordenar-div {
+    gap: $xs-size;
+  }
+
+  .ordenar-div {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ordenar-div select {
+    width: 62%;
+  }
 }
