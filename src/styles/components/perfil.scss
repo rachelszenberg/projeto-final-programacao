@@ -10,7 +10,7 @@
         .text-question-perfil {
             font-size: $font-size-small;
             margin-bottom: $xs-size;
-          }
+        }
 
         textarea {
             box-sizing: border-box;
@@ -45,10 +45,10 @@
     background-color: $cor-fundo-avaliacao;
     color: $cor-secundaria;
     border: 1px solid $cor-secundaria;
-  
+
     &:hover {
-      cursor: default;
-      background-color: $cor-fundo-avaliacao;
+        cursor: default;
+        background-color: $cor-fundo-avaliacao;
     }
 
     @media (max-width: $media-size) {
@@ -56,10 +56,10 @@
     }
 }
 
-.button-abled-perfil-mobile {  
+.button-abled-perfil-mobile {
     &:hover {
-      cursor: default;
-      background-color: $cor-fundo-avaliacao;
+        cursor: pointer;
+        background-color: $botao-primario-hover;
     }
 
     @media (max-width: $media-size) {
