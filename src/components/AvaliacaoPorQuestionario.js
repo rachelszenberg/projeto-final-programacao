@@ -8,6 +8,7 @@ import { addAvaliacao, addSalvarAvaliacao, selectNota, setRespostasSemNota, setS
 import { ConfirmacaoModal } from "./ConfirmacaoModal";
 import { useNavigate } from "react-router-dom";
 import { ModalTexto } from "./ModalTexto";
+import { toggleQuestionarioStatus } from "../features/QuestionarioSlice";
 
 export const AvaliacaoPorQuestionario = (props) => {
     const perguntasAll = useSelector(selectAllPerguntas);
@@ -52,6 +53,10 @@ export const AvaliacaoPorQuestionario = (props) => {
         navigate('/obrigado', { state: { title: "Obrigado pela avaliação!", text: "Salvamos as suas notas dadas para o questionário.", buttonNavigateTo: `/${props.idAvaliador}/avaliacao`, buttonText: "Voltar a tela de avaliação", underlineButtonText: "Ver todas as avaliações", underlineButtonNavigateTo: '/analise' } });
     }
 
+    const onChangeQuestionarioStatus = () => {
+        dispatch(toggleQuestionarioStatus(props.questionario.id));
+    }
+
     useEffect(() => {
         setPodeEnviar(true);
         if (props.questionario.aberto || !temp){
@@ -74,6 +79,8 @@ export const AvaliacaoPorQuestionario = (props) => {
             <RightComponent
                 podeSalvar={temp}
                 onSalvar={onSalvar}
+                questAberto={props.questionario.aberto}
+                onChangeStatus={onChangeQuestionarioStatus}
                 onEnviar={!podeEnviar ? onCheck : onEnviar}
                 buttonNextOrSaveClass={!podeEnviar ? "button-disabled" : undefined}
                 titleText={`Avaliação - ${props.questionario.nome}`}

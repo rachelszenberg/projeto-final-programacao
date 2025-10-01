@@ -290,7 +290,7 @@ export const Notas = () => {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <ReferenceLine y={7} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
-                                            <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
+                                            <YAxis type="number" domain={[1, 8.5]} ticks={[1, 2, 3, 4, 5, 6, 7, 8, 8.5]} allowDataOverflow />
                                             <Tooltip />
                                             <Legend content={() => <CustomLegend pdf={1} />} />
                                             <Bar dataKey="pdf1" fill="#A7C7E7">
@@ -319,7 +319,7 @@ export const Notas = () => {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <ReferenceLine y={7} strokeWidth={5} label={{ value: "max", position: "right" }} />
                                             <XAxis dataKey="nome" />
-                                            <YAxis domain={[1, 8]} ticks={[1, 2, 3, 4, 5, 6, 7, 8]} />
+                                            <YAxis type="number" domain={[1, 8.5]} ticks={[1, 2, 3, 4, 5, 6, 7, 8, 8.5]} allowDataOverflow />
                                             <Tooltip />
                                             <Legend content={<CustomLegend />} />
                                             <Bar dataKey="pdf2" fill="#FBC49C" >

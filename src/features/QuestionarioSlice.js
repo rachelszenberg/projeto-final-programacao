@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get, ref } from "firebase/database";
+import { get, ref, runTransaction } from "firebase/database";
 import { db } from "../firebase/firebase";
 
 export const fetchQuestionarios = createAsyncThunk(
@@ -27,7 +27,26 @@ export const fetchQuestionarios = createAsyncThunk(
     }
 );
 
-export const avaliacaoSlice = createSlice({
+export const toggleQuestionarioStatus = createAsyncThunk(
+  'questionario/toggleStatus',
+  async (idQuestionario, { rejectWithValue }) => {
+    try {
+      const abertoRef = ref(db, `questionarios/${idQuestionario}/aberto`);
+      let novoValor = null;
+
+      await runTransaction(abertoRef, (valorAtual) => {
+        novoValor = !Boolean(valorAtual);
+        return novoValor;
+      });
+
+      return { idQuestionario, aberto: novoValor };
+    } catch (e) {
+      return rejectWithValue(e.message || 'Falha ao alternar status');
+    }
+  }
+);
+
+export const questionarioSlice = createSlice({
     name: 'questionarios',
     initialState: {
         todosQuestionarios: [],
@@ -41,7 +60,7 @@ export const avaliacaoSlice = createSlice({
             if (questionariosAbertos.length > 1) {
                 let zeroAdded = false;
                 questionariosAbertos.forEach((q, i) => {
-                    
+
                     const listPdf = q.listPdf;
                     if (!zeroAdded && (i === (questionariosAbertos.length - 1))) {
                         pdfIdx = 0;
@@ -71,11 +90,17 @@ export const avaliacaoSlice = createSlice({
                 state.todosQuestionarios = action.payload;
                 state.questionariosAbertos = action.payload.filter(q => q.aberto === true);
             })
+            .addCase(toggleQuestionarioStatus.fulfilled, (state, action) => {
+        const { idQuestionario, aberto } = action.payload;
+
+        const q = state.todosQuestionarios.find(x => x.id === idQuestionario);
+        if (q) q.aberto = aberto;
+
+        state.questionariosAbertos = state.todosQuestionarios.filter(x => x.aberto === true);
+      });
     }
 })
 
 export const selectAllQuestionarios = (state) => state.questionario;
-
-export const { selectRandomPdfs } = avaliacaoSlice.actions;
-
-export default avaliacaoSlice.reducer;
+export const { selectRandomPdfs } = questionarioSlice.actions;
+export default questionarioSlice.reducer;

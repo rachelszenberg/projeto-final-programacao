@@ -127,7 +127,7 @@ export const Histograma = ({ medias }) => {
                                                     type: "number",
                                                     position: "left",
                                                     title: { text: "Frequência" },
-                                                    max: 10
+                                                    max: 30
                                                 },
                                             ],
                                         };

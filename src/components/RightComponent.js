@@ -20,6 +20,8 @@ export const RightComponent = ({
     onEnviar,
     buttonNextOrSaveClass,
     noAnswer = false,
+    onChangeStatus,
+    questAberto,
     children
 }) => {
     const childrenRef = useRef(null);
@@ -39,6 +41,8 @@ export const RightComponent = ({
                 titleText={titleText}
                 nomeQuestionario={nomeQuestionario}
                 tempoQuestionario={tempoQuestionario}
+                onChangeStatus={onChangeStatus}
+                questAberto={questAberto}
             />
             <div className={noAnswer ? 'div-no-answer' : 'div-children'} ref={childrenRef}>
             {children}
