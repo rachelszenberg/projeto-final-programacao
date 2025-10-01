@@ -7,6 +7,7 @@ export const ModalTexto = (props) => (
         ariaHideApp={false}
         contentLabel="Selected Option"
         className="custom-modal"
+        overlayClassName="custom-overlay"
     >
         <div className="modal-content">
             <div>

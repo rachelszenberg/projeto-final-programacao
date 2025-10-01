@@ -30,6 +30,7 @@
 
   @media (min-width: $media-size) {
     overflow: auto;
+    max-height: calc(100vh - 160px);
   }
 }
 
